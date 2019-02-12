@@ -72,7 +72,10 @@ public class MainMarketFragment extends Fragment {
             mProductPriceTextView = itemView.findViewById(R.id.product_price_list_item);
         }
         public void bind(Product product){
+
+            if(product.getImages()!=null&&product.getImages().size()>0)
             Picasso.get().load(product.getImages().get(0).getPath()).into(mProductImageView);
+
             mProductNameTextView.setText(product.getName());
             mProductPriceTextView.setText(product.getPrice());
         }

@@ -12,6 +12,9 @@ public class ProductLab {
     }
 
     public static ProductLab getInstance() {
+        if(mInstance==null)
+            mInstance = new ProductLab();
+
         return mInstance;
     }
 

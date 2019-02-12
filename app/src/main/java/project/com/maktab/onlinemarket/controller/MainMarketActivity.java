@@ -1,12 +1,17 @@
 package project.com.maktab.onlinemarket.controller;
 
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import project.com.maktab.onlinemarket.R;
 
 public class MainMarketActivity extends SingleFragmentActivity {
+    public static Intent getIntent(Context context) {
+        Intent intent = new Intent(context, MainMarketActivity.class);
+        return intent;
+    }
 
     @Override
     public Fragment createFragment() {

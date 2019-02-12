@@ -2,8 +2,10 @@ package project.com.maktab.onlinemarket.controller;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -14,7 +16,18 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import java.util.List;
+
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.model.Product;
+import project.com.maktab.onlinemarket.model.ProductLab;
+import project.com.maktab.onlinemarket.model.Root;
+import project.com.maktab.onlinemarket.network.Api;
+import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 
 /**
@@ -52,6 +65,24 @@ public class StartFragment extends Fragment {
 
 
         if(isNetworkAvailable()){
+            Retrofit retrofit = RetrofitClientInstance.getRetrofitInstance();
+            Api api = retrofit.create(Api.class);
+            api.getRoot().enqueue(new Callback<List<Product>>() {
+                @Override
+                public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                    ProductLab.getInstance().setProducts(response.body());
+                    Intent intent = MainMarketActivity.getIntent(getActivity());
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onFailure(Call<List<Product>> call, Throwable t) {
+                    Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+
 
 
         }else{
@@ -81,5 +112,8 @@ public class StartFragment extends Fragment {
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
+
+
 
 }
