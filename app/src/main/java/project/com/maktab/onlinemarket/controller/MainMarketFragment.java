@@ -4,10 +4,14 @@ package project.com.maktab.onlinemarket.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,11 +33,15 @@ public class MainMarketFragment extends Fragment {
     private RecyclerView mProductRecyclerView;
     private RecyclerViewProductAdapter mProductAdapter;
 
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
+
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
 
     public static MainMarketFragment newInstance() {
-        
+
         Bundle args = new Bundle();
-        
+
         MainMarketFragment fragment = new MainMarketFragment();
         fragment.setArguments(args);
         return fragment;
@@ -50,6 +58,31 @@ public class MainMarketFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main_market, container, false);
         mProductRecyclerView = view.findViewById(R.id.product_recycler_view);
+        mDrawerLayout = view.findViewById(R.id.drawer_layout);
+        mNavigationView = view.findViewById(R.id.navigation_view);
+
+        mActionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
+
+        mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
+
+        mActionBarDrawerToggle.syncState();
+        ((MainMarketActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.list_category_menu_item:
+
+
+
+                        return true;
+
+
+                    default:
+                        return false;
+                }
+            }
+        });
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
@@ -61,7 +94,7 @@ public class MainMarketFragment extends Fragment {
         return view;
     }
 
-    private class RecyclerViewProductHolder extends RecyclerView.ViewHolder{
+    private class RecyclerViewProductHolder extends RecyclerView.ViewHolder {
         private ImageView mProductImageView;
         private TextView mProductNameTextView;
         private TextView mProductPriceTextView;
@@ -75,21 +108,23 @@ public class MainMarketFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = ProductInfoActivity.newIntent(getActivity(),mProduct.getId());
+                    Intent intent = ProductInfoActivity.newIntent(getActivity(), mProduct.getId());
                     startActivity(intent);
                 }
             });
         }
-        public void bind(Product product){
+
+        public void bind(Product product) {
             mProduct = product;
-            if(product.getImages()!=null&&product.getImages().size()>0)
-            Picasso.get().load(product.getImages().get(0).getPath()).into(mProductImageView);
+            if (product.getImages() != null && product.getImages().size() > 0)
+                Picasso.get().load(product.getImages().get(0).getPath()).into(mProductImageView);
 
             mProductNameTextView.setText(product.getName());
             mProductPriceTextView.setText(product.getPrice());
         }
     }
-    private class RecyclerViewProductAdapter extends RecyclerView.Adapter<RecyclerViewProductHolder>{
+
+    private class RecyclerViewProductAdapter extends RecyclerView.Adapter<RecyclerViewProductHolder> {
         private List<Product> mProductList;
 
         public RecyclerViewProductAdapter(List<Product> productList) {
@@ -103,7 +138,7 @@ public class MainMarketFragment extends Fragment {
         @NonNull
         @Override
         public RecyclerViewProductHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.product_list_item,viewGroup,false);
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.product_list_item, viewGroup, false);
             return new RecyclerViewProductHolder(view);
         }
 
