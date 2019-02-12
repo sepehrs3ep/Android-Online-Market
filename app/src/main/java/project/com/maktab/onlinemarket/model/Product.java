@@ -20,17 +20,24 @@ public class Product {
     @SerializedName("average_rating")
     private String rate;
 
+    private String price;
+
     private List<Image> images;
 
     private List<Category> categories;
 
-    public Product(String id, String name, String date, String description, String sales, String rate, List<Image> images, List<Category> categories) {
+    public String getPrice() {
+        return price;
+    }
+
+    public Product(String id, String name, String date, String description, String sales, String rate, String price, List<Image> images, List<Category> categories) {
         this.id = id;
         this.name = name;
         this.date = date;
         this.description = description;
         this.sales = sales;
         this.rate = rate;
+        this.price = price;
         this.images = images;
         this.categories = categories;
     }

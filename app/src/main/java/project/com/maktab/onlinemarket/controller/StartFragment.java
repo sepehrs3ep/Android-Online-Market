@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket;
+package project.com.maktab.onlinemarket.controller;
 
 
 import android.content.Context;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
+
+import project.com.maktab.onlinemarket.R;
 
 
 /**
