@@ -1,6 +1,7 @@
 package project.com.maktab.onlinemarket.controller;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -64,15 +65,23 @@ public class MainMarketFragment extends Fragment {
         private ImageView mProductImageView;
         private TextView mProductNameTextView;
         private TextView mProductPriceTextView;
+        private Product mProduct;
 
         public RecyclerViewProductHolder(@NonNull View itemView) {
             super(itemView);
             mProductImageView = itemView.findViewById(R.id.product_image_list_item);
             mProductNameTextView = itemView.findViewById(R.id.product_name_list_item);
             mProductPriceTextView = itemView.findViewById(R.id.product_price_list_item);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = ProductInfoActivity.newIntent(getActivity(),mProduct.getId());
+                    startActivity(intent);
+                }
+            });
         }
         public void bind(Product product){
-
+            mProduct = product;
             if(product.getImages()!=null&&product.getImages().size()>0)
             Picasso.get().load(product.getImages().get(0).getPath()).into(mProductImageView);
 

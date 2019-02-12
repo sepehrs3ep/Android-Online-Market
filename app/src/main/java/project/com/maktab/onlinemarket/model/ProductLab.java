@@ -12,7 +12,7 @@ public class ProductLab {
     }
 
     public static ProductLab getInstance() {
-        if(mInstance==null)
+        if (mInstance == null)
             mInstance = new ProductLab();
 
         return mInstance;
@@ -24,5 +24,14 @@ public class ProductLab {
 
     public void setProducts(List<Product> products) {
         mProducts = products;
+    }
+
+    public Product getProductById(String id) {
+        for (Product product : mProducts) {
+            if (product.getId().equalsIgnoreCase(id))
+                return product;
+        }
+
+        return null;
     }
 }
