@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.model;
+package project.com.maktab.onlinemarket.model.product;
 
 import java.util.List;
 

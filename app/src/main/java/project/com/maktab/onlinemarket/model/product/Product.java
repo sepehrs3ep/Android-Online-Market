@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.model;
+package project.com.maktab.onlinemarket.model.product;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -24,13 +24,13 @@ public class Product {
 
     private List<Image> images;
 
-    private List<Category> categories;
+    private List<ProductCategory> categories;
 
     public String getPrice() {
         return price;
     }
 
-    public Product(String id, String name, String date, String description, String sales, String rate, String price, List<Image> images, List<Category> categories) {
+    public Product(String id, String name, String date, String description, String sales, String rate, String price, List<Image> images, List<ProductCategory> categories) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -70,7 +70,7 @@ public class Product {
         return images;
     }
 
-    public List<Category> getCategories() {
+    public List<ProductCategory> getCategories() {
         return categories;
     }
 }

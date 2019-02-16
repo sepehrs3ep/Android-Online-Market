@@ -22,8 +22,8 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import project.com.maktab.onlinemarket.R;
-import project.com.maktab.onlinemarket.model.Product;
-import project.com.maktab.onlinemarket.model.ProductLab;
+import project.com.maktab.onlinemarket.model.product.Product;
+import project.com.maktab.onlinemarket.model.product.ProductLab;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,6 +76,7 @@ public class MainMarketFragment extends Fragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.list_category_menu_item:
+
 
 
 

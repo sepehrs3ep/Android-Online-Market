@@ -1,13 +1,13 @@
-package project.com.maktab.onlinemarket.model;
+package project.com.maktab.onlinemarket.model.product;
 
-public class Category {
+public class ProductCategory {
 
     private String id;
     private String name;
 
     private String slug;
 
-    public Category(String id, String name, String slug) {
+    public ProductCategory(String id, String name, String slug) {
         this.id = id;
         this.name = name;
         this.slug = slug;
