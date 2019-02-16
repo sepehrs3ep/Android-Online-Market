@@ -10,4 +10,5 @@
     <string name="new_products">New Products</string>
     <string name="visited_products">Most Visited products </string>
     <string name="rated_products">Most Rated Products</string>
+    <string name="progress_product">Getting products info</string>
 </resources>

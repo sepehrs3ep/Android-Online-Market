@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 import project.com.maktab.onlinemarket.R;
 
-public class ProductInfoActivity extends SingleFragmentActivity {
+public class ProductInfoActivity extends AppCompatActivity {
     private static final String PRODUCT_ID_EXTRA = "productIdExtra";
     private String mProductId;
 
@@ -21,26 +21,28 @@ public class ProductInfoActivity extends SingleFragmentActivity {
     }
 
 
-    @Override
+  /*  @Override
     public Fragment createFragment() {
+        mProductId = getIntent().getStringExtra(PRODUCT_ID_EXTRA);
         return ProductInfoFragment.newInstance(mProductId);
+
     }
 
     @Override
     public int getLayoutResId() {
         return R.layout.activity_single_fragment;
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_info);
-         mProductId = getIntent().getStringExtra(PRODUCT_ID_EXTRA);
 
-    /*     getSupportFragmentManager().beginTransaction()
+        mProductId = getIntent().getStringExtra(PRODUCT_ID_EXTRA);
+
+         getSupportFragmentManager().beginTransaction()
                  .replace(R.id.info_fragmnet_container,ProductInfoFragment.newInstance(mProductId))
                  .commit();
-*/
 
     }
 }

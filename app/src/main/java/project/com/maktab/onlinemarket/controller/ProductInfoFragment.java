@@ -1,6 +1,7 @@
 package project.com.maktab.onlinemarket.controller;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -19,6 +21,11 @@ import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.model.Image;
 import project.com.maktab.onlinemarket.model.Product;
 import project.com.maktab.onlinemarket.model.ProductLab;
+import project.com.maktab.onlinemarket.network.Api;
+import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +38,7 @@ public class ProductInfoFragment extends Fragment {
     private ViewPager mViewPager;
     private ViewPagerGalleryAdapter mAdapter;
     private TextView mTextViewName, mTextViewPrice, mTextViewDesc;
+    private ProgressDialog mProgressDialog;
 
     public static ProductInfoFragment newInstance(String productId) {
 
@@ -45,7 +53,8 @@ public class ProductInfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProductId = getArguments().getString(PRODUCT_ID_ARGS);
-        mProduct = ProductLab.getInstance().getProductById(mProductId);
+
+//        mProduct = ProductLab.getInstance().getProductById(mProductId);
     }
 
     public ProductInfoFragment() {
@@ -63,6 +72,37 @@ public class ProductInfoFragment extends Fragment {
         mTextViewDesc = view.findViewById(R.id.info_product_desc);
         mViewPager = view.findViewById(R.id.photo_gallery_view_pager);
 
+        mProgressDialog.setMessage(getString(R.string.progress_product));
+        mProgressDialog.show();
+
+
+        RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                .getProduct(mProductId)
+                .enqueue(new Callback<Product>() {
+                    @Override
+                    public void onResponse(Call<Product> call, Response<Product> response) {
+                        if(response.isSuccessful()){
+                            mProduct = response.body();
+                            showDetailsUI();
+                            mProgressDialog.cancel();
+                        }
+
+                    }
+
+
+                    @Override
+                    public void onFailure(Call<Product> call, Throwable t) {
+                        Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+
+
+        return view;
+    }
+
+    private void showDetailsUI() {
         mTextViewName.setText(mProduct.getName());
         mTextViewPrice.setText(mProduct.getPrice());
         mTextViewDesc.setText(mProduct.getDescription());
@@ -75,9 +115,6 @@ public class ProductInfoFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
 
         } else mViewPager.setVisibility(View.GONE);
-
-
-        return view;
     }
 
     private class ViewPagerGalleryAdapter extends FragmentPagerAdapter {
