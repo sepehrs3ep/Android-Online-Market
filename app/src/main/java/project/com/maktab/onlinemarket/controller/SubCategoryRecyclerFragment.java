@@ -1,6 +1,7 @@
 package project.com.maktab.onlinemarket.controller;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,13 +38,14 @@ public class SubCategoryRecyclerFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private SubCategoryAdapter mAdapter;
+    private ProgressDialog mProgressDialog;
 
-    private String mCategoryParentId;
+    private long mCategoryParentId;
 
-    public static SubCategoryRecyclerFragment newInstance(String categoryId) {
+    public static SubCategoryRecyclerFragment newInstance(long categoryId) {
 
         Bundle args = new Bundle();
-        args.putString(CATEGORY_Parent_ID_ARGS, categoryId);
+        args.putLong(CATEGORY_Parent_ID_ARGS, categoryId);
         SubCategoryRecyclerFragment fragment = new SubCategoryRecyclerFragment();
         fragment.setArguments(args);
         return fragment;
@@ -52,7 +54,7 @@ public class SubCategoryRecyclerFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCategoryParentId = getArguments().getString(CATEGORY_Parent_ID_ARGS);
+        mCategoryParentId = getArguments().getLong(CATEGORY_Parent_ID_ARGS);
     }
 
     public SubCategoryRecyclerFragment() {
@@ -66,11 +68,14 @@ public class SubCategoryRecyclerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sub_category_recycler, container, false);
         mRecyclerView = view.findViewById(R.id.sub_category_recycler_view);
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setMessage(getString(R.string.progress_product));
+        mProgressDialog.show();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                .getSubCategories(mCategoryParentId)
+                .getSubCategories(String.valueOf(mCategoryParentId))
                 .enqueue(new Callback<List<Category>>() {
                     @Override
                     public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
@@ -78,7 +83,7 @@ public class SubCategoryRecyclerFragment extends Fragment {
                             List<Category> categoryList = response.body();
                             mAdapter = new SubCategoryAdapter(categoryList);
                             mRecyclerView.setAdapter(mAdapter);
-
+                            mProgressDialog.cancel();
                         }
 
                     }

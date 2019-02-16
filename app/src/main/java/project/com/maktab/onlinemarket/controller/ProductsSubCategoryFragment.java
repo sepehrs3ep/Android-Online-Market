@@ -37,12 +37,12 @@ public class ProductsSubCategoryFragment extends Fragment {
     private ProgressDialog mProgressDialog;
 
     private static final String CATEGORY_ID_ARGS = "categoryIdArgs";
-    private String mCategoryId;
+    private long mCategoryId;
 
-    public static ProductsSubCategoryFragment newInstance(String categoryId) {
+    public static ProductsSubCategoryFragment newInstance(long categoryId) {
 
         Bundle args = new Bundle();
-        args.putString(CATEGORY_ID_ARGS,categoryId);
+        args.putLong(CATEGORY_ID_ARGS,categoryId);
         ProductsSubCategoryFragment fragment = new ProductsSubCategoryFragment();
         fragment.setArguments(args);
         return fragment;
@@ -51,7 +51,7 @@ public class ProductsSubCategoryFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCategoryId = getArguments().getString(CATEGORY_ID_ARGS);
+        mCategoryId = getArguments().getLong(CATEGORY_ID_ARGS);
     }
 
     public ProductsSubCategoryFragment() {
@@ -72,7 +72,7 @@ public class ProductsSubCategoryFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                .getProductsSubCategoires(mCategoryId)
+                .getProductsSubCategoires(String.valueOf(mCategoryId))
                 .enqueue(new Callback<List<Product>>() {
                     @Override
                     public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {

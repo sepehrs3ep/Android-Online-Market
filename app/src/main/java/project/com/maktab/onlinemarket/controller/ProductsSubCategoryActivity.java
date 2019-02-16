@@ -10,9 +10,9 @@ import project.com.maktab.onlinemarket.R;
 
 public class ProductsSubCategoryActivity extends AppCompatActivity {
     private static final String CATEGORY_ID_EXTRA = "project.com.maktab.onlinemarket.controller.categoryId";
-    private String mCategoryId;
+    private long mCategoryId;
 
-    public static Intent newIntent(Context context,String categoryId){
+    public static Intent newIntent(Context context,long categoryId){
         Intent intent = new Intent(context, ProductsSubCategoryActivity.class);
         intent.putExtra(CATEGORY_ID_EXTRA,categoryId);
         return intent;
@@ -23,7 +23,7 @@ public class ProductsSubCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_fragment);
 
-        mCategoryId = getIntent().getStringExtra(CATEGORY_ID_EXTRA);
+        mCategoryId = getIntent().getLongExtra(CATEGORY_ID_EXTRA,0);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()

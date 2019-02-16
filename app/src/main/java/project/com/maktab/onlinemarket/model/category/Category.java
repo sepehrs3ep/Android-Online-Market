@@ -4,7 +4,7 @@ import project.com.maktab.onlinemarket.model.product.Image;
 
 public class Category {
 
-    private String id;
+    private long id;
 
     private String name;
 
@@ -16,7 +16,7 @@ public class Category {
 
     private Image image;
 
-    public Category(String id, String name, long parent, long count, String slug, Image image) {
+    public Category(long id, String name, long parent, long count, String slug, Image image) {
         this.id = id;
         this.name = name;
         this.parent = parent;
@@ -25,7 +25,7 @@ public class Category {
         this.image = image;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 

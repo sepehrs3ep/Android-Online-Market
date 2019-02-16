@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.chip.Chip;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,10 +42,10 @@ import retrofit2.Response;
  */
 public class MainMarketFragment extends Fragment {
 
-    private RecyclerView mNewProductRecyclerView , mRateProductsRecyclerView , mVisitedProductsRecyclerView;
+    private RecyclerView mNewProductRecyclerView , mRateProductsRecyclerView , mVisitedProductsRecyclerView , mChipsRecyclerView;
     private RecyclerViewProductAdapter mNewProductAdapter ,mRateProductAdapter,mVisitedProductAdapter;
 
-
+    private List<Category> mChipsCategoryList;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
 
@@ -61,6 +64,11 @@ public class MainMarketFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mChipsCategoryList = CategoryLab.getmCategoryInstance().getParentCategories();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,6 +78,7 @@ public class MainMarketFragment extends Fragment {
         mNewProductRecyclerView = view.findViewById(R.id.new_product_recycler_view);
         mVisitedProductsRecyclerView = view.findViewById(R.id.visited_products_recycler_view);
         mRateProductsRecyclerView = view.findViewById(R.id.rated_products_recycler_view);
+        mChipsRecyclerView = view.findViewById(R.id.chips_recyclerView);
 
         mDrawerLayout = view.findViewById(R.id.drawer_layout);
         mNavigationView = view.findViewById(R.id.navigation_view);
@@ -95,7 +104,7 @@ public class MainMarketFragment extends Fragment {
                                     public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                                         if(response.isSuccessful()){
                                         CategoryLab.getmCategoryInstance().setAllCategories(response.body());
-                                        Intent intent = CategoryViewPagerActivity.newIntent(getActivity());
+                                        Intent intent = CategoryViewPagerActivity.newIntent(getActivity(),-2);
                                         progressDialog.cancel();
                                         startActivity(intent);
                                         }
@@ -120,20 +129,66 @@ public class MainMarketFragment extends Fragment {
             }
         });
 
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        LinearLayoutManager layoutManager1
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        LinearLayoutManager layoutManager2
-                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mNewProductRecyclerView.setLayoutManager(layoutManager);
-        mRateProductsRecyclerView.setLayoutManager(layoutManager1);
-        mVisitedProductsRecyclerView.setLayoutManager(layoutManager2);
+
+
+        mChipsRecyclerView.setLayoutManager(getHorizontalLayoutManager());
+        mNewProductRecyclerView.setLayoutManager(getHorizontalLayoutManager());
+        mRateProductsRecyclerView.setLayoutManager(getHorizontalLayoutManager());
+        mVisitedProductsRecyclerView.setLayoutManager(getHorizontalLayoutManager());
 
         mNewProductAdapter = new RecyclerViewProductAdapter(ProductLab.getInstance().getNewProducts());
         mRateProductAdapter = new RecyclerViewProductAdapter(ProductLab.getInstance().getRatedProducts());
         mVisitedProductAdapter = new RecyclerViewProductAdapter(ProductLab.getInstance().getVisitedProducts());
 
+        mChipsRecyclerView.setAdapter(new RecyclerView.Adapter() {
+
+             class ChipsViewHolder extends RecyclerView.ViewHolder{
+                 private Button mChip;
+                 private Category mCategory;
+
+                 public ChipsViewHolder(@NonNull View itemView) {
+                     super(itemView);
+                     mChip = itemView.findViewById(R.id.category_btn);
+
+                     itemView.setOnClickListener(new View.OnClickListener() {
+                         @Override
+                         public void onClick(View v) {
+                             Intent intent = CategoryViewPagerActivity.newIntent(getActivity(),mCategory.getId());
+                             startActivity(intent);
+                         }
+                     });
+
+
+                 }
+                 public void bind(Category category){
+                     mCategory = category;
+                     mChip.setText(category.getName());
+                 }
+             }
+
+
+
+
+            @NonNull
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+                 View viewHolderView = LayoutInflater.from(getActivity()).inflate(R.layout.category_chips_item,viewGroup,false);
+                return new ChipsViewHolder(viewHolderView);
+            }
+
+            @Override
+            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                Category category = mChipsCategoryList.get(i);
+                ChipsViewHolder chipsViewHolder = (ChipsViewHolder) viewHolder;
+                chipsViewHolder.bind(category);
+
+            }
+
+            @Override
+            public int getItemCount() {
+                return mChipsCategoryList.size();
+            }
+        });
 
         mNewProductRecyclerView.setAdapter(mNewProductAdapter);
         mRateProductsRecyclerView.setAdapter(mRateProductAdapter);
@@ -141,6 +196,10 @@ public class MainMarketFragment extends Fragment {
 
 
         return view;
+    }
+
+    private LinearLayoutManager getHorizontalLayoutManager() {
+        return new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
     }
 
     private class RecyclerViewProductHolder extends RecyclerView.ViewHolder {
@@ -203,5 +262,7 @@ public class MainMarketFragment extends Fragment {
             return mProductList.size();
         }
     }
+
+
 
 }

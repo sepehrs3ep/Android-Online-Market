@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.model.product.ProductLab;
 import project.com.maktab.onlinemarket.network.Api;
@@ -118,6 +119,8 @@ public class StartFragment extends Fragment {
             try {
                 List<Product> newProducts = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                         .getAllProducts("date").execute().body();
+                CategoryLab.getmCategoryInstance().setAllCategories(RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                        .getAllCategories().execute().body());
 
                /* List<Product> ratedProducts = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                         .getRatedProducts().execute().body();
