@@ -30,8 +30,9 @@ import project.com.maktab.onlinemarket.model.ProductLab;
  */
 public class MainMarketFragment extends Fragment {
 
-    private RecyclerView mProductRecyclerView;
-    private RecyclerViewProductAdapter mProductAdapter;
+    private RecyclerView mNewProductRecyclerView , mRateProductsRecyclerView , mVisitedProductsRecyclerView;
+    private RecyclerViewProductAdapter mNewProductAdapter ,mRateProductAdapter,mVisitedProductAdapter;
+
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -57,7 +58,10 @@ public class MainMarketFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main_market, container, false);
-        mProductRecyclerView = view.findViewById(R.id.product_recycler_view);
+        mNewProductRecyclerView = view.findViewById(R.id.new_product_recycler_view);
+        mVisitedProductsRecyclerView = view.findViewById(R.id.visited_products_recycler_view);
+        mRateProductsRecyclerView = view.findViewById(R.id.rated_products_recycler_view);
+
         mDrawerLayout = view.findViewById(R.id.drawer_layout);
         mNavigationView = view.findViewById(R.id.navigation_view);
 
@@ -86,9 +90,22 @@ public class MainMarketFragment extends Fragment {
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        mProductRecyclerView.setLayoutManager(layoutManager);
-        mProductAdapter = new RecyclerViewProductAdapter(ProductLab.getInstance().getProducts());
-        mProductRecyclerView.setAdapter(mProductAdapter);
+        LinearLayoutManager layoutManager1
+                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager layoutManager2
+                = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mNewProductRecyclerView.setLayoutManager(layoutManager);
+        mRateProductsRecyclerView.setLayoutManager(layoutManager1);
+        mVisitedProductsRecyclerView.setLayoutManager(layoutManager2);
+
+        mNewProductAdapter = new RecyclerViewProductAdapter(ProductLab.getInstance().getNewProducts());
+        mRateProductAdapter = new RecyclerViewProductAdapter(ProductLab.getInstance().getRatedProducts());
+        mVisitedProductAdapter = new RecyclerViewProductAdapter(ProductLab.getInstance().getVisitedProducts());
+
+
+        mNewProductRecyclerView.setAdapter(mNewProductAdapter);
+        mRateProductsRecyclerView.setAdapter(mRateProductAdapter);
+        mVisitedProductsRecyclerView.setAdapter(mVisitedProductAdapter);
 
 
         return view;

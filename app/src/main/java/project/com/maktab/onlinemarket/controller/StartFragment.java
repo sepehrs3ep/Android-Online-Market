@@ -16,18 +16,14 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 
+import java.io.IOException;
 import java.util.List;
 
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.model.Product;
 import project.com.maktab.onlinemarket.model.ProductLab;
-import project.com.maktab.onlinemarket.model.Root;
 import project.com.maktab.onlinemarket.network.Api;
 import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 
 /**
@@ -64,13 +60,13 @@ public class StartFragment extends Fragment {
         mInternetAnimationView.setVisibility(View.GONE);
 
 
-        if(isNetworkAvailable()){
-            Retrofit retrofit = RetrofitClientInstance.getRetrofitInstance();
+        if (isNetworkAvailable()) {
+  /*          Retrofit retrofit = RetrofitClientInstance.getRetrofitInstance();
             Api api = retrofit.create(Api.class);
-            api.getRoot().enqueue(new Callback<List<Product>>() {
+            api.getAllProducts("date").enqueue(new Callback<List<Product>>() {
                 @Override
                 public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                    ProductLab.getInstance().setProducts(response.body());
+                    ProductLab.getInstance().setNewProducts(response.body());
                     Intent intent = MainMarketActivity.getIntent(getActivity());
                     startActivity(intent);
                 }
@@ -82,16 +78,17 @@ public class StartFragment extends Fragment {
                 }
             });
 
+*/
+            new InitProductsAsynceTask().execute();
 
 
-
-        }else{
+        } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     getActivity().finishAffinity();
                 }
-            },5000);
+            }, 5000);
 
 
             Toast.makeText(getActivity(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
@@ -113,7 +110,45 @@ public class StartFragment extends Fragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    private class InitProductsAsynceTask extends AsyncTask<Void, String, Void> {
 
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            try {
+                List<Product> newProducts = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                        .getAllProducts("date").execute().body();
+
+               /* List<Product> ratedProducts = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                        .getRatedProducts().execute().body();
+                List<Product> visitedProducts = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                        .getVisitedProducts().execute().body();*/
+                ProductLab.getInstance().setNewProducts(newProducts);
+                ProductLab.getInstance().setRatedProducts(newProducts);
+                ProductLab.getInstance().setVisitedProducts(newProducts);
+            } catch (IOException e) {
+                e.printStackTrace();
+                publishProgress(getString(R.string.problem_response));
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            String toastString = values[0];
+            Toast.makeText(getActivity(), toastString, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Intent intent = MainMarketActivity.getIntent(getActivity());
+            startActivity(intent);
+        }
+    }
 
 
 }
