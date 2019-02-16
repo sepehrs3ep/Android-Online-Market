@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controller.CategoryViewPagerActivity"></activity>
+        <activity android:name=".controller.CategoryViewPagerActivity"/>
         <activity android:name=".controller.ProductInfoActivity" />
         <activity android:name=".controller.MainMarketActivity" />
         <activity android:name=".controller.StartActivity">

@@ -1,6 +1,7 @@
 package project.com.maktab.onlinemarket.controller;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,14 +17,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.model.category.Category;
+import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.model.product.ProductLab;
+import project.com.maktab.onlinemarket.network.Api;
+import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,6 +85,28 @@ public class MainMarketFragment extends Fragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.list_category_menu_item:
+                        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                        progressDialog.setMessage(getString(R.string.progress_category));
+                        progressDialog.show();
+                        RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                                .getAllCategories()
+                                .enqueue(new Callback<List<Category>>() {
+                                    @Override
+                                    public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                                        if(response.isSuccessful()){
+                                        CategoryLab.getmCategoryInstance().setAllCategories(response.body());
+                                        Intent intent = CategoryViewPagerActivity.newIntent(getActivity());
+                                        progressDialog.cancel();
+                                        startActivity(intent);
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<List<Category>> call, Throwable t) {
+                                        Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
 
 
 

@@ -69,7 +69,7 @@ public class ProductInfoFragment extends Fragment {
         mTextViewPrice = view.findViewById(R.id.info_product_price);
         mTextViewDesc = view.findViewById(R.id.info_product_desc);
         mViewPager = view.findViewById(R.id.photo_gallery_view_pager);
-
+        mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_product));
         mProgressDialog.show();
 

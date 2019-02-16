@@ -23,7 +23,7 @@ public class CategoryViewPagerActivity extends AppCompatActivity {
     private CategoryViewPagerAdapter mPagerAdapter;
 
     public static Intent newIntent(Context context){
-        Intent intent = new Intent(context,AppCompatActivity.class);
+        Intent intent = new Intent(context,CategoryViewPagerActivity.class);
         return intent;
     }
 

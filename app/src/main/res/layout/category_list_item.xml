@@ -9,6 +9,7 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:src="@drawable/shop"
         android:id="@+id/category_image_view_list_item"
         android:layout_width="100dp"
         android:layout_height="80dp"
