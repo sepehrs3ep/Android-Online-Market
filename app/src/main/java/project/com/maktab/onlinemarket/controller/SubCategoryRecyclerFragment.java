@@ -1,6 +1,7 @@
 package project.com.maktab.onlinemarket.controller;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -95,15 +96,24 @@ public class SubCategoryRecyclerFragment extends Fragment {
     private class SubCategoryViewHolder extends RecyclerView.ViewHolder {
         private ImageView mImageView;
         private TextView mTextView;
+        private Category mCategory;
 
         public SubCategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.category_image_view_list_item);
             mTextView = itemView.findViewById(R.id.category_text_view_list_item);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = ProductsSubCategoryActivity.newIntent(getActivity(),mCategory.getId());
+                    startActivity(intent);
+                }
+            });
         }
 
         public void bind(Category category) {
-
+            mCategory = category;
             mTextView.setText(category.getName());
 
             if (category.getImage() != null) {
