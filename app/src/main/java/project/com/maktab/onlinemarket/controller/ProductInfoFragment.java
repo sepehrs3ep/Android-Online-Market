@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class ProductInfoFragment extends Fragment {
     private TextView mTextViewName, mTextViewPrice, mTextViewDesc;
     private ProgressDialog mProgressDialog;
     private TabLayout mTabLayout;
+    private Button mProductInfoBtn;
 
     public static ProductInfoFragment newInstance(String productId) {
 
@@ -69,10 +71,12 @@ public class ProductInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_product, container, false);
         mTextViewName = view.findViewById(R.id.info_product_name);
+     /*
+        mTextViewDesc = view.findViewById(R.id.info_product_desc);*/
         mTextViewPrice = view.findViewById(R.id.info_product_price);
-        mTextViewDesc = view.findViewById(R.id.info_product_desc);
         mViewPager = view.findViewById(R.id.photo_gallery_view_pager);
         mTabLayout = view.findViewById(R.id.photo_gallery_tab_layout);
+        mProductInfoBtn = view.findViewById(R.id.info_product_detail);
         mTabLayout.setupWithViewPager(mViewPager,true);
 
         mProgressDialog = new ProgressDialog(getActivity());
@@ -108,8 +112,9 @@ public class ProductInfoFragment extends Fragment {
 
     private void showDetailsUI() {
         mTextViewName.setText(mProduct.getName());
-        mTextViewPrice.setText(mProduct.getPrice());
-        mTextViewDesc.setText(mProduct.getDescription());
+        mTextViewPrice.setText(mProduct.getPrice() + " $ ");
+ /*
+        mTextViewDesc.setText(mProduct.getDescription());*/
 
 
         if (mProduct.getImages() != null && mProduct.getImages().size() > 0) {

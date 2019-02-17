@@ -12,6 +12,7 @@
     <string name="rated_products">Most Rated Products</string>
     <string name="progress_product">Getting products info</string>
     <string name="progress_category">Getting categories info</string>
+    <string name="product_info">Information</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
