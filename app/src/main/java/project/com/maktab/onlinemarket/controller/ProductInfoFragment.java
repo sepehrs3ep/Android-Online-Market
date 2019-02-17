@@ -9,14 +9,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+
+import java.util.Arrays;
 import java.util.List;
 
 import project.com.maktab.onlinemarket.R;
@@ -42,6 +47,9 @@ public class ProductInfoFragment extends Fragment {
     private ProgressDialog mProgressDialog;
     private TabLayout mTabLayout;
     private Button mProductInfoBtn;
+    private ImageButton mExpandImageBtn;
+    private TextView mExpandTextView;
+    boolean isExpanded = false;
 
     public static ProductInfoFragment newInstance(String productId) {
 
@@ -77,11 +85,38 @@ public class ProductInfoFragment extends Fragment {
         mViewPager = view.findViewById(R.id.photo_gallery_view_pager);
         mTabLayout = view.findViewById(R.id.photo_gallery_tab_layout);
         mProductInfoBtn = view.findViewById(R.id.info_product_detail);
+        mExpandImageBtn = view.findViewById(R.id.expand_image_btn);
+        mExpandTextView = view.findViewById(R.id.expand_desc_text_view);
+
         mTabLayout.setupWithViewPager(mViewPager,true);
 
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_product));
         mProgressDialog.show();
+
+
+
+
+        mExpandImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isExpanded = !isExpanded;
+                if(isExpanded){
+                    mExpandTextView.setVisibility(View.VISIBLE);
+/*
+                    mExpandTextView.animate()
+                            .translationY(mExpandTextView.getHeight())
+                            .alpha(0.0f)
+                            .setDuration(300);
+                    mExpandTextView.setVisibility(View.GONE);*/
+
+
+                }
+                else mExpandTextView.setVisibility(View.GONE);
+            }
+        });
+
+
 
 
         RetrofitClientInstance.getRetrofitInstance().create(Api.class)
@@ -91,6 +126,7 @@ public class ProductInfoFragment extends Fragment {
                     public void onResponse(Call<Product> call, Response<Product> response) {
                         if(response.isSuccessful()){
                             mProduct = response.body();
+                            if(mProduct.getDescription()!=null)
                             showDetailsUI();
                             mProgressDialog.cancel();
                         }
@@ -113,9 +149,8 @@ public class ProductInfoFragment extends Fragment {
     private void showDetailsUI() {
         mTextViewName.setText(mProduct.getName());
         mTextViewPrice.setText(mProduct.getPrice() + " $ ");
- /*
-        mTextViewDesc.setText(mProduct.getDescription());*/
-
+        mExpandTextView.setText(mProduct.getDescription());
+        mExpandTextView.setVisibility(View.GONE);
 
         if (mProduct.getImages() != null && mProduct.getImages().size() > 0) {
             mAdapter = new ViewPagerGalleryAdapter(getChildFragmentManager());
