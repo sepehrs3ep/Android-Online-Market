@@ -26,11 +26,17 @@ public class Product {
 
     private List<ProductCategory> categories;
 
+    private List<Attribute> attributes;
+
     public String getPrice() {
         return price;
     }
 
-    public Product(String id, String name, String date, String description, String sales, String rate, String price, List<Image> images, List<ProductCategory> categories) {
+    public List<Attribute> getAttributes() {
+        return attributes;
+    }
+
+    public Product(String id, String name, String date, String description, String sales, String rate, String price, List<Image> images, List<ProductCategory> categories, List<Attribute> attributes) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -40,6 +46,7 @@ public class Product {
         this.price = price;
         this.images = images;
         this.categories = categories;
+        this.attributes = attributes;
     }
 
     public String getId() {
