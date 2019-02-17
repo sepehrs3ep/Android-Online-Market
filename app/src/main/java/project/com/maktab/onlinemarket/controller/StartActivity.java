@@ -2,6 +2,8 @@ package project.com.maktab.onlinemarket.controller;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 import project.com.maktab.onlinemarket.R;
 
@@ -20,5 +22,6 @@ public class StartActivity extends SingleFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 }

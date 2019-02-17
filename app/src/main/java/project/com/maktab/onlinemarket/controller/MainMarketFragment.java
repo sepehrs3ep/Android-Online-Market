@@ -143,32 +143,18 @@ public class MainMarketFragment extends Fragment {
         mChipsRecyclerView.setAdapter(new RecyclerView.Adapter() {
 
              class ChipsViewHolder extends RecyclerView.ViewHolder{
-                 private Button mChip;
+                 private TextView mChip;
                  private Category mCategory;
 
                  public ChipsViewHolder(@NonNull View itemView) {
                      super(itemView);
                      mChip = itemView.findViewById(R.id.category_btn);
-
-                     itemView.setOnClickListener(new View.OnClickListener() {
-                         @Override
-                         public void onClick(View v) {
-                             Intent intent = CategoryViewPagerActivity.newIntent(getActivity(),mCategory.getId());
-                             startActivity(intent);
-                         }
-                     });
-
-
                  }
                  public void bind(Category category){
                      mCategory = category;
                      mChip.setText(category.getName());
                  }
              }
-
-
-
-
             @NonNull
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -178,9 +164,16 @@ public class MainMarketFragment extends Fragment {
 
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-                Category category = mChipsCategoryList.get(i);
+                final Category category = mChipsCategoryList.get(i);
                 ChipsViewHolder chipsViewHolder = (ChipsViewHolder) viewHolder;
                 chipsViewHolder.bind(category);
+                ((ChipsViewHolder) viewHolder).mChip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = CategoryViewPagerActivity.newIntent(getActivity(),category.getId());
+                        startActivity(intent);
+                    }
+                });
 
             }
 
@@ -228,7 +221,7 @@ public class MainMarketFragment extends Fragment {
                 Picasso.get().load(product.getImages().get(0).getPath()).into(mProductImageView);
 
             mProductNameTextView.setText(product.getName());
-            mProductPriceTextView.setText(product.getPrice());
+            mProductPriceTextView.setText(product.getPrice() + " $ ");
         }
     }
 

@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
-    android:layout_margin="8dp"
     android:orientation="vertical"
     tools:context=".controller.MainMarketFragment">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
+        android:layout_margin="8dp"
         android:layout_height="match_parent">
 
         <android.support.constraint.ConstraintLayout
@@ -21,7 +21,7 @@
 
                 android:id="@+id/chips_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.132"
@@ -29,6 +29,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/new_product_recycler_view"/>
 
             <TextView
+                android:textStyle="italic|bold"
                 android:id="@+id/textView3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -41,6 +42,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/chips_recyclerView" />
 
             <android.support.v7.widget.RecyclerView
+                android:background="@android:color/darker_gray"
+
                 android:id="@+id/visited_products_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -51,6 +54,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <TextView
+                android:textStyle="italic|bold"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:id="@+id/textView4"
@@ -63,6 +67,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/rated_products_recycler_view" />
 
             <android.support.v7.widget.RecyclerView
+                android:background="@android:color/darker_gray"
+
                 android:id="@+id/rated_products_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -72,6 +78,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
             <TextView
+                android:textStyle="italic|bold"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:text="@string/new_products"
@@ -84,6 +91,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <android.support.v7.widget.RecyclerView
+                android:background="@android:color/darker_gray"
                 android:id="@+id/new_product_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
