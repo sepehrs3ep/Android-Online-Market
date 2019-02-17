@@ -4,6 +4,7 @@ package project.com.maktab.onlinemarket.controller;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import java.util.List;
 
@@ -37,6 +39,7 @@ public class ProductInfoFragment extends Fragment {
     private ViewPagerGalleryAdapter mAdapter;
     private TextView mTextViewName, mTextViewPrice, mTextViewDesc;
     private ProgressDialog mProgressDialog;
+    private TabLayout mTabLayout;
 
     public static ProductInfoFragment newInstance(String productId) {
 
@@ -69,6 +72,9 @@ public class ProductInfoFragment extends Fragment {
         mTextViewPrice = view.findViewById(R.id.info_product_price);
         mTextViewDesc = view.findViewById(R.id.info_product_desc);
         mViewPager = view.findViewById(R.id.photo_gallery_view_pager);
+        mTabLayout = view.findViewById(R.id.photo_gallery_tab_layout);
+        mTabLayout.setupWithViewPager(mViewPager,true);
+
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_product));
         mProgressDialog.show();
@@ -130,6 +136,12 @@ public class ProductInfoFragment extends Fragment {
         public Fragment getItem(int i) {
             return PhotoGalleryFragment.newInstance(mImagePathList.get(i).getPath());
         }
+
+       /* @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return String.valueOf(position);
+        }*/
 
         @Override
         public int getCount() {
