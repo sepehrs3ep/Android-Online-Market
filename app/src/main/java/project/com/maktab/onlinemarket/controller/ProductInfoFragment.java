@@ -306,6 +306,14 @@ public class ProductInfoFragment extends Fragment {
         public CategoriesViewHolder(@NonNull View itemView) {
             super(itemView);
             mChip = itemView.findViewById(R.id.category_btn);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent =ProductsSubCategoryActivity.newIntent(getActivity(), Long.parseLong(mCategory.getId()));
+                    startActivity(intent);
+                }
+            });
         }
         public void bind(ProductCategory category){
             mCategory = category;
