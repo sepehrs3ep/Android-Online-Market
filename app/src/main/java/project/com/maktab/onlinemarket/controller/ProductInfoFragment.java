@@ -32,8 +32,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.product.Image;
 import project.com.maktab.onlinemarket.model.product.Product;
+import project.com.maktab.onlinemarket.model.product.ProductCategory;
 import project.com.maktab.onlinemarket.model.product.ProductLab;
 import project.com.maktab.onlinemarket.network.Api;
 import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
@@ -51,7 +53,9 @@ public class ProductInfoFragment extends Fragment {
     private Product mProduct;
     private ViewPager mViewPager;
     private RecyclerView mReleatedRecyclerView;
+    private RecyclerView mCategoriesRecyclerView;
     private ViewPagerGalleryAdapter mAdapter;
+    private CategoriesAdapter mCategoriesAdapter;
     private TextView mTextViewName, mTextViewPrice, mTextViewDesc;
     private ProgressDialog mProgressDialog;
     private TabLayout mTabLayout;
@@ -98,8 +102,14 @@ public class ProductInfoFragment extends Fragment {
         mProductInfoBtn = view.findViewById(R.id.info_product_detail);
         mExpandImageBtn = view.findViewById(R.id.expand_image_btn);
         mExpandTextView = view.findViewById(R.id.expand_desc_text_view);
+        mCategoriesRecyclerView = view.findViewById(R.id.product_info_category_recycler_view);
 
+        mCategoriesRecyclerView.setLayoutManager(getHorizontalLayoutManager());
         mReleatedRecyclerView.setLayoutManager(getHorizontalLayoutManager());
+
+        mCategoriesAdapter = new CategoriesAdapter(mProduct.getCategories());
+        mCategoriesRecyclerView.setAdapter(mCategoriesAdapter);
+
         mReleatedAdapter = new ReleatedAdapter(new ArrayList<Product>());
         mReleatedRecyclerView.setAdapter(mReleatedAdapter);
 
@@ -289,6 +299,52 @@ public class ProductInfoFragment extends Fragment {
             return mProductList.size();
         }
     }
+    private class CategoriesViewHolder extends RecyclerView.ViewHolder{
+        private TextView mChip;
+        private ProductCategory mCategory;
+
+        public CategoriesViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mChip = itemView.findViewById(R.id.category_btn);
+        }
+        public void bind(ProductCategory category){
+            mCategory = category;
+            mChip.setText(category.getName());
+        }
+    }
+    private class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder>{
+        private List<ProductCategory> mCategoryList;
+
+        public CategoriesAdapter(List<ProductCategory> categoryList) {
+            mCategoryList = categoryList;
+        }
+
+        public void setCategoryList(List<ProductCategory> categoryList) {
+            mCategoryList = categoryList;
+        }
+
+        @NonNull
+        @Override
+        public CategoriesViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.category_chips_item,viewGroup,false);
+            return new CategoriesViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull CategoriesViewHolder categoriesViewHolder, int i) {
+
+            ProductCategory  category = mCategoryList.get(i);
+            categoriesViewHolder.bind(category);
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return mCategoryList.size();
+        }
+    }
+
+
 
 
 }

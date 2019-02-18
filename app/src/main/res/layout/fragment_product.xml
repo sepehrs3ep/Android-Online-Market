@@ -142,11 +142,21 @@
 
         </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/product_info_category_recycler_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="24dp"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/expand_desc_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/related_products"
             android:textColor="@android:color/black"
             android:textSize="20sp"
@@ -154,7 +164,7 @@
             android:textStyle="italic|bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/expand_desc_card_view" />
+            app:layout_constraintTop_toBottomOf="@+id/product_info_category_recycler_view" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/related_recycler_view"
