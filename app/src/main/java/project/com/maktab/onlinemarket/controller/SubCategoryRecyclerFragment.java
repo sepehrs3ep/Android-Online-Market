@@ -20,8 +20,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.model.category.Category;
+import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.network.Api;
 import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
 import retrofit2.Call;
@@ -39,6 +41,7 @@ public class SubCategoryRecyclerFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private SubCategoryAdapter mAdapter;
     private ProgressDialog mProgressDialog;
+    private List<Category> mCategoryList;
 
     private long mCategoryParentId;
 
@@ -55,6 +58,7 @@ public class SubCategoryRecyclerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCategoryParentId = getArguments().getLong(CATEGORY_Parent_ID_ARGS);
+        mCategoryList = CategoryLab.getmCategoryInstance().getSubCategoires(mCategoryParentId);
     }
 
     public SubCategoryRecyclerFragment() {
@@ -68,13 +72,16 @@ public class SubCategoryRecyclerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sub_category_recycler, container, false);
         mRecyclerView = view.findViewById(R.id.sub_category_recycler_view);
-        mProgressDialog = new ProgressDialog(getActivity());
+    /*    mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_product));
-        mProgressDialog.show();
+        mProgressDialog.show();*/
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new SubCategoryAdapter(mCategoryList);
+        mRecyclerView.setAdapter(mAdapter);
 
-        RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+
+     /*   RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                 .getSubCategories(String.valueOf(mCategoryParentId))
                 .enqueue(new Callback<List<Category>>() {
                     @Override
@@ -92,14 +99,14 @@ public class SubCategoryRecyclerFragment extends Fragment {
                     public void onFailure(Call<List<Category>> call, Throwable t) {
                         Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
                     }
-                });
+                });*/
 
 
         return view;
     }
 
     private class SubCategoryViewHolder extends RecyclerView.ViewHolder {
-        private ImageView mImageView;
+        private CircleImageView mImageView;
         private TextView mTextView;
         private Category mCategory;
 

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -78,6 +79,10 @@ public class ProductsSubCategoryFragment extends Fragment {
                     public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                         if(response.isSuccessful()){
                             List<Product> products = response.body();
+                            if(products==null||products.size()<=0){
+                                Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.no_item, Snackbar.LENGTH_LONG);
+                                snackbar.show();
+                            }
                             mAdapter = new RecyclerAdapter(products);
                             mRecyclerView.setAdapter(mAdapter);
                             mProgressDialog.cancel();
@@ -119,7 +124,7 @@ public class ProductsSubCategoryFragment extends Fragment {
         public void bind(Product product){
             mProduct = product;
             mNameTextView.setText(product.getName());
-            mPriceTextView.setText(product.getPrice());
+            mPriceTextView.setText(product.getPrice() + " $ ");
             if(product.getImages()!=null&&product.getImages().size()>0){
                 Picasso.get().load(product.getImages().get(0).getPath())
                         .placeholder(R.drawable.shop)

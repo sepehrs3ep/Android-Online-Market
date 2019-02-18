@@ -26,6 +26,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import project.com.maktab.onlinemarket.ProgressDialogLab;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
@@ -94,7 +95,10 @@ public class MainMarketFragment extends Fragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.list_category_menu_item:
-                        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+
+                        Intent intent = CategoryViewPagerActivity.newIntent(getActivity(),-2);
+                        startActivity(intent);
+                /*        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
                         progressDialog.setMessage(getString(R.string.progress_category));
                         progressDialog.show();
                         RetrofitClientInstance.getRetrofitInstance().create(Api.class)
@@ -117,7 +121,7 @@ public class MainMarketFragment extends Fragment {
                                     }
                                 });
 
-
+*/
 
 
                         return true;

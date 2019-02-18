@@ -13,6 +13,7 @@ import android.os.Bundle;
 
 import java.util.List;
 
+import project.com.maktab.onlinemarket.ProgressDialogLab;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
@@ -44,6 +45,8 @@ public class CategoryViewPagerActivity extends AppCompatActivity {
         mPagerAdapter = new CategoryViewPagerAdapter(getSupportFragmentManager());
         mPagerAdapter.setParentList(CategoryLab.getmCategoryInstance().getParentCategories());
         mViewPager.setAdapter(mPagerAdapter);
+
+
 
         if(mCurrentCategory>0){
             int index = CategoryLab.getmCategoryInstance().getCurrentCategory(mCurrentCategory);

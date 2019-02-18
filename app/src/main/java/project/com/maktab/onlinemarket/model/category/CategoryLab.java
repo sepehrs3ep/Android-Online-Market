@@ -41,6 +41,15 @@ public class CategoryLab {
                 mParentCategories.add(category);
         }
     }
+    public List<Category> getSubCategoires(long parentId){
+        List<Category> result = new ArrayList<>();
+
+        for(Category category:mAllCategories){
+            if(category.getParent()==parentId)
+                result.add(category);
+        }
+        return result;
+    }
 
 
     public List<Category> getAllCategories() {

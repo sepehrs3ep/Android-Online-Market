@@ -27,6 +27,7 @@ import java.util.List;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.model.product.Image;
 import project.com.maktab.onlinemarket.model.product.Product;
+import project.com.maktab.onlinemarket.model.product.ProductLab;
 import project.com.maktab.onlinemarket.network.Api;
 import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
 import retrofit2.Call;
@@ -65,7 +66,7 @@ public class ProductInfoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mProductId = getArguments().getString(PRODUCT_ID_ARGS);
 
-//        mProduct = ProductLab.getInstance().getProductById(mProductId);
+        mProduct = ProductLab.getInstance().getProductById(mProductId);
     }
 
     public ProductInfoFragment() {
@@ -90,11 +91,11 @@ public class ProductInfoFragment extends Fragment {
 
         mTabLayout.setupWithViewPager(mViewPager,true);
 
-        mProgressDialog = new ProgressDialog(getActivity());
+     /*   mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_product));
         mProgressDialog.show();
-
-
+*/
+        showDetailsUI();
 
         mProductInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +126,7 @@ public class ProductInfoFragment extends Fragment {
 
 
 
-
+/*
         RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                 .getProduct(mProductId)
                 .enqueue(new Callback<Product>() {
@@ -133,7 +134,7 @@ public class ProductInfoFragment extends Fragment {
                     public void onResponse(Call<Product> call, Response<Product> response) {
                         if(response.isSuccessful()){
                             mProduct = response.body();
-                            if(mProduct.getDescription()!=null)
+//                            if(mProduct.getDescription()!=null)
                             showDetailsUI();
                             mProgressDialog.cancel();
                         }
@@ -145,7 +146,7 @@ public class ProductInfoFragment extends Fragment {
                     public void onFailure(Call<Product> call, Throwable t) {
                         Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
                     }
-                });
+                });*/
 
 
 
