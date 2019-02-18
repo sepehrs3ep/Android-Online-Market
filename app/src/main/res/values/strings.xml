@@ -17,6 +17,8 @@
     <string name="no_item">no products !</string>
     <string name="load_data">loading data!</string>
     <string name="search">search products</string>
+    <string name="all_product_list">show all products</string>
+    <string name="no_page">no more page available</string>
 
     <string name="related_products">Related Products</string>
 

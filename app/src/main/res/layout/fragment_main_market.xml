@@ -29,17 +29,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/new_product_recycler_view"/>
 
             <TextView
-                android:textStyle="italic|bold"
                 android:id="@+id/textView3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/rated_products"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textStyle="italic|bold"
+                app:layout_constraintEnd_toStartOf="@+id/rate_poducts_complete_text_template"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chips_recyclerView" />
+
+
 
             <android.support.v7.widget.RecyclerView
                 android:background="@color/colorPrimary"
@@ -54,15 +57,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
             <TextView
-                android:textStyle="italic|bold"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
                 android:id="@+id/textView4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/visited_products"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="italic|bold"
+                app:layout_constraintEnd_toStartOf="@+id/visited_poducts_complete_text_template"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rated_products_recycler_view" />
 
@@ -78,16 +82,29 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
             <TextView
-                android:textStyle="italic|bold"
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/new_products"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
-                android:text="@string/new_products"
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textStyle="italic|bold"
+                app:layout_constraintEnd_toStartOf="@+id/new_poducts_complete_text_template"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/new_poducts_complete_text_template"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/new_product_recycler_view"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <android.support.v7.widget.RecyclerView
@@ -103,6 +120,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+            <TextView
+                android:id="@+id/rate_poducts_complete_text_template"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/rated_products_recycler_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chips_recyclerView" />
+
+            <TextView
+                android:id="@+id/visited_poducts_complete_text_template"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/visited_products_recycler_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rated_products_recycler_view" />
 
 
         </android.support.constraint.ConstraintLayout>

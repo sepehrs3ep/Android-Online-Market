@@ -1,56 +1,53 @@
 package project.com.maktab.onlinemarket.controller;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.chip.Chip;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import project.com.maktab.onlinemarket.ProgressDialogLab;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.model.product.ProductLab;
-import project.com.maktab.onlinemarket.network.Api;
-import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MainMarketFragment extends Fragment {
 
-    private RecyclerView mNewProductRecyclerView , mRateProductsRecyclerView , mVisitedProductsRecyclerView , mChipsRecyclerView;
-    private RecyclerViewProductAdapter mNewProductAdapter ,mRateProductAdapter,mVisitedProductAdapter;
+    private RecyclerView mNewProductRecyclerView, mRateProductsRecyclerView, mVisitedProductsRecyclerView, mChipsRecyclerView;
+    private RecyclerViewProductAdapter mNewProductAdapter, mRateProductAdapter, mVisitedProductAdapter;
 
     private List<Category> mChipsCategoryList;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+    private TextView mNewTemplate, mRateTemplate, mVisitTemplate;
 
     private ActionBarDrawerToggle mActionBarDrawerToggle;
 
@@ -77,19 +74,22 @@ public class MainMarketFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_main_market,menu);
+        inflater.inflate(R.menu.fragment_main_market, menu);
     }
-
+    private void setTemplate(TextView template){
+        template.setMovementMethod(LinkMovementMethod.getInstance());
+        template.setHighlightColor(Color.TRANSPARENT);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.search_products_menu:
                 SearchProductsDialogFragment fragment = SearchProductsDialogFragment.newInstance();
-                fragment.show(getFragmentManager(),"Search");
+                fragment.show(getFragmentManager(), "Search");
 
-            return  true;
+                return true;
             default:
-        return super.onOptionsItemSelected(item);
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -102,6 +102,9 @@ public class MainMarketFragment extends Fragment {
         mVisitedProductsRecyclerView = view.findViewById(R.id.visited_products_recycler_view);
         mRateProductsRecyclerView = view.findViewById(R.id.rated_products_recycler_view);
         mChipsRecyclerView = view.findViewById(R.id.chips_recyclerView);
+        mNewTemplate = view.findViewById(R.id.new_poducts_complete_text_template);
+        mRateTemplate = view.findViewById(R.id.rate_poducts_complete_text_template);
+        mVisitTemplate = view.findViewById(R.id.visited_poducts_complete_text_template);
 
         mDrawerLayout = view.findViewById(R.id.drawer_layout);
         mNavigationView = view.findViewById(R.id.navigation_view);
@@ -110,15 +113,41 @@ public class MainMarketFragment extends Fragment {
 
         mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
 
+        SpannableString spannableAllList = new SpannableString(getString(R.string.all_product_list));
+        ClickableSpan clickableSpanAllList = new ClickableSpan() {
+            @Override
+            public void onClick(View textView) {
+                Intent intent = CompleteProductListActivity.newIntent(getActivity(), "date");
+                startActivity(intent);
+            }
+
+            @Override
+            public void updateDrawState(TextPaint ds) {
+                super.updateDrawState(ds);
+                ds.setUnderlineText(false);
+            }
+        };
+        spannableAllList.setSpan(clickableSpanAllList, 0, getString(R.string.all_product_list).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        mNewTemplate.setText(spannableAllList);
+
+        mRateTemplate.setText(spannableAllList);
+
+        mVisitTemplate.setText(spannableAllList);
+
+        setTemplate(mNewTemplate);
+        setTemplate(mRateTemplate);
+        setTemplate(mVisitTemplate);
+
+
         mActionBarDrawerToggle.syncState();
-        ((MainMarketActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((MainMarketActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.list_category_menu_item:
 
-                        Intent intent = CategoryViewPagerActivity.newIntent(getActivity(),-2);
+                        Intent intent = CategoryViewPagerActivity.newIntent(getActivity(), -2);
                         startActivity(intent);
                 /*        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
                         progressDialog.setMessage(getString(R.string.progress_category));
@@ -156,7 +185,6 @@ public class MainMarketFragment extends Fragment {
         });
 
 
-
         mChipsRecyclerView.setLayoutManager(getHorizontalLayoutManager());
         mNewProductRecyclerView.setLayoutManager(getHorizontalLayoutManager());
         mRateProductsRecyclerView.setLayoutManager(getHorizontalLayoutManager());
@@ -168,23 +196,25 @@ public class MainMarketFragment extends Fragment {
 
         mChipsRecyclerView.setAdapter(new RecyclerView.Adapter() {
 
-             class ChipsViewHolder extends RecyclerView.ViewHolder{
-                 private TextView mChip;
-                 private Category mCategory;
+            class ChipsViewHolder extends RecyclerView.ViewHolder {
+                private TextView mChip;
+                private Category mCategory;
 
-                 public ChipsViewHolder(@NonNull View itemView) {
-                     super(itemView);
-                     mChip = itemView.findViewById(R.id.category_btn);
-                 }
-                 public void bind(Category category){
-                     mCategory = category;
-                     mChip.setText(category.getName());
-                 }
-             }
+                public ChipsViewHolder(@NonNull View itemView) {
+                    super(itemView);
+                    mChip = itemView.findViewById(R.id.category_btn);
+                }
+
+                public void bind(Category category) {
+                    mCategory = category;
+                    mChip.setText(category.getName());
+                }
+            }
+
             @NonNull
             @Override
             public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-                 View viewHolderView = LayoutInflater.from(getActivity()).inflate(R.layout.category_chips_item,viewGroup,false);
+                View viewHolderView = LayoutInflater.from(getActivity()).inflate(R.layout.category_chips_item, viewGroup, false);
                 return new ChipsViewHolder(viewHolderView);
             }
 
@@ -196,7 +226,7 @@ public class MainMarketFragment extends Fragment {
                 ((ChipsViewHolder) viewHolder).mChip.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = CategoryViewPagerActivity.newIntent(getActivity(),category.getId());
+                        Intent intent = CategoryViewPagerActivity.newIntent(getActivity(), category.getId());
                         startActivity(intent);
                     }
                 });
@@ -281,7 +311,6 @@ public class MainMarketFragment extends Fragment {
             return mProductList.size();
         }
     }
-
 
 
 }
