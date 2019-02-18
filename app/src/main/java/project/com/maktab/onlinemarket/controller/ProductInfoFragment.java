@@ -2,7 +2,9 @@ package project.com.maktab.onlinemarket.controller;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,17 +12,22 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,6 +50,7 @@ public class ProductInfoFragment extends Fragment {
     private String mProductId;
     private Product mProduct;
     private ViewPager mViewPager;
+    private RecyclerView mReleatedRecyclerView;
     private ViewPagerGalleryAdapter mAdapter;
     private TextView mTextViewName, mTextViewPrice, mTextViewDesc;
     private ProgressDialog mProgressDialog;
@@ -50,6 +58,7 @@ public class ProductInfoFragment extends Fragment {
     private Button mProductInfoBtn;
     private ImageButton mExpandImageBtn;
     private TextView mExpandTextView;
+    private ReleatedAdapter mReleatedAdapter;
     boolean isExpanded = false;
 
     public static ProductInfoFragment newInstance(String productId) {
@@ -83,11 +92,17 @@ public class ProductInfoFragment extends Fragment {
      /*
         mTextViewDesc = view.findViewById(R.id.info_product_desc);*/
         mTextViewPrice = view.findViewById(R.id.info_product_price);
+        mReleatedRecyclerView = view.findViewById(R.id.related_recycler_view);
         mViewPager = view.findViewById(R.id.photo_gallery_view_pager);
         mTabLayout = view.findViewById(R.id.photo_gallery_tab_layout);
         mProductInfoBtn = view.findViewById(R.id.info_product_detail);
         mExpandImageBtn = view.findViewById(R.id.expand_image_btn);
         mExpandTextView = view.findViewById(R.id.expand_desc_text_view);
+
+        mReleatedRecyclerView.setLayoutManager(getHorizontalLayoutManager());
+        mReleatedAdapter = new ReleatedAdapter(new ArrayList<Product>());
+        mReleatedRecyclerView.setAdapter(mReleatedAdapter);
+
 
         mTabLayout.setupWithViewPager(mViewPager,true);
 
@@ -124,6 +139,24 @@ public class ProductInfoFragment extends Fragment {
             }
         });
 
+        RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                .getReleatedProducts(mProduct.getRelatedProducts().toString())
+                .enqueue(new Callback<List<Product>>() {
+                    @Override
+                    public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                        if(response.isSuccessful()){
+                            List<Product> products = response.body();
+                            mReleatedAdapter.setProductList(products);
+                            mReleatedAdapter.notifyDataSetChanged();
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Product>> call, Throwable t) {
+                        Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
 /*
@@ -153,7 +186,9 @@ public class ProductInfoFragment extends Fragment {
 
         return view;
     }
-
+    private LinearLayoutManager getHorizontalLayoutManager() {
+        return new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+    }
     private void showDetailsUI() {
         mTextViewName.setText(mProduct.getName());
         mTextViewPrice.setText(mProduct.getPrice() + " $ ");
@@ -196,5 +231,64 @@ public class ProductInfoFragment extends Fragment {
             return mImagePathList.size();
         }
     }
+
+    private class ReleatedViewHolder extends RecyclerView.ViewHolder{
+        private ImageView mProductImageView;
+        private TextView mProductNameTextView;
+        private TextView mProductPriceTextView;
+        private Product mProduct;
+
+        public ReleatedViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mProductImageView = itemView.findViewById(R.id.product_image_list_item);
+            mProductNameTextView = itemView.findViewById(R.id.product_name_list_item);
+            mProductPriceTextView = itemView.findViewById(R.id.product_price_list_item);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = ProductInfoActivity.newIntent(getActivity(), mProduct.getId());
+                    startActivity(intent);
+                }
+            });
+        }
+        public void bind(Product product) {
+            mProduct = product;
+            if (product.getImages() != null && product.getImages().size() > 0)
+                Picasso.get().load(product.getImages().get(0).getPath()).into(mProductImageView);
+
+            mProductNameTextView.setText(product.getName());
+            mProductPriceTextView.setText(product.getPrice() + " $ ");
+        }
+    }
+    private class ReleatedAdapter extends RecyclerView.Adapter<ReleatedViewHolder>{
+        private List<Product> mProductList;
+
+        public ReleatedAdapter(List<Product> productList) {
+            mProductList = productList;
+        }
+
+        public void setProductList(List<Product> productList) {
+            mProductList = productList;
+        }
+
+        @NonNull
+        @Override
+        public ReleatedViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.product_list_item, viewGroup, false);
+            return new ReleatedViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ReleatedViewHolder releatedViewHolder, int i) {
+            Product product = mProductList.get(i);
+            releatedViewHolder.bind(product);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mProductList.size();
+        }
+    }
+
 
 }

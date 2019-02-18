@@ -18,6 +18,8 @@
     <string name="load_data">loading data!</string>
     <string name="search">search products</string>
 
+    <string name="related_products">Related Products</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
