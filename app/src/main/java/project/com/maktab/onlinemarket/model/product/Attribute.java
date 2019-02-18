@@ -1,8 +1,13 @@
 package project.com.maktab.onlinemarket.model.product;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class Attribute {
+public class Attribute   {
+
+
 
     private long id;
 
@@ -34,4 +39,6 @@ public class Attribute {
     public long getPosition() {
         return position;
     }
+
+
 }

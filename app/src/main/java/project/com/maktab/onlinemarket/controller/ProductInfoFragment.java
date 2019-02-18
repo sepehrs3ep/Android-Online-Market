@@ -96,6 +96,13 @@ public class ProductInfoFragment extends Fragment {
 
 
 
+        mProductInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProductAttributeDialogFragment fragment = ProductAttributeDialogFragment.newInstance(mProductId);
+                fragment.show(getFragmentManager(),"Show Details");
+            }
+        });
 
         mExpandImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
