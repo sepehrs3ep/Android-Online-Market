@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import project.com.maktab.onlinemarket.R;
@@ -42,6 +43,15 @@ public class SearchProductsDialogFragment extends DialogFragment {
     private SearchAdapter mAdapter;
     private ProgressDialog mProgressDialog;
 
+
+    public static SearchProductsDialogFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        SearchProductsDialogFragment fragment = new SearchProductsDialogFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public SearchProductsDialogFragment() {
         // Required empty public constructor
@@ -80,7 +90,7 @@ public class SearchProductsDialogFragment extends DialogFragment {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mAdapter = new SearchAdapter(null);
+        mAdapter = new SearchAdapter(new ArrayList<Product>());
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -146,6 +156,7 @@ public class SearchProductsDialogFragment extends DialogFragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = ProductInfoActivity.newIntent(getActivity(),mProduct.getId());
+                    dismiss();
                     startActivity(intent);
                 }
             });
