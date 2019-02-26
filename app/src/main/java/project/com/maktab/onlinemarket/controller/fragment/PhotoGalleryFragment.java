@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.controller;
+package project.com.maktab.onlinemarket.controller.fragment;
 
 
 import android.os.Bundle;

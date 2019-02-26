@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.controller;
+package project.com.maktab.onlinemarket.controller.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.fragment.ProductsSubCategoryFragment;
 
 public class ProductsSubCategoryActivity extends AppCompatActivity {
     private static final String CATEGORY_ID_EXTRA = "project.com.maktab.onlinemarket.controller.categoryId";
@@ -27,7 +28,7 @@ public class ProductsSubCategoryActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container,ProductsSubCategoryFragment.newInstance(mCategoryId))
+                .replace(R.id.fragment_container, ProductsSubCategoryFragment.newInstance(mCategoryId))
                 .commit();
 
 

@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.controller;
+package project.com.maktab.onlinemarket.controller.activity;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;

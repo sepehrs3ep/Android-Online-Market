@@ -4,7 +4,7 @@
     android:id="@+id/products_sub_category_recycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.ProductsSubCategoryFragment">
+    tools:context=".controller.fragment.ProductsSubCategoryFragment">
 
 
 

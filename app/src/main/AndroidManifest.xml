@@ -14,13 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.CompleteProductListActivity"></activity>
-        <activity android:name=".controller.ProductsSubCategoryActivity" />
-        <activity android:name=".controller.CategoryViewPagerActivity" />
-        <activity android:name=".controller.ProductInfoActivity" />
-        <activity android:name=".controller.MainMarketActivity" />
+        <activity android:name=".controller.activity.CompleteProductListActivity"></activity>
+        <activity android:name=".controller.activity.ProductsSubCategoryActivity" />
+        <activity android:name=".controller.activity.CategoryViewPagerActivity" />
+        <activity android:name=".controller.activity.ProductInfoActivity" />
+        <activity android:name=".controller.activity.MainMarketActivity" />
         <activity
-            android:name=".controller.StartActivity"
+            android:name=".controller.activity.StartActivity"
             android:theme="@style/AppTheme.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.SingleFragmentActivity" />
+        <activity android:name=".controller.activity.SingleFragmentActivity" />
     </application>
 
 </manifest>

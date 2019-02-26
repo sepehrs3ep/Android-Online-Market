@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.controller;
+package project.com.maktab.onlinemarket.controller.fragment;
 
 
 import android.app.ProgressDialog;
@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.network.Api;
 import project.com.maktab.onlinemarket.network.RetrofitClientInstance;

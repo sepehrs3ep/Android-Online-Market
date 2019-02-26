@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.controller;
+package project.com.maktab.onlinemarket.controller.fragment;
 
 
 import android.app.ProgressDialog;
@@ -12,16 +12,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.activity.ProductsSubCategoryActivity;
 import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.network.Api;
@@ -72,16 +73,17 @@ public class SubCategoryRecyclerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sub_category_recycler, container, false);
         mRecyclerView = view.findViewById(R.id.sub_category_recycler_view);
-    /*    mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_product));
-        mProgressDialog.show();*/
+        mProgressDialog.show();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new SubCategoryAdapter(mCategoryList);
-        mRecyclerView.setAdapter(mAdapter);
+//        mAdapter = new SubCategoryAdapter(new ArrayList<Category>());
+        /*mAdapter = new SubCategoryAdapter(mCategoryList);
+        mRecyclerView.setAdapter(mAdapter);*/
 
 
-     /*   RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+        RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                 .getSubCategories(String.valueOf(mCategoryParentId))
                 .enqueue(new Callback<List<Category>>() {
                     @Override
@@ -99,7 +101,7 @@ public class SubCategoryRecyclerFragment extends Fragment {
                     public void onFailure(Call<List<Category>> call, Throwable t) {
                         Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
                     }
-                });*/
+                });
 
 
         return view;

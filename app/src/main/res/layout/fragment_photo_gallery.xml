@@ -9,7 +9,7 @@
     android:background="@drawable/photo_gallery_image_view_border"
     android:layout_height="match_parent"
     android:padding="1dp"
-    tools:context=".controller.PhotoGalleryFragment">
+    tools:context=".controller.fragment.PhotoGalleryFragment">
 
 
 

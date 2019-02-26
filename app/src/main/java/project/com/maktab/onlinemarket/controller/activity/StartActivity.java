@@ -1,11 +1,10 @@
-package project.com.maktab.onlinemarket.controller;
+package project.com.maktab.onlinemarket.controller.activity;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
 
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.fragment.StartFragment;
 
 public class StartActivity extends SingleFragmentActivity {
 

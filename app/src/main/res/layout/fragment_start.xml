@@ -5,7 +5,7 @@
     android:background="@drawable/start_gradiant"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".controller.StartFragment">
+    tools:context=".controller.fragment.StartFragment">
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/bag_lottie_animation"
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.controller;
+package project.com.maktab.onlinemarket.controller.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.fragment.MainMarketFragment;
 
 public class MainMarketActivity extends SingleFragmentActivity {
     public static Intent getIntent(Context context) {

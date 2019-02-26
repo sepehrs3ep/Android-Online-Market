@@ -1,12 +1,12 @@
-package project.com.maktab.onlinemarket.controller;
+package project.com.maktab.onlinemarket.controller.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.fragment.ProductInfoFragment;
 
 public class ProductInfoActivity extends AppCompatActivity {
     private static final String PRODUCT_ID_EXTRA = "productIdExtra";
@@ -41,7 +41,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         mProductId = getIntent().getStringExtra(PRODUCT_ID_EXTRA);
 
          getSupportFragmentManager().beginTransaction()
-                 .replace(R.id.info_fragmnet_container,ProductInfoFragment.newInstance(mProductId))
+                 .replace(R.id.info_fragmnet_container, ProductInfoFragment.newInstance(mProductId))
                  .commit();
 
     }

@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.controller;
+package project.com.maktab.onlinemarket.controller.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +13,8 @@ import android.os.Bundle;
 
 import java.util.List;
 
-import project.com.maktab.onlinemarket.ProgressDialogLab;
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.fragment.SubCategoryRecyclerFragment;
 import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
 

@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.controller;
+package project.com.maktab.onlinemarket.controller.fragment;
 
 
 import android.app.ProgressDialog;
@@ -11,13 +11,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,11 +26,11 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import project.com.maktab.onlinemarket.R;
-import project.com.maktab.onlinemarket.model.category.Category;
+import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
+import project.com.maktab.onlinemarket.controller.activity.ProductsSubCategoryActivity;
 import project.com.maktab.onlinemarket.model.product.Image;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.model.product.ProductCategory;
@@ -310,7 +308,7 @@ public class ProductInfoFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent =ProductsSubCategoryActivity.newIntent(getActivity(), Long.parseLong(mCategory.getId()));
+                    Intent intent = ProductsSubCategoryActivity.newIntent(getActivity(), Long.parseLong(mCategory.getId()));
                     startActivity(intent);
                 }
             });
