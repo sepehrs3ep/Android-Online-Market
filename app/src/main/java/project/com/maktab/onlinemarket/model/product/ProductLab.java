@@ -44,6 +44,11 @@ public class ProductLab {
     }
 
     public void addToBag(String id){
+        List<ShoppingBag> checkList = mBagDao.queryBuilder()
+                .where(ShoppingBagDao.Properties.ProductId.eq(id))
+                .list();
+        if(checkList!=null&&checkList.size()>0)
+            return;
         ShoppingBag shoppingBag = new ShoppingBag();
         shoppingBag.setProductId(id);
         mBagDao.insert(shoppingBag);

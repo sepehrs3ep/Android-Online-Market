@@ -22,6 +22,8 @@
     <string name="try_again">دوباره تلاش کن</string>
     <string name="shop_bag">سبد خرید</string>
     <string name="add_shop_successfully">محصول به سبد خرید اضافه شد.</string>
+    <string name="shopping_final_sum">جمع خرید کل</string>
+    <string name="submit_shopping">خرید خود را نهایی کنید</string>
 
     <string name="related_products">محصولات مشابه</string>
 
