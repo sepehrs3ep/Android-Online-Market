@@ -24,6 +24,9 @@
     <string name="add_shop_successfully">محصول به سبد خرید اضافه شد.</string>
     <string name="shopping_final_sum">جمع خرید کل</string>
     <string name="submit_shopping">خرید خود را نهایی کنید</string>
+    <string name="full_price">قیمت کل</string>
+    <string name="final_price">قیمت نهایی</string>
+    <string name="delete">حذف</string>
 
     <string name="related_products">محصولات مشابه</string>
 
