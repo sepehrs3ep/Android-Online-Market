@@ -4,19 +4,12 @@ package project.com.maktab.onlinemarket.controller.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.navigation.NavigationView;
-import androidx.fragment.app.Fragment;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,10 +19,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.navigation.NavigationView;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.CategoryViewPagerActivity;
 import project.com.maktab.onlinemarket.controller.activity.CompleteProductListActivity;
@@ -49,11 +55,12 @@ public class MainMarketFragment extends Fragment {
     private RecyclerViewProductAdapter mNewProductAdapter, mRateProductAdapter, mVisitedProductAdapter;
 
     private List<Category> mChipsCategoryList;
+
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
+    private ActionBarDrawerToggle mActionBarDrawerToggle;
     private TextView mNewTemplate, mRateTemplate, mVisitTemplate;
 
-    private ActionBarDrawerToggle mActionBarDrawerToggle;
 
     public static MainMarketFragment newInstance() {
 
@@ -73,6 +80,7 @@ public class MainMarketFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mChipsCategoryList = CategoryLab.getmCategoryInstance().getParentCategories();
         setHasOptionsMenu(true);
+//        getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
     }
 
     @Override
@@ -80,10 +88,12 @@ public class MainMarketFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_main_market, menu);
     }
-    private void setTemplate(TextView template){
+
+    private void setTemplate(TextView template) {
         template.setMovementMethod(LinkMovementMethod.getInstance());
         template.setHighlightColor(Color.TRANSPARENT);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -92,6 +102,15 @@ public class MainMarketFragment extends Fragment {
                 fragment.show(getFragmentManager(), "Search");
 
                 return true;
+            case android.R.id.home:
+                if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                }
+                else {
+                    mDrawerLayout.openDrawer(Gravity.RIGHT);
+                }
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -110,6 +129,11 @@ public class MainMarketFragment extends Fragment {
         mRateTemplate = view.findViewById(R.id.rate_poducts_complete_text_template);
         mVisitTemplate = view.findViewById(R.id.visited_poducts_complete_text_template);
 
+
+
+
+
+
         mDrawerLayout = view.findViewById(R.id.drawer_layout);
         mNavigationView = view.findViewById(R.id.navigation_view);
 
@@ -117,9 +141,27 @@ public class MainMarketFragment extends Fragment {
 
         mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
 
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.list_category_menu_item:
+
+                        Intent intent = CategoryViewPagerActivity.newIntent(getActivity(), -2);
+                        startActivity(intent);
+
+                        return true;
+
+
+                    default:
+                        return false;
+                }
+            }
+        });
+
         mActionBarDrawerToggle.syncState();
 
-        ((MainMarketActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((MainMarketActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SpannableString spannableAllList = new SpannableString(getString(R.string.all_product_list));
         ClickableSpan clickableSpanAllList = new ClickableSpan() {
@@ -147,25 +189,7 @@ public class MainMarketFragment extends Fragment {
         setTemplate(mVisitTemplate);
 
 
-
         ((MainMarketActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.list_category_menu_item:
-
-                        Intent intent = CategoryViewPagerActivity.newIntent(getActivity(), -2);
-                        startActivity(intent);
-
-                        return true;
-
-
-                    default:
-                        return false;
-                }
-            }
-        });
 
 
         mChipsRecyclerView.setLayoutManager(getHorizontalLayoutManager());
