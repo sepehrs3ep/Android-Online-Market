@@ -7,8 +7,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
+
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,18 +122,11 @@ public class StartFragment extends Fragment {
         protected Void doInBackground(Void... voids) {
 
             try {
-                List<Product> newProducts = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                        .getAllProducts("date").execute().body();
+                ProductLab.getInstance().setNewProducts(generateLists("date"));
+                ProductLab.getInstance().setRatedProducts(generateLists("rating"));
+                ProductLab.getInstance().setVisitedProducts(generateLists("popularity"));
                 CategoryLab.getmCategoryInstance().setAllCategories(RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                         .getAllCategories().execute().body());
-
-               /* List<Product> ratedProducts = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                        .getRatedProducts().execute().body();
-                List<Product> visitedProducts = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                        .getVisitedProducts().execute().body();*/
-                ProductLab.getInstance().setNewProducts(newProducts);
-                ProductLab.getInstance().setRatedProducts(newProducts);
-                ProductLab.getInstance().setVisitedProducts(newProducts);
             } catch (IOException e) {
                 e.printStackTrace();
                 publishProgress(getString(R.string.problem_response));
@@ -156,6 +149,11 @@ public class StartFragment extends Fragment {
             Intent intent = MainMarketActivity.getIntent(getActivity());
             startActivity(intent);
         }
+    }
+
+    private List<Product> generateLists(String type) throws IOException {
+        return RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                 .getAllProducts(type).execute().body();
     }
 
 

@@ -15,12 +15,6 @@ public interface Api {
     Call<List<Product>> getAllProducts(@Query("orderby") String orderType);
 
 
-    @GET("products/?orderby=average_rating")
-    Call<List<Product>> getRatedProducts();
-
-    @GET("products/?orderby=total_sales")
-    Call<List<Product>> getVisitedProducts();
-
     @GET("products/{id}/?")
     Call<Product> getProduct(@Path("id") String productId);
 

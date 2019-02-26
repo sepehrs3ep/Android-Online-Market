@@ -4,14 +4,14 @@ package project.com.maktab.onlinemarket.controller.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.navigation.NavigationView;
+import androidx.fragment.app.Fragment;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -117,6 +117,10 @@ public class MainMarketFragment extends Fragment {
 
         mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
 
+        mActionBarDrawerToggle.syncState();
+
+        ((MainMarketActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         SpannableString spannableAllList = new SpannableString(getString(R.string.all_product_list));
         ClickableSpan clickableSpanAllList = new ClickableSpan() {
             @Override
@@ -143,7 +147,7 @@ public class MainMarketFragment extends Fragment {
         setTemplate(mVisitTemplate);
 
 
-        mActionBarDrawerToggle.syncState();
+
         ((MainMarketActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -153,31 +157,6 @@ public class MainMarketFragment extends Fragment {
 
                         Intent intent = CategoryViewPagerActivity.newIntent(getActivity(), -2);
                         startActivity(intent);
-                /*        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                        progressDialog.setMessage(getString(R.string.progress_category));
-                        progressDialog.show();
-                        RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                                .getAllCategories()
-                                .enqueue(new Callback<List<Category>>() {
-                                    @Override
-                                    public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                                        if(response.isSuccessful()){
-                                        CategoryLab.getmCategoryInstance().setAllCategories(response.body());
-                                        Intent intent = CategoryViewPagerActivity.newIntent(getActivity(),-2);
-                                        progressDialog.cancel();
-                                        startActivity(intent);
-                                        }
-
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<List<Category>> call, Throwable t) {
-                                        Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
-*/
-
 
                         return true;
 
