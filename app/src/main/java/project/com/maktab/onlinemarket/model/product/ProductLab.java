@@ -1,13 +1,25 @@
 package project.com.maktab.onlinemarket.model.product;
 
+import android.os.Build;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import androidx.annotation.RequiresApi;
+import project.com.maktab.onlinemarket.OnlineMarketApp;
+import project.com.maktab.onlinemarket.database.FavoriteProducts;
+import project.com.maktab.onlinemarket.database.FavoriteProductsDao;
+import project.com.maktab.onlinemarket.database.ShoppingBag;
+import project.com.maktab.onlinemarket.database.ShoppingBagDao;
 
 public class ProductLab {
     private static ProductLab mInstance;
     private List<Product> mNewProducts;
     private List<Product> mRatedProducts;
     private List<Product> mVisitedProducts;
+    private ShoppingBagDao mBagDao;
+    private FavoriteProductsDao mFavoriteProductsDao;
 
     public List<Product> getRatedProducts() {
         return mRatedProducts;
@@ -27,7 +39,41 @@ public class ProductLab {
 
     private ProductLab() {
         mNewProducts = new ArrayList<>();
+        mBagDao = OnlineMarketApp.getAppInstance().getDaoSession().getShoppingBagDao();
+        mFavoriteProductsDao = OnlineMarketApp.getAppInstance().getDaoSession().getFavoriteProductsDao();
     }
+
+    public void addToBag(String id){
+        ShoppingBag shoppingBag = new ShoppingBag();
+        shoppingBag.setProductId(id);
+        mBagDao.insert(shoppingBag);
+    }
+    public void addToFavorite(String id){
+        FavoriteProducts favoriteProducts = new FavoriteProducts();
+        favoriteProducts.setProductId(id);
+        mFavoriteProductsDao.insert(favoriteProducts);
+    }
+    public boolean isFavorite(String id){
+        List<FavoriteProducts> result = mFavoriteProductsDao.queryBuilder().where(
+                FavoriteProductsDao.Properties.ProductId.eq(id)
+        ).list();
+        return result.size()>0;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<String> getFavoriteProducts(){
+         List<FavoriteProducts> list = mFavoriteProductsDao.loadAll();
+        List<String> result = list.stream().map(FavoriteProducts::getProductId).collect(Collectors.toList());
+        return result;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<String> getShoppingBag(){
+        List<ShoppingBag> list = mBagDao.loadAll();
+        List<String> result = list.stream().map(ShoppingBag::getProductId).collect(Collectors.toList());
+        return result;
+    }
+
 
     public static ProductLab getInstance() {
         if (mInstance == null)

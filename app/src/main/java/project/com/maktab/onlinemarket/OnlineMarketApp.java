@@ -9,6 +9,7 @@ import project.com.maktab.onlinemarket.database.DaoSession;
 import project.com.maktab.onlinemarket.database.DevOpenHelper;
 
 public class OnlineMarketApp extends Application {
+
     private static OnlineMarketApp mInstance;
     private DaoSession mDaoSession;
     private static final String DB_NAME = "Market";
