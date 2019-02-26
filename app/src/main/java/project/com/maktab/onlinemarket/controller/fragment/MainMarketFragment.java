@@ -105,7 +105,7 @@ public class MainMarketFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mChipsCategoryList = CategoryLab.getmCategoryInstance().getParentCategories();
         setHasOptionsMenu(true);
-//        getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
     }
 
     @Override
@@ -152,6 +152,12 @@ public class MainMarketFragment extends Fragment {
                 else {
                     mDrawerLayout.openDrawer(Gravity.RIGHT);
                 }
+                /*if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
+                }
+                else {
+                    mDrawerLayout.openDrawer(Gravity.RIGHT);
+                }*/
                 return true;
             case R.id.action_cart:
                 ShopBagDialogFragment shopBagDialogFragment = ShopBagDialogFragment.newInstance();
@@ -190,8 +196,8 @@ public class MainMarketFragment extends Fragment {
         mRateProductsRecyclerView = view.findViewById(R.id.rated_products_recycler_view);
         mChipsRecyclerView = view.findViewById(R.id.chips_recyclerView);
         mNewTemplate = view.findViewById(R.id.new_poducts_complete_text_template);
-        mRateTemplate = view.findViewById(R.id.rate_poducts_complete_text_template);
-        mVisitTemplate = view.findViewById(R.id.visited_poducts_complete_text_template);
+        mRateTemplate = view.findViewById(R.id.rated_complete_text_template);
+        mVisitTemplate = view.findViewById(R.id.visited_complete_text_template);
 
 
 
