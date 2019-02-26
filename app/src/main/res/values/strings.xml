@@ -1,26 +1,27 @@
 <resources>
     <string name="app_name">OnlineMarket</string>
-    <string name="no_internet_connection">no internet connection ! try again.</string>
-    <string name="problem_response">problem with your request</string>
+    <string name="no_internet_connection">خطا در اتصال به اینترنت</string>
+    <string name="problem_response">خطا در برقراری ارتباط</string>
 
-    <string name="list_category_menu">Products Categories List</string>
+    <string name="list_category_menu">لیست دسته بندی محصولات</string>
 
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
-    <string name="new_products">New Products</string>
-    <string name="visited_products">Most Visited products </string>
-    <string name="rated_products">Most Rated Products</string>
-    <string name="progress_product">Getting products info</string>
-    <string name="progress_category">Getting categories info</string>
-    <string name="product_info">Information</string>
-    <string name="product_description">Description</string>
-    <string name="no_item">no products !</string>
-    <string name="load_data">loading data!</string>
-    <string name="search">search products</string>
-    <string name="all_product_list">show all products</string>
-    <string name="no_page">no more page available</string>
+    <string name="new_products">جدید ترین محصولات</string>
+    <string name="visited_products">پر بازدید ترین محصولات</string>
+    <string name="rated_products">پر امتیاز ترین محصولات</string>
+    <string name="progress_product">در حال دریافت اطلاعات محصول</string>
+    <string name="progress_category">در حال دریافت دسته بندی ها</string>
+    <string name="product_info">مشخصات</string>
+    <string name="product_description">توضیحات</string>
+    <string name="no_item">محصولی یافت نشد</string>
+    <string name="load_data">در حال بارگذاری اطلاعات</string>
+    <string name="search">جستجو کردن محصول</string>
+    <string name="all_product_list">لیست کامل</string>
+    <string name="no_page">صفحه ی بیشتری یافت نشد</string>
+    <string name="try_again">دوباره تلاش کن</string>
 
-    <string name="related_products">Related Products</string>
+    <string name="related_products">محصولات مشابه</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

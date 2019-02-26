@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -34,6 +35,7 @@ import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
 public class StartFragment extends Fragment {
     private LottieAnimationView mBagAnimationView;
     private LottieAnimationView mInternetAnimationView;
+    private Button mTryAgainButton;
 
 
     public static StartFragment newInstance() {
@@ -60,50 +62,51 @@ public class StartFragment extends Fragment {
 
         mBagAnimationView = view.findViewById(R.id.bag_lottie_animation);
         mInternetAnimationView = view.findViewById(R.id.no_internet_lottie_animation);
+        mTryAgainButton = view.findViewById(R.id.try_again_btn);
         mInternetAnimationView.setVisibility(View.GONE);
+        mTryAgainButton.setVisibility(View.GONE);
 
 
+        startInit();
+
+        mTryAgainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startInit();
+            }
+        });
+
+        return view;
+    }
+
+    private void startInit() {
         if (isNetworkAvailable()) {
-  /*          Retrofit retrofit = RetrofitClientInstance.getRetrofitInstance();
-            Api api = retrofit.create(Api.class);
-            api.getAllProducts("date").enqueue(new Callback<List<Product>>() {
-                @Override
-                public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                    ProductLab.getInstance().setNewProducts(response.body());
-                    Intent intent = MainMarketActivity.getIntent(getActivity());
-                    startActivity(intent);
-                }
+            mBagAnimationView.setVisibility(View.VISIBLE);
+            mInternetAnimationView.setVisibility(View.GONE);
+            mTryAgainButton.setVisibility(View.GONE);
+            mBagAnimationView.playAnimation();
 
-                @Override
-                public void onFailure(Call<List<Product>> call, Throwable t) {
-                    Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
-*/
             new InitProductsAsynceTask().execute();
 
-
         } else {
-            new Handler().postDelayed(new Runnable() {
+         /*   new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
+
                     getActivity().finishAffinity();
                 }
             }, 5000);
-
+*/
 
             Toast.makeText(getActivity(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
             mBagAnimationView.cancelAnimation();
             mBagAnimationView.setVisibility(View.GONE);
             mInternetAnimationView.setVisibility(View.VISIBLE);
             mInternetAnimationView.playAnimation();
+            mTryAgainButton.setVisibility(View.VISIBLE);
 
 
         }
-
-        return view;
     }
 
     private boolean isNetworkAvailable() {
