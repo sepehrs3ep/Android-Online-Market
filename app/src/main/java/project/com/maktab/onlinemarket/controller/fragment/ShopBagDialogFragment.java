@@ -35,6 +35,7 @@ import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.model.product.ProductLab;
 import project.com.maktab.onlinemarket.network.Api;
 import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
+import project.com.maktab.onlinemarket.utils.CustomAlertDialogFragment;
 import project.com.maktab.onlinemarket.utils.GenerateSnackBar;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -161,9 +162,24 @@ public class ShopBagDialogFragment extends DialogFragment {
             super(itemView);
             ButterKnife.bind(this,itemView);
             mDeleteProductBtn.setOnClickListener(v -> {
-                ProductLab.getInstance().deleteFromBag(mProduct.getId());
-                mBagShopProductList.remove(mProduct);
-                updateUI();
+                CustomAlertDialogFragment dialogFragment = CustomAlertDialogFragment.newInstance(getString(R.string.dialog_bag_question));
+                dialogFragment.show(getFragmentManager(),"sure for delete");
+                dialogFragment.setOnYesNoClick(new CustomAlertDialogFragment.OnYesNoDialogClick() {
+                    @Override
+                    public void onYesClicked() {
+                        ProductLab.getInstance().deleteFromBag(mProduct.getId());
+                        mBagShopProductList.remove(mProduct);
+                        updateUI();
+                    }
+
+                    @Override
+                    public void onNoClicked() {
+                    dialogFragment.dismiss();
+                    }
+                });
+
+
+
             });
             mProductImage.setOnClickListener(v -> {
                 Intent intent = ProductInfoActivity.newIntent(getActivity(),mProduct.getId());
