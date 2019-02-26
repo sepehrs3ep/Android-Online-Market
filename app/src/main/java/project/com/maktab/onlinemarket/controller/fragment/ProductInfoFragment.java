@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -70,6 +72,7 @@ public class ProductInfoFragment extends Fragment {
     private ReleatedAdapter mReleatedAdapter;
     private BottomAppBar mAppBar;
     private TextView textCartItemCount;
+    private AppCompatCheckBox mLikeProductCheckBox;
     boolean isExpanded = false;
 
     public static ProductInfoFragment newInstance(String productId) {
@@ -111,7 +114,12 @@ public class ProductInfoFragment extends Fragment {
         mExpandTextView = view.findViewById(R.id.expand_desc_text_view);
         mAddToShopBagFab = view.findViewById(R.id.add_to_shop_fab);
         mCategoriesRecyclerView = view.findViewById(R.id.product_info_category_recycler_view);
+        mLikeProductCheckBox = view.findViewById(R.id.like_product_check_box);
         mAppBar = view.findViewById(R.id.bottom_app_bar);
+
+        boolean likeStatus = ProductLab.getInstance().isFavorite(mProductId);
+        if(likeStatus)
+            mLikeProductCheckBox.setChecked(true);
 
         ((ProductInfoActivity) getActivity()).setSupportActionBar(mAppBar);
 
@@ -126,6 +134,15 @@ public class ProductInfoFragment extends Fragment {
 
         mCategoriesAdapter = new CategoriesAdapter(mChipsList);
 
+        mLikeProductCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    ProductLab.getInstance().addToFavorite(mProductId);
+                else
+                    ProductLab.getInstance().removeFromFavorite(mProductId);
+            }
+        });
         mCategoriesRecyclerView.setAdapter(mCategoriesAdapter);
 
         mReleatedAdapter = new ReleatedAdapter(new ArrayList<Product>());
@@ -185,8 +202,8 @@ public class ProductInfoFragment extends Fragment {
                             List<Product> products = response.body();
                             mReleatedAdapter.setProductList(products);
                             mReleatedAdapter.notifyDataSetChanged();
-                        }
-
+                        }else
+                            Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

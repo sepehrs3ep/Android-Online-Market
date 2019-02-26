@@ -64,9 +64,24 @@ public class ProductLab {
     }
 
     public void addToFavorite(String id) {
+        List<FavoriteProducts> checkList = mFavoriteProductsDao.queryBuilder()
+                .where(FavoriteProductsDao.Properties.ProductId.eq(id))
+                .list();
+        if (checkList != null && checkList.size() > 0)
+            return;
+
         FavoriteProducts favoriteProducts = new FavoriteProducts();
         favoriteProducts.setProductId(id);
         mFavoriteProductsDao.insert(favoriteProducts);
+    }
+    public void removeFromFavorite(String id){
+        List<FavoriteProducts> result = mFavoriteProductsDao.queryBuilder()
+                .where(FavoriteProductsDao.Properties.ProductId.eq(id))
+                .list();
+        if(result.size()<=0)
+            return;
+        FavoriteProducts products = result.get(0);
+        mFavoriteProductsDao.delete(products);
     }
 
     public void deleteFromBag(String productId) {
