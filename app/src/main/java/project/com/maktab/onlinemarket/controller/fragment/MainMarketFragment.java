@@ -3,6 +3,7 @@ package project.com.maktab.onlinemarket.controller.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -21,12 +22,14 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -35,8 +38,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import butterknife.BindView;
 import project.com.maktab.onlinemarket.EventBus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.CategoryViewPagerActivity;
@@ -62,6 +68,10 @@ public class MainMarketFragment extends Fragment {
     private NavigationView mNavigationView;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
     private TextView mNewTemplate, mRateTemplate, mVisitTemplate;
+
+    private ViewPager mMainViewPager;
+    private TabLayout mMainTabLayout;
+    private List<Integer> mDrawbleImages;
 
 
     public static MainMarketFragment newInstance() {
@@ -106,6 +116,11 @@ public class MainMarketFragment extends Fragment {
         mChipsCategoryList = CategoryLab.getmCategoryInstance().getParentCategories();
         setHasOptionsMenu(true);
         getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        mDrawbleImages = new ArrayList<>();
+        mDrawbleImages.add(R.drawable.market1);
+        mDrawbleImages.add(R.drawable.market2);
+        mDrawbleImages.add(R.drawable.market3);
+        mDrawbleImages.add(R.drawable.market4);
     }
 
     @Override
@@ -198,7 +213,26 @@ public class MainMarketFragment extends Fragment {
         mNewTemplate = view.findViewById(R.id.new_poducts_complete_text_template);
         mRateTemplate = view.findViewById(R.id.rated_complete_text_template);
         mVisitTemplate = view.findViewById(R.id.visited_complete_text_template);
+        mMainViewPager = view.findViewById(R.id.main_photo_gallery_view_pager);
+        mMainTabLayout = view.findViewById(R.id.main_photo_gallery_tab_layout);
 
+        mMainViewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return PhotoGalleryFragment.newInstance(null,mDrawbleImages.get(position),true);
+            }
+
+            @Override
+            public int getCount() {
+                return mDrawbleImages.size();
+            }
+        });
+
+        mMainTabLayout.setupWithViewPager(mMainViewPager,true);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            mMainTabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
 
 
 
