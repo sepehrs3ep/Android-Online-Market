@@ -28,6 +28,9 @@
     <string name="final_price">قیمت نهایی</string>
     <string name="delete">حذف</string>
     <string name="price_format">  %s ریال</string>
+    <string name="dialog_bag_question">آیا مایل به حذف این محصول از سبد خرید هستید؟</string>
+    <string name="yes">بله</string>
+    <string name="no">خیر</string>
 
     <string name="related_products">محصولات مشابه</string>
 

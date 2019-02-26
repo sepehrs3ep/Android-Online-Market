@@ -28,6 +28,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,7 +52,7 @@ public class MainMarketFragment extends Fragment {
     private RecyclerViewProductAdapter mNewProductAdapter, mRateProductAdapter, mVisitedProductAdapter;
 
     private List<Category> mChipsCategoryList;
-
+    private TextView textCartItemCount;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
@@ -65,6 +66,12 @@ public class MainMarketFragment extends Fragment {
         MainMarketFragment fragment = new MainMarketFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupBadge();
     }
 
     public MainMarketFragment() {
@@ -83,6 +90,24 @@ public class MainMarketFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_main_market, menu);
+
+
+        final MenuItem menuItem = menu.findItem(R.id.action_cart);
+
+        View actionView = MenuItemCompat.getActionView(menuItem);
+        textCartItemCount = (TextView) actionView.findViewById(R.id.cart_badge);
+
+        setupBadge();
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+
+
+
     }
 
     private void setTemplate(TextView template) {
@@ -106,13 +131,30 @@ public class MainMarketFragment extends Fragment {
                     mDrawerLayout.openDrawer(Gravity.RIGHT);
                 }
                 return true;
-            case R.id.shop_bag_menu:
+            case R.id.action_cart:
                 ShopBagDialogFragment shopBagDialogFragment = ShopBagDialogFragment.newInstance();
                 shopBagDialogFragment.show(getFragmentManager(),"show the bag from main");
                 return true;
 
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void setupBadge() {
+        int bagSize = ProductLab.getInstance().getShoppingBag().size();
+
+        if (textCartItemCount != null) {
+            if (bagSize == 0) {
+                if (textCartItemCount.getVisibility() != View.GONE) {
+                    textCartItemCount.setVisibility(View.GONE);
+                }
+            } else {
+                textCartItemCount.setText(String.valueOf(Math.min(bagSize, 99)));
+                if (textCartItemCount.getVisibility() != View.VISIBLE) {
+                    textCartItemCount.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 

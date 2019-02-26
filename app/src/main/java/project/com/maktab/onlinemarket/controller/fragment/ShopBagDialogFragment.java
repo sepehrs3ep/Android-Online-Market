@@ -51,6 +51,7 @@ public class ShopBagDialogFragment extends DialogFragment {
     @BindView(R.id.shop_bag_recycler_view)
      RecyclerView mShopBagRecyclerView;
 
+    private List<Product> mBagShopProductList;
     private ProgressDialog mProgressDialog;
 
     private ShopBagAdapter mAdapter;
@@ -84,19 +85,10 @@ public class ShopBagDialogFragment extends DialogFragment {
         View view =  inflater.inflate(R.layout.fragment_shop_bag_dialog, container, false);
         ButterKnife.bind(this,view);
         mShopBagRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
-
-        updateUI();
-
-
-
-        return view;
-    }
-    private void updateUI(){
         mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_product));
         mProgressDialog.show();
+
         List<String> productIdies = ProductLab.getInstance().getShoppingBag();
 
         RetrofitClientInstance.getRetrofitInstance().create(Api.class).getReleatedProducts(productIdies.toString())
@@ -107,17 +99,8 @@ public class ShopBagDialogFragment extends DialogFragment {
                             Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        List<Product> products = response.body();
-                        if(products==null||products.size()<=0)
-                            new GenerateSnackBar(getActivity(),R.string.no_item).getSnackbar().show();
-                        if(mAdapter==null){
-                            mAdapter = new ShopBagAdapter(products);
-                            mShopBagRecyclerView.setAdapter(mAdapter);
-                        }else {
-                            mAdapter.setProductList(products);
-                            mAdapter.notifyDataSetChanged();
-                        }
-                        calculateProductsPrice(products);
+                        mBagShopProductList = response.body();
+                        updateUI();
                         mProgressDialog.cancel();
                     }
 
@@ -128,10 +111,31 @@ public class ShopBagDialogFragment extends DialogFragment {
                 });
 
 
+
+
+
+
+        return view;
     }
-    private void calculateProductsPrice(List<Product> list){
+    private void updateUI(){
+
+        if(mBagShopProductList==null||mBagShopProductList.size()<=0)
+            new GenerateSnackBar(getActivity(),R.string.no_item).getSnackbar().show();
+        if(mAdapter==null){
+            mAdapter = new ShopBagAdapter(mBagShopProductList);
+            mShopBagRecyclerView.setAdapter(mAdapter);
+        }else {
+            mAdapter.setProductList(mBagShopProductList);
+            mAdapter.notifyDataSetChanged();
+        }
+        calculateProductsPrice();
+
+
+
+    }
+    private void calculateProductsPrice(){
         long finalValue = 0 ;
-        for(Product product:list){
+        for(Product product:mBagShopProductList){
             long price = Long.valueOf(product.getPrice());
             finalValue += price;
         }
@@ -158,6 +162,7 @@ public class ShopBagDialogFragment extends DialogFragment {
             ButterKnife.bind(this,itemView);
             mDeleteProductBtn.setOnClickListener(v -> {
                 ProductLab.getInstance().deleteFromBag(mProduct.getId());
+                mBagShopProductList.remove(mProduct);
                 updateUI();
             });
             mProductImage.setOnClickListener(v -> {

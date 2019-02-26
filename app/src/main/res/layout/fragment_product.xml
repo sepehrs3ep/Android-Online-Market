@@ -24,6 +24,9 @@
         android:layout_height="50dp"
         android:layout_gravity="bottom"
         />
+
+
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_to_shop_fab"
         android:backgroundTint="@android:color/holo_green_dark"

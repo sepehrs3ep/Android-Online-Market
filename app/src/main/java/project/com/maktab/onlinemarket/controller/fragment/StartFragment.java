@@ -127,6 +127,7 @@ public class StartFragment extends Fragment {
                 ProductLab.getInstance().setVisitedProducts(generateLists("popularity"));
                 CategoryLab.getmCategoryInstance().setAllCategories(RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                         .getAllCategories().execute().body());
+                ProductLab.getInstance().clearDuplicate();
             } catch (IOException e) {
                 e.printStackTrace();
                 publishProgress(getString(R.string.problem_response));

@@ -3,7 +3,9 @@ package project.com.maktab.onlinemarket.model.product;
 import android.os.Build;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import androidx.annotation.RequiresApi;
@@ -18,6 +20,7 @@ public class ProductLab {
     private List<Product> mNewProducts;
     private List<Product> mRatedProducts;
     private List<Product> mVisitedProducts;
+    private List<Product> mAllProducts;
     private ShoppingBagDao mBagDao;
     private FavoriteProductsDao mFavoriteProductsDao;
 
@@ -27,6 +30,7 @@ public class ProductLab {
 
     public void setRatedProducts(List<Product> ratedProducts) {
         mRatedProducts = ratedProducts;
+        mAllProducts.addAll(mRatedProducts);
     }
 
     public List<Product> getVisitedProducts() {
@@ -35,10 +39,15 @@ public class ProductLab {
 
     public void setVisitedProducts(List<Product> visitedProducts) {
         mVisitedProducts = visitedProducts;
+//        Set<Product> set = new HashSet<>(mVisitedProducts);
+        mAllProducts.addAll(mVisitedProducts);
     }
+
 
     private ProductLab() {
         mNewProducts = new ArrayList<>();
+        mAllProducts = new ArrayList<>();
+
         mBagDao = OnlineMarketApp.getAppInstance().getDaoSession().getShoppingBagDao();
         mFavoriteProductsDao = OnlineMarketApp.getAppInstance().getDaoSession().getFavoriteProductsDao();
     }
@@ -76,10 +85,12 @@ public class ProductLab {
         return result.size() > 0;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public List<String> getFavoriteProducts() {
         List<FavoriteProducts> list = mFavoriteProductsDao.loadAll();
-        List<String> result = list.stream().map(FavoriteProducts::getProductId).collect(Collectors.toList());
+        List<String> result = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = list.stream().map(FavoriteProducts::getProductId).collect(Collectors.toList());
+        }
         return result;
     }
 
@@ -106,10 +117,16 @@ public class ProductLab {
 
     public void setNewProducts(List<Product> products) {
         mNewProducts = products;
+        mAllProducts.addAll(mNewProducts);
+    }
+    public void clearDuplicate(){
+        Set<Product> set = new HashSet<>(mAllProducts);
+        mAllProducts.clear();
+        mAllProducts.addAll(set);
     }
 
     public Product getProductById(String id) {
-        for (Product product : mNewProducts) {
+        for (Product product : mAllProducts) {
             if (product.getId().equalsIgnoreCase(id))
                 return product;
         }
