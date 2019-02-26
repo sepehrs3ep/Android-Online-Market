@@ -11,42 +11,40 @@ import retrofit2.http.Query;
 
 public interface Api {
 
-    @GET("products/?consumer_key=ck_00fdf4e3f65c5275d802b412db586ba2cac6835f&consumer_secret=cs_d2571d995db502ea4b04bfae270b92ac447eb8ba")
+    @GET("products/?")
     Call<List<Product>> getAllProducts(@Query("orderby") String orderType);
 
 
-    @GET("products/?consumer_key=ck_00fdf4e3f65c5275d802b412db586ba2cac6835f&consumer_secret=cs_d2571d995db502ea4b04bfae270b92ac447eb8ba" +
-            "&orderby=average_rating")
+    @GET("products/?orderby=average_rating")
     Call<List<Product>> getRatedProducts();
 
-    @GET("products/?consumer_key=ck_00fdf4e3f65c5275d802b412db586ba2cac6835f&consumer_secret=cs_d2571d995db502ea4b04bfae270b92ac447eb8ba" +
-            "&orderby=total_sales")
+    @GET("products/?orderby=total_sales")
     Call<List<Product>> getVisitedProducts();
 
-    @GET("products/{id}/?consumer_key=ck_00fdf4e3f65c5275d802b412db586ba2cac6835f&consumer_secret=cs_d2571d995db502ea4b04bfae270b92ac447eb8ba")
+    @GET("products/{id}/?")
     Call<Product> getProduct(@Path("id") String productId);
 
 
-    @GET("products/categories/?consumer_key=ck_00fdf4e3f65c5275d802b412db586ba2cac6835f&consumer_secret=cs_d2571d995db502ea4b04bfae270b92ac447eb8ba")
+    @GET("products/categories/?per_page=100")
     Call<List<Category>> getAllCategories();
 
-    @GET("products/categories/?consumer_key=ck_00fdf4e3f65c5275d802b412db586ba2cac6835f&consumer_secret=cs_d2571d995db502ea4b04bfae270b92ac447eb8ba")
+    @GET("products/categories/?per_page=100")
     Call<List<Category>> getSubCategories(@Query("parent") String parentId);
 
 
-    @GET("products/?consumer_key=ck_00fdf4e3f65c5275d802b412db586ba2cac6835f&consumer_secret=cs_d2571d995db502ea4b04bfae270b92ac447eb8ba")
+    @GET("products/?")
     Call<List<Product>> getProductsSubCategoires(@Query("category") String categoryId);
 
-    @GET("products/?consumer_key=ck_00fdf4e3f65c5275d802b412db586ba2cac6835f&consumer_secret=cs_d2571d995db502ea4b04bfae270b92ac447eb8ba")
+    @GET("products/?")
     Call<List<Product>> searchProducts(@Query("search") String productName);
 
 
-    @GET("products/?consumer_key=ck_00fdf4e3f65c5275d802b412db586ba2cac6835f&consumer_secret=cs_d2571d995db502ea4b04bfae270b92ac447eb8ba")
+    @GET("products/?")
     Call<List<Product>> getReleatedProducts(@Query("include") String... releateds);
 
 
-    @GET("products/?consumer_key=ck_00fdf4e3f65c5275d802b412db586ba2cac6835f&consumer_secret=cs_d2571d995db502ea4b04bfae270b92ac447eb8ba")
-    Call<List<Product>> getAllProductWithPage(@Query("page") String pageNumber,@Query("orderby") String orderBy);
+    @GET("products/?")
+    Call<List<Product>> getAllProductWithPage(@Query("page") String pageNumber, @Query("orderby") String orderBy);
 
 
 }
