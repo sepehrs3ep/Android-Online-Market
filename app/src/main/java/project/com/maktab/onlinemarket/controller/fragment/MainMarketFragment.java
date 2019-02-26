@@ -23,6 +23,10 @@ import com.google.android.material.navigation.NavigationView;
 
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -33,6 +37,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import project.com.maktab.onlinemarket.EventBus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.CategoryViewPagerActivity;
 import project.com.maktab.onlinemarket.controller.activity.CompleteProductListActivity;
@@ -76,6 +81,23 @@ public class MainMarketFragment extends Fragment {
 
     public MainMarketFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateBadgesEvent(BadgeMassageEvent badgeMassageEvent){
+        setupBadge();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override

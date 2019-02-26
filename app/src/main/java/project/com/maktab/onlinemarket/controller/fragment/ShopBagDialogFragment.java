@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import project.com.maktab.onlinemarket.EventBus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
 import project.com.maktab.onlinemarket.model.product.Product;
@@ -170,6 +173,8 @@ public class ShopBagDialogFragment extends DialogFragment {
                         ProductLab.getInstance().deleteFromBag(mProduct.getId());
                         mBagShopProductList.remove(mProduct);
                         updateUI();
+
+                        EventBus.getDefault().post(new BadgeMassageEvent());
                     }
 
                     @Override
