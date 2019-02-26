@@ -243,8 +243,10 @@ public class MainMarketFragment extends Fragment {
                         startActivity(intent);
 
                         return true;
-
-
+                    case R.id.list_like_menu_item:
+                        LikedProductsDialogFragment fragment = LikedProductsDialogFragment.newInstance();
+                        fragment.show(getFragmentManager(), "show liked list");
+                        return true;
                     default:
                         return false;
                 }

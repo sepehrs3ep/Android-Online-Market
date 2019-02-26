@@ -10,7 +10,7 @@
 
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/sum_card_view"
+            android:id="@+id/like_card_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +50,7 @@
         app:layout_constraintBottom_toTopOf="@+id/submit_shop_bag_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sum_card_view"
+        app:layout_constraintTop_toBottomOf="@id/like_card_view"
         android:layout_height="wrap_content" >
     </ProgressBar>
     <androidx.recyclerview.widget.RecyclerView
@@ -62,7 +62,7 @@
         app:layout_constraintBottom_toTopOf="@+id/submit_shop_bag_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sum_card_view" />
+        app:layout_constraintTop_toBottomOf="@id/like_card_view" />
 
 
     <Button

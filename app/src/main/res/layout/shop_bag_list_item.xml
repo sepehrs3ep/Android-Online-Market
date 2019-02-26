@@ -62,13 +62,14 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
-                <TextView
-                    android:textSize="20sp"
-                    android:layout_weight="1"
-                    android:text="@string/full_price"
 
+                <TextView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+
+                    android:text="@string/full_price"
+                    android:textSize="20sp" />
 
 
             </LinearLayout>

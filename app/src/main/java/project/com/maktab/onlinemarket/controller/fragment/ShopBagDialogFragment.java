@@ -108,6 +108,9 @@ public class ShopBagDialogFragment extends DialogFragment {
                             return;
                         }
                         mBagShopProductList = response.body();
+                        if(mBagShopProductList==null||mBagShopProductList.size()<=0){
+                            new GenerateSnackBar(getActivity(),R.string.no_item).getSnackbar().show();
+                        }
                         updateUI();
                         mProgressBar.setVisibility(View.GONE);
                     }

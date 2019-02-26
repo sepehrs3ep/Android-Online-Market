@@ -7,4 +7,11 @@
         android:icon="@drawable/ic_product_list"
         android:title="@string/list_category_menu"
         app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/list_like_menu_item"
+        android:icon="@drawable/ic_love_menu_item"
+        app:showAsAction="ifRoom|withText"
+        android:title="@string/liked_products_list" />
+
+
 </menu>
