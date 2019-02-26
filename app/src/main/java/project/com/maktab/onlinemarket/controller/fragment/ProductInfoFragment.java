@@ -39,6 +39,7 @@ import project.com.maktab.onlinemarket.model.product.ProductCategory;
 import project.com.maktab.onlinemarket.model.product.ProductLab;
 import project.com.maktab.onlinemarket.network.Api;
 import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
+import project.com.maktab.onlinemarket.utils.GenerateSnackBar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -118,37 +119,36 @@ public class ProductInfoFragment extends Fragment {
 
         mTabLayout.setupWithViewPager(mViewPager,true);
 
+        mAddToShopBagFab.setOnClickListener(v -> {
+            ProductLab.getInstance().addToBag(mProduct.getId());
+            new GenerateSnackBar(getActivity(),R.string.add_shop_successfully).getSnackbar().show();
+        });
+
      /*   mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_product));
         mProgressDialog.show();
 */
         showDetailsUI();
 
-        mProductInfoBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProductAttributeDialogFragment fragment = ProductAttributeDialogFragment.newInstance(mProductId);
-                fragment.show(getFragmentManager(),"Show Details");
-            }
+        mProductInfoBtn.setOnClickListener(v -> {
+            ProductAttributeDialogFragment fragment = ProductAttributeDialogFragment.newInstance(mProductId);
+            fragment.show(getFragmentManager(),"Show Details");
         });
 
-        mExpandImageBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isExpanded = !isExpanded;
-                if(isExpanded){
-                    mExpandTextView.setVisibility(View.VISIBLE);
+        mExpandImageBtn.setOnClickListener(v -> {
+            isExpanded = !isExpanded;
+            if(isExpanded){
+                mExpandTextView.setVisibility(View.VISIBLE);
 /*
-                    mExpandTextView.animate()
-                            .translationY(mExpandTextView.getHeight())
-                            .alpha(0.0f)
-                            .setDuration(300);
-                    mExpandTextView.setVisibility(View.GONE);*/
+                mExpandTextView.animate()
+                        .translationY(mExpandTextView.getHeight())
+                        .alpha(0.0f)
+                        .setDuration(300);
+                mExpandTextView.setVisibility(View.GONE);*/
 
 
-                }
-                else mExpandTextView.setVisibility(View.GONE);
             }
+            else mExpandTextView.setVisibility(View.GONE);
         });
 
         RetrofitClientInstance.getRetrofitInstance().create(Api.class)
