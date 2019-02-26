@@ -20,11 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -109,6 +105,9 @@ public class MainMarketFragment extends Fragment {
                 else {
                     mDrawerLayout.openDrawer(Gravity.RIGHT);
                 }
+                return true;
+            case R.id.shop_bag_menu:
+
                 return true;
 
             default:

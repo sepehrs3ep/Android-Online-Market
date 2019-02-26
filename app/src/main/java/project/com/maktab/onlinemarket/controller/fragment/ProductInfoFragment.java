@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -53,6 +55,7 @@ public class ProductInfoFragment extends Fragment {
     private RecyclerView mReleatedRecyclerView;
     private RecyclerView mCategoriesRecyclerView;
     private ViewPagerGalleryAdapter mAdapter;
+    private FloatingActionButton mAddToShopBagFab;
     private CategoriesAdapter mCategoriesAdapter;
     private TextView mTextViewName, mTextViewPrice, mTextViewDesc;
     private ProgressDialog mProgressDialog;
@@ -100,6 +103,7 @@ public class ProductInfoFragment extends Fragment {
         mProductInfoBtn = view.findViewById(R.id.info_product_detail);
         mExpandImageBtn = view.findViewById(R.id.expand_image_btn);
         mExpandTextView = view.findViewById(R.id.expand_desc_text_view);
+        mAddToShopBagFab = view.findViewById(R.id.add_to_shop_fab);
         mCategoriesRecyclerView = view.findViewById(R.id.product_info_category_recycler_view);
 
         mCategoriesRecyclerView.setLayoutManager(getHorizontalLayoutManager());

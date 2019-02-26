@@ -9,4 +9,9 @@
         android:icon="@drawable/ic_search_product"
         android:title="@string/search"
         app:showAsAction="ifRoom|withText" />
+    <item
+        android:id="@+id/shop_bag_menu"
+        android:icon="@drawable/ic_add_shop"
+        android:title="@string/shop_bag"
+        app:showAsAction="ifRoom|withText" />
 </menu>
