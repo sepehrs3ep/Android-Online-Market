@@ -10,7 +10,6 @@
     <com.google.android.material.bottomappbar.BottomAppBar
         style="@style/Widget.MaterialComponents.BottomAppBar"
         android:id="@+id/bottom_app_bar"
-        app:navigationIcon="@drawable/ic_menu"
         android:background="@color/colorPrimary"
         android:backgroundTint="@color/colorPrimary"
         android:layout_width="match_parent"

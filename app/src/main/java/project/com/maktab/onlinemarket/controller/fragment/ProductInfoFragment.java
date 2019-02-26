@@ -4,18 +4,10 @@ package project.com.maktab.onlinemarket.controller.fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,16 +16,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.MenuItemCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
 import project.com.maktab.onlinemarket.controller.activity.ProductsSubCategoryActivity;
-import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.product.Image;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.model.product.ProductCategory;
@@ -66,6 +68,8 @@ public class ProductInfoFragment extends Fragment {
     private ImageButton mExpandImageBtn;
     private TextView mExpandTextView;
     private ReleatedAdapter mReleatedAdapter;
+    private BottomAppBar mAppBar;
+    private TextView textCartItemCount;
     boolean isExpanded = false;
 
     public static ProductInfoFragment newInstance(String productId) {
@@ -81,7 +85,7 @@ public class ProductInfoFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mProductId = getArguments().getString(PRODUCT_ID_ARGS);
-
+        setHasOptionsMenu(true);
         mProduct = ProductLab.getInstance().getProductById(mProductId);
     }
 
@@ -107,14 +111,17 @@ public class ProductInfoFragment extends Fragment {
         mExpandTextView = view.findViewById(R.id.expand_desc_text_view);
         mAddToShopBagFab = view.findViewById(R.id.add_to_shop_fab);
         mCategoriesRecyclerView = view.findViewById(R.id.product_info_category_recycler_view);
+        mAppBar = view.findViewById(R.id.bottom_app_bar);
+
+        ((ProductInfoActivity) getActivity()).setSupportActionBar(mAppBar);
 
         mCategoriesRecyclerView.setLayoutManager(getHorizontalLayoutManager());
         mReleatedRecyclerView.setLayoutManager(getHorizontalLayoutManager());
         List<ProductCategory> mChipsList = new ArrayList<>();
 
-        if(mProduct.getCategories()==null){
+        if (mProduct.getCategories() == null) {
             mCategoriesRecyclerView.setVisibility(View.GONE);
-        }else
+        } else
             mChipsList = mProduct.getCategories();
 
         mCategoriesAdapter = new CategoriesAdapter(mChipsList);
@@ -125,20 +132,23 @@ public class ProductInfoFragment extends Fragment {
         mReleatedRecyclerView.setAdapter(mReleatedAdapter);
 
 
-        mTabLayout.setupWithViewPager(mViewPager,true);
+        mTabLayout.setupWithViewPager(mViewPager, true);
 
         mAddToShopBagFab.setOnClickListener(v -> {
             addProductToBag();
+            setupBadge();
         });
         mAddToShopBagFab.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 addProductToBag();
+                setupBadge();
                 ShopBagDialogFragment fragment = ShopBagDialogFragment.newInstance();
-                fragment.show(getFragmentManager(),"show bag");
+                fragment.show(getFragmentManager(), "show bag");
                 return true;
             }
         });
+
 
      /*   mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_product));
@@ -148,12 +158,12 @@ public class ProductInfoFragment extends Fragment {
 
         mProductInfoBtn.setOnClickListener(v -> {
             ProductAttributeDialogFragment fragment = ProductAttributeDialogFragment.newInstance(mProductId);
-            fragment.show(getFragmentManager(),"Show Details");
+            fragment.show(getFragmentManager(), "Show Details");
         });
 
         mExpandImageBtn.setOnClickListener(v -> {
             isExpanded = !isExpanded;
-            if(isExpanded){
+            if (isExpanded) {
                 mExpandTextView.setVisibility(View.VISIBLE);
 /*
                 mExpandTextView.animate()
@@ -163,8 +173,7 @@ public class ProductInfoFragment extends Fragment {
                 mExpandTextView.setVisibility(View.GONE);*/
 
 
-            }
-            else mExpandTextView.setVisibility(View.GONE);
+            } else mExpandTextView.setVisibility(View.GONE);
         });
 
         RetrofitClientInstance.getRetrofitInstance().create(Api.class)
@@ -172,7 +181,7 @@ public class ProductInfoFragment extends Fragment {
                 .enqueue(new Callback<List<Product>>() {
                     @Override
                     public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                        if(response.isSuccessful()){
+                        if (response.isSuccessful()) {
                             List<Product> products = response.body();
                             mReleatedAdapter.setProductList(products);
                             mReleatedAdapter.notifyDataSetChanged();
@@ -210,19 +219,18 @@ public class ProductInfoFragment extends Fragment {
                 });*/
 
 
-
-
         return view;
     }
 
     private void addProductToBag() {
         ProductLab.getInstance().addToBag(mProduct.getId());
-        new GenerateSnackBar(getActivity(),R.string.add_shop_successfully).getSnackbar().show();
+        new GenerateSnackBar(getActivity(), R.string.add_shop_successfully).getSnackbar().show();
     }
 
     private LinearLayoutManager getHorizontalLayoutManager() {
         return new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
     }
+
     private void showDetailsUI() {
         mTextViewName.setText(mProduct.getName());
         mTextViewPrice.setText(mProduct.getPrice() + " $ ");
@@ -251,7 +259,7 @@ public class ProductInfoFragment extends Fragment {
 
         @Override
         public Fragment getItem(int i) {
-            return PhotoGalleryFragment.newInstance(mImagePathList.get(i).getPath(),-5,false);
+            return PhotoGalleryFragment.newInstance(mImagePathList.get(i).getPath(), -5, false);
         }
 
        /* @Nullable
@@ -266,7 +274,7 @@ public class ProductInfoFragment extends Fragment {
         }
     }
 
-    private class ReleatedViewHolder extends RecyclerView.ViewHolder{
+    private class ReleatedViewHolder extends RecyclerView.ViewHolder {
         private ImageView mProductImageView;
         private TextView mProductNameTextView;
         private TextView mProductPriceTextView;
@@ -294,7 +302,61 @@ public class ProductInfoFragment extends Fragment {
             mProductPriceTextView.setText(product.getPrice() + " $ ");
         }
     }
-    private class ReleatedAdapter extends RecyclerView.Adapter<ReleatedViewHolder>{
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_product_info,menu);
+
+
+        final MenuItem menuItem = menu.findItem(R.id.product_info_action_cart);
+
+        View actionView = MenuItemCompat.getActionView(menuItem);
+        textCartItemCount = (TextView) actionView.findViewById(R.id.cart_badge);
+
+        setupBadge();
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+
+    }
+    private void setupBadge() {
+        int bagSize = ProductLab.getInstance().getShoppingBag().size();
+
+        if (textCartItemCount != null) {
+            if (bagSize == 0) {
+                if (textCartItemCount.getVisibility() != View.GONE) {
+                    textCartItemCount.setVisibility(View.GONE);
+                }
+            } else {
+                textCartItemCount.setText(String.valueOf(Math.min(bagSize, 99)));
+                if (textCartItemCount.getVisibility() != View.VISIBLE) {
+                    textCartItemCount.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.product_info_action_cart:
+                ShopBagDialogFragment shopBagDialogFragment = ShopBagDialogFragment.newInstance();
+                shopBagDialogFragment.show(getFragmentManager(), "show the bag from product");
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private class ReleatedAdapter extends RecyclerView.Adapter<ReleatedViewHolder> {
         private List<Product> mProductList;
 
         public ReleatedAdapter(List<Product> productList) {
@@ -323,7 +385,8 @@ public class ProductInfoFragment extends Fragment {
             return mProductList.size();
         }
     }
-    private class CategoriesViewHolder extends RecyclerView.ViewHolder{
+
+    private class CategoriesViewHolder extends RecyclerView.ViewHolder {
         private TextView mChip;
         private ProductCategory mCategory;
 
@@ -339,12 +402,14 @@ public class ProductInfoFragment extends Fragment {
                 }
             });
         }
-        public void bind(ProductCategory category){
+
+        public void bind(ProductCategory category) {
             mCategory = category;
             mChip.setText(category.getName());
         }
     }
-    private class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder>{
+
+    private class CategoriesAdapter extends RecyclerView.Adapter<CategoriesViewHolder> {
         private List<ProductCategory> mCategoryList;
 
         public CategoriesAdapter(List<ProductCategory> categoryList) {
@@ -358,14 +423,14 @@ public class ProductInfoFragment extends Fragment {
         @NonNull
         @Override
         public CategoriesViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.category_chips_item,viewGroup,false);
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.category_chips_item, viewGroup, false);
             return new CategoriesViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull CategoriesViewHolder categoriesViewHolder, int i) {
 
-            ProductCategory  category = mCategoryList.get(i);
+            ProductCategory category = mCategoryList.get(i);
             categoriesViewHolder.bind(category);
 
         }
@@ -375,8 +440,6 @@ public class ProductInfoFragment extends Fragment {
             return mCategoryList.size();
         }
     }
-
-
 
 
 }
