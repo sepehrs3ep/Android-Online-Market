@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
-    tools:openDrawer="right"
+    tools:openDrawer="end"
+    android:fitsSystemWindows="true"
+
     android:orientation="vertical"
     tools:context=".controller.fragment.MainMarketFragment">
 
@@ -159,17 +161,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-
-
-
-
-
-
-
-
-
     </androidx.core.widget.NestedScrollView>
 <com.google.android.material.navigation.NavigationView
     android:layout_width="wrap_content"
@@ -177,7 +168,7 @@
     android:layoutDirection="rtl"
     android:textDirection="rtl"
     android:fitsSystemWindows="true"
-    android:layout_gravity="right"
+    android:layout_gravity="end"
     android:id="@+id/navigation_view"
     app:headerLayout="@layout/navigation_header"
 

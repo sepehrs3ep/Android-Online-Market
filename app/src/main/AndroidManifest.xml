@@ -17,7 +17,7 @@
         <activity android:name=".controller.activity.CompleteProductListActivity"></activity>
         <activity android:name=".controller.activity.ProductsSubCategoryActivity" />
         <activity android:name=".controller.activity.CategoryViewPagerActivity" />
-        <activity android:name=".controller.activity.ProductInfoActivity" />
+        <activity android:name=".controller.activity.ProductInfoActivity" android:theme="@style/AppTheme.Fullscreen"/>
         <activity android:name=".controller.activity.MainMarketActivity" />
         <activity
             android:name=".controller.activity.StartActivity"
