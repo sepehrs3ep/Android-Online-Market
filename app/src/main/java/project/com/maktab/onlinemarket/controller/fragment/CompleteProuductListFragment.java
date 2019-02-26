@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,7 @@ public class CompleteProuductListFragment extends Fragment {
     private static int mPageCounter = 1;
     private List<Product> mProductList;
     private static boolean NO_MORE_PAGE ;
-
+    private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
 
 
@@ -74,6 +75,7 @@ public class CompleteProuductListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_products_sub_category, container, false);
         mRecyclerView = view.findViewById(R.id.products_sub_category_recycler);
+        mProgressBar = view.findViewById(R.id.sub_category_progress_bar);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         setAdapter();
@@ -125,8 +127,7 @@ public class CompleteProuductListFragment extends Fragment {
         @Override
         protected void onPostExecute(List<Product> products) {
             super.onPostExecute(products);
-            if(mProgressDialog.isShowing())
-                mProgressDialog.cancel();
+            mProgressBar.setVisibility(View.GONE);
             if(products==null||products.size()<=0){
                 snackbar.show();
                 NO_MORE_PAGE = true;
@@ -161,7 +162,7 @@ public class CompleteProuductListFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgressDialog.show();
+            mProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override

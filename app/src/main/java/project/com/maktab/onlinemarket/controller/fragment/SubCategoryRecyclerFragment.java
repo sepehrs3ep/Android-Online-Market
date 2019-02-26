@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -72,15 +73,16 @@ public class SubCategoryRecyclerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sub_category_recycler, container, false);
         mRecyclerView = view.findViewById(R.id.sub_category_recycler_view);
-        mProgressDialog = new ProgressDialog(getActivity());
+     /*   mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_product));
-        mProgressDialog.show();
+        mProgressDialog.show();*/
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        mAdapter = new SubCategoryAdapter(new ArrayList<Category>());
-        /*mAdapter = new SubCategoryAdapter(mCategoryList);
-        mRecyclerView.setAdapter(mAdapter);*/
 
+        mAdapter = new SubCategoryAdapter(mCategoryList);
+        mRecyclerView.setAdapter(mAdapter);
+
+/*
 
         RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                 .getSubCategories(String.valueOf(mCategoryParentId))
@@ -101,6 +103,7 @@ public class SubCategoryRecyclerFragment extends Fragment {
                         Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
                     }
                 });
+*/
 
 
         return view;

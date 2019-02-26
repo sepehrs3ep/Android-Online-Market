@@ -42,6 +42,17 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+    <ProgressBar
+        android:id="@+id/shop_bag_progress_bar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/submit_shop_bag_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sum_card_view"
+        android:layout_height="wrap_content" >
+    </ProgressBar>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shop_bag_recycler_view"
         android:layout_width="0dp"

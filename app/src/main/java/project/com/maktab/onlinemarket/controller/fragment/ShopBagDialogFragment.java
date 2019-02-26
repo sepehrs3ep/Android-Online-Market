@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +55,8 @@ public class ShopBagDialogFragment extends DialogFragment {
     Button mSubmitShopBagBtn;
     @BindView(R.id.shop_bag_recycler_view)
      RecyclerView mShopBagRecyclerView;
+    @BindView(R.id.shop_bag_progress_bar)
+    ProgressBar mProgressBar;
 
     private List<Product> mBagShopProductList;
     private ProgressDialog mProgressDialog;
@@ -89,9 +92,10 @@ public class ShopBagDialogFragment extends DialogFragment {
         View view =  inflater.inflate(R.layout.fragment_shop_bag_dialog, container, false);
         ButterKnife.bind(this,view);
         mShopBagRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mProgressDialog = new ProgressDialog(getActivity());
+        /*mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_product));
-        mProgressDialog.show();
+        mProgressDialog.show();*/
+        mProgressBar.setVisibility(View.VISIBLE);
 
         List<String> productIdies = ProductLab.getInstance().getShoppingBag();
 
@@ -105,7 +109,7 @@ public class ShopBagDialogFragment extends DialogFragment {
                         }
                         mBagShopProductList = response.body();
                         updateUI();
-                        mProgressDialog.cancel();
+                        mProgressBar.setVisibility(View.GONE);
                     }
 
                     @Override

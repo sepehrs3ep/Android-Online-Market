@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +37,7 @@ import retrofit2.Response;
 public class ProductsSubCategoryFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerAdapter mAdapter;
-    private ProgressDialog mProgressDialog;
+    private ProgressBar mProgressBar;
 
     private static final String CATEGORY_ID_ARGS = "categoryIdArgs";
     private long mCategoryId;
@@ -67,9 +68,8 @@ public class ProductsSubCategoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_products_sub_category, container, false);
         mRecyclerView = view.findViewById(R.id.products_sub_category_recycler);
-        mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setMessage("getting products");
-        mProgressDialog.show();
+       mProgressBar = view.findViewById(R.id.sub_category_progress_bar);
+       mProgressBar.setVisibility(View.VISIBLE);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -86,8 +86,10 @@ public class ProductsSubCategoryFragment extends Fragment {
                             }
                             mAdapter = new RecyclerAdapter(products);
                             mRecyclerView.setAdapter(mAdapter);
-                            mProgressDialog.cancel();
+                            mProgressBar.setVisibility(View.GONE);
                         }
+                        else
+                            Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

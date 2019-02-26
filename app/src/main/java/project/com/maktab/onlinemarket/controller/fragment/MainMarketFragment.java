@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
-
 import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
@@ -42,7 +41,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-import butterknife.BindView;
 import project.com.maktab.onlinemarket.EventBus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.CategoryViewPagerActivity;
@@ -100,7 +98,7 @@ public class MainMarketFragment extends Fragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void updateBadgesEvent(BadgeMassageEvent badgeMassageEvent){
+    public void updateBadgesEvent(BadgeMassageEvent badgeMassageEvent) {
         setupBadge();
     }
 
@@ -144,7 +142,6 @@ public class MainMarketFragment extends Fragment {
         });
 
 
-
     }
 
     private void setTemplate(TextView template) {
@@ -163,20 +160,14 @@ public class MainMarketFragment extends Fragment {
             case android.R.id.home:
                 if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
                     mDrawerLayout.closeDrawer(Gravity.RIGHT);
-                }
-                else {
+                } else {
                     mDrawerLayout.openDrawer(Gravity.RIGHT);
                 }
-                /*if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
-                    mDrawerLayout.closeDrawer(Gravity.RIGHT);
-                }
-                else {
-                    mDrawerLayout.openDrawer(Gravity.RIGHT);
-                }*/
+
                 return true;
             case R.id.action_cart:
                 ShopBagDialogFragment shopBagDialogFragment = ShopBagDialogFragment.newInstance();
-                shopBagDialogFragment.show(getFragmentManager(),"show the bag from main");
+                shopBagDialogFragment.show(getFragmentManager(), "show the bag from main");
                 return true;
 
             default:
@@ -219,7 +210,7 @@ public class MainMarketFragment extends Fragment {
         mMainViewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return PhotoGalleryFragment.newInstance(null,mDrawbleImages.get(position),true);
+                return PhotoGalleryFragment.newInstance(null, mDrawbleImages.get(position), true);
             }
 
             @Override
@@ -228,14 +219,11 @@ public class MainMarketFragment extends Fragment {
             }
         });
 
-        mMainTabLayout.setupWithViewPager(mMainViewPager,true);
+        mMainTabLayout.setupWithViewPager(mMainViewPager, true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             mMainTabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
         }
-
-
-
 
 
         mDrawerLayout = view.findViewById(R.id.drawer_layout);
@@ -271,8 +259,18 @@ public class MainMarketFragment extends Fragment {
         ClickableSpan clickableSpanAllList = new ClickableSpan() {
             @Override
             public void onClick(View textView) {
-                Intent intent = CompleteProductListActivity.newIntent(getActivity(), "date");
-                startActivity(intent);
+                switch (textView.getId()) {
+                    case R.id.new_poducts_complete_text_template:
+                        sendAllListIntent("date");
+                        break;
+                    case R.id.rated_complete_text_template:
+                        sendAllListIntent("rating");
+                        break;
+                    case R.id.visited_complete_text_template:
+                        sendAllListIntent("popularity");
+                        break;
+
+                }
             }
 
             @Override
@@ -356,6 +354,11 @@ public class MainMarketFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void sendAllListIntent(String type) {
+        Intent intent = CompleteProductListActivity.newIntent(getActivity(), type);
+        startActivity(intent);
     }
 
     private LinearLayoutManager getHorizontalLayoutManager() {

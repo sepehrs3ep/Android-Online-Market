@@ -251,7 +251,7 @@ public class ProductInfoFragment extends Fragment {
 
         @Override
         public Fragment getItem(int i) {
-            return PhotoGalleryFragment.newInstance(mImagePathList.get(i).getPath(),null,false);
+            return PhotoGalleryFragment.newInstance(mImagePathList.get(i).getPath(),-5,false);
         }
 
        /* @Nullable
