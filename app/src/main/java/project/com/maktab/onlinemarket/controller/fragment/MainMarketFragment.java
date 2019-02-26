@@ -107,7 +107,8 @@ public class MainMarketFragment extends Fragment {
                 }
                 return true;
             case R.id.shop_bag_menu:
-
+                ShopBagDialogFragment shopBagDialogFragment = ShopBagDialogFragment.newInstance();
+                shopBagDialogFragment.show(getFragmentManager(),"show the bag from main");
                 return true;
 
             default:

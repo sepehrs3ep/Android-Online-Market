@@ -83,10 +83,12 @@ public class ProductLab {
         return result;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public List<String> getShoppingBag() {
         List<ShoppingBag> list = mBagDao.loadAll();
-        List<String> result = list.stream().map(ShoppingBag::getProductId).collect(Collectors.toList());
+        List<String> result = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            result = list.stream().map(ShoppingBag::getProductId).collect(Collectors.toList());
+        }
         return result;
     }
 

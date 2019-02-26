@@ -20,7 +20,7 @@
                 android:id="@+id/root_layout"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <ImageView
                     android:id="@+id/product_shop_bag_image"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
@@ -30,7 +30,7 @@
                     app:layout_constraintEnd_toEndOf="@id/root_layout"
                     app:layout_constraintTop_toTopOf="@id/root_layout" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:id="@+id/product_shop_bag_name_text_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                     android:layout_weight="1"
                     android:textStyle="bold"
                     android:textColor="@android:color/holo_green_dark"
-                    android:text="@string/full_price"
+                    android:text="@string/final_price"
 
                     android:layout_width="0dp"
                     android:layout_height="wrap_content" />
@@ -106,7 +106,7 @@
 
         </androidx.cardview.widget.CardView>
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/delete_product_bag_btn"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:layout_width="match_parent"

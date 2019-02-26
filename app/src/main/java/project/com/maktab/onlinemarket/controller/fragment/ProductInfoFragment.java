@@ -120,8 +120,16 @@ public class ProductInfoFragment extends Fragment {
         mTabLayout.setupWithViewPager(mViewPager,true);
 
         mAddToShopBagFab.setOnClickListener(v -> {
-            ProductLab.getInstance().addToBag(mProduct.getId());
-            new GenerateSnackBar(getActivity(),R.string.add_shop_successfully).getSnackbar().show();
+            addProductToBag();
+        });
+        mAddToShopBagFab.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                addProductToBag();
+                ShopBagDialogFragment fragment = ShopBagDialogFragment.newInstance();
+                fragment.show(getFragmentManager(),"show bag");
+                return true;
+            }
         });
 
      /*   mProgressDialog = new ProgressDialog(getActivity());
@@ -198,6 +206,12 @@ public class ProductInfoFragment extends Fragment {
 
         return view;
     }
+
+    private void addProductToBag() {
+        ProductLab.getInstance().addToBag(mProduct.getId());
+        new GenerateSnackBar(getActivity(),R.string.add_shop_successfully).getSnackbar().show();
+    }
+
     private LinearLayoutManager getHorizontalLayoutManager() {
         return new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
     }

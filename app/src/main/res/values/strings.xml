@@ -27,6 +27,7 @@
     <string name="full_price">قیمت کل</string>
     <string name="final_price">قیمت نهایی</string>
     <string name="delete">حذف</string>
+    <string name="price_format">  %s ریال</string>
 
     <string name="related_products">محصولات مشابه</string>
 
