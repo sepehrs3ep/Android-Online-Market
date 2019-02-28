@@ -5,10 +5,11 @@ import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
+import androidx.fragment.app.Fragment;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.fragment.ProductInfoFragment;
 
-public class ProductInfoActivity extends AppCompatActivity {
+public class ProductInfoActivity extends SingleFragmentActivity {
     private static final String PRODUCT_ID_EXTRA = "productIdExtra";
     private String mProductId;
 
@@ -21,19 +22,17 @@ public class ProductInfoActivity extends AppCompatActivity {
     }
 
 
-  /*  @Override
+    @Override
     public Fragment createFragment() {
-        mProductId = getIntent().getStringExtra(PRODUCT_ID_EXTRA);
-        return ProductInfoFragment.newInstance(mProductId);
-
+        return ProductInfoFragment.newInstance(getIntent().getStringExtra(PRODUCT_ID_EXTRA));
     }
 
     @Override
     public int getLayoutResId() {
         return R.layout.activity_single_fragment;
-    }*/
+    }
 
-    @Override
+/*    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_info);
@@ -44,5 +43,5 @@ public class ProductInfoActivity extends AppCompatActivity {
                  .replace(R.id.info_fragmnet_container, ProductInfoFragment.newInstance(mProductId))
                  .commit();
 
-    }
+    }*/
 }

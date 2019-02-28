@@ -20,6 +20,14 @@ public class CategoryLab {
         mParentCategories = new ArrayList<>();
     }
 
+    public Category getCategory(long categoryId) {
+        for (Category category : mAllCategories) {
+            if (category.getId() == categoryId)
+                return category;
+        }
+        return null;
+    }
+
     public void setAllCategories(List<Category> allCategories) {
         mAllCategories.clear();
         mParentCategories.clear();
@@ -27,25 +35,26 @@ public class CategoryLab {
         generateParentList();
     }
 
-    public int getCurrentCategory(long id){
-        for(int i=0;i<mParentCategories.size();i++){
-            if(mParentCategories.get(i).getId()==id)
+    public int getCurrentCategory(long id) {
+        for (int i = 0; i < mParentCategories.size(); i++) {
+            if (mParentCategories.get(i).getId() == id)
                 return i;
         }
         return -1;
     }
 
-    private void generateParentList(){
-        for(Category category:mAllCategories){
-            if(category.getParent()==0)
+    private void generateParentList() {
+        for (Category category : mAllCategories) {
+            if (category.getParent() == 0)
                 mParentCategories.add(category);
         }
     }
-    public List<Category> getSubCategoires(long parentId){
+
+    public List<Category> getSubCategoires(long parentId) {
         List<Category> result = new ArrayList<>();
 
-        for(Category category:mAllCategories){
-            if(category.getParent()==parentId)
+        for (Category category : mAllCategories) {
+            if (category.getParent() == parentId)
                 result.add(category);
         }
         return result;
@@ -62,7 +71,7 @@ public class CategoryLab {
 
 
     public static CategoryLab getmCategoryInstance() {
-        if(mCategoryInstance==null)
+        if (mCategoryInstance == null)
             mCategoryInstance = new CategoryLab();
 
         return mCategoryInstance;

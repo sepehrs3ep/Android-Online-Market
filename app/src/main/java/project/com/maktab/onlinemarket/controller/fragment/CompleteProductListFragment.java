@@ -1,13 +1,16 @@
 package project.com.maktab.onlinemarket.controller.fragment;
 
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,12 +29,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
+import project.com.maktab.onlinemarket.model.category.Category;
+import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.model.product.Product;
+import project.com.maktab.onlinemarket.model.product.ProductLab;
 import project.com.maktab.onlinemarket.network.Api;
 import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
 import project.com.maktab.onlinemarket.utils.GenerateSnackBar;
@@ -58,7 +65,7 @@ public class CompleteProductListFragment extends Fragment {
     private static boolean NO_MORE_PAGE;
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
-
+    private TextView textCartItemCount;
 
     public static CompleteProductListFragment newInstance(String orderBy, long categoryId, String searchItem, boolean isFromSearch,
                                                           boolean isSubCategory) {
@@ -74,10 +81,52 @@ public class CompleteProductListFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_main_market, menu);
+
+        final MenuItem menuItem = menu.findItem(R.id.action_cart);
+
+        View actionView = MenuItemCompat.getActionView(menuItem);
+        textCartItemCount = (TextView) actionView.findViewById(R.id.cart_badge);
+
+        setupBadge();
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search_products_menu:
+                SearchProductsDialogFragment fragment = SearchProductsDialogFragment.newInstance();
+                fragment.show(getFragmentManager(), "Search");
+                return true;
+            case R.id.action_cart:
+                ShopBagDialogFragment shopBagDialogFragment = ShopBagDialogFragment.newInstance();
+                shopBagDialogFragment.show(getFragmentManager(), "show the bag from main");
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        }
+        setHasOptionsMenu(true);
+
         mOrderType = getArguments().getString(ORDER_BY_ARGS);
         mCategoryId = getArguments().getLong(CATEGORY_ID_ARGS);
         mSearchedString = getArguments().getString(SEARCH_STRING_ARGS);
@@ -100,11 +149,23 @@ public class CompleteProductListFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.products_sub_category_recycler);
         mProgressBar = view.findViewById(R.id.sub_category_progress_bar);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        if (mIsFromSearch) {
-            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (mIsFromSearch)
             actionBar.setTitle(mSearchedString);
+        else if (mIsSubCategory) {
+            Category category = CategoryLab.getmCategoryInstance().getCategory(mCategoryId);
+            if (category != null)
+                actionBar.setTitle(category.getName());
+        } else{
+            String order ;
+            if(mOrderType.equalsIgnoreCase("date"))
+                order = getString(R.string.new_products);
+            else if(mOrderType.equalsIgnoreCase("rating"))
+                order =getString(R.string.rated_products);
+            else
+                order = getString(R.string.visited_products);
 
+            actionBar.setTitle(order);
         }
 
 
@@ -162,7 +223,7 @@ public class CompleteProductListFragment extends Fragment {
             super.onPostExecute(products);
             mProgressBar.setVisibility(View.GONE);
             if (mHasNoProduct) {
-                new GenerateSnackBar(getActivity(), R.string.no_item).getSnackbar().show();
+                new GenerateSnackBar(getContext(), R.string.no_item).getSnackbar().show();
                 return;
             } else if (products == null || products.size() <= 0) {
                 snackbar.show();
@@ -284,6 +345,23 @@ public class CompleteProductListFragment extends Fragment {
         @Override
         public int getItemCount() {
             return mProductList.size();
+        }
+    }
+
+    private void setupBadge() {
+        int bagSize = ProductLab.getInstance().getShoppingBag().size();
+
+        if (textCartItemCount != null) {
+            if (bagSize == 0) {
+                if (textCartItemCount.getVisibility() != View.GONE) {
+                    textCartItemCount.setVisibility(View.GONE);
+                }
+            } else {
+                textCartItemCount.setText(String.valueOf(Math.min(bagSize, 99)));
+                if (textCartItemCount.getVisibility() != View.VISIBLE) {
+                    textCartItemCount.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 
