@@ -40,6 +40,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.activity.ProductFilterActivity;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
 import project.com.maktab.onlinemarket.eventbus.ProductSortMassage;
 import project.com.maktab.onlinemarket.model.category.Category;
@@ -66,6 +67,7 @@ public class CompleteProductListFragment extends Fragment {
     private static final String RATE = "rating";
     private static final String VISITED = "popularity";
     private static final String PRICE = "price";
+    public static final String SHOULD_HANDLE_FILTER = "SHOULD_HANDLE_FILTER";
     private long mCategoryId;
     private String mOrder;
     private String mSearchedString;
@@ -141,6 +143,19 @@ public class CompleteProductListFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
+        mFilterCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mIsSubCategory) {
+                    Intent intent = ProductFilterActivity.newIntent(getActivity(), mProductList.get(0).getId());
+                    startActivity(intent);
+                } else {
+                    Intent intent = ProductFilterActivity.newIntent(getActivity(), SHOULD_HANDLE_FILTER);
+                    startActivity(intent);
+                }
+
+            }
+        });
         mSortCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -41,6 +41,7 @@
     <string name="check_box_selles">پر بازدید ترین</string>
     <string name="check_box_cost_low_high">قیمت از کم به زیاد</string>
     <string name="check_box_cost_high_low">قیمت از زیاد به کم</string>
+    <string name="filter_action_bar">فیلتر کردن محصول</string>
 
     <string name="related_products">محصولات مشابه</string>
 
