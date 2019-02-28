@@ -40,8 +40,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import project.com.maktab.onlinemarket.R;
-import project.com.maktab.onlinemarket.controller.activity.ProductFilterActivity;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
+import project.com.maktab.onlinemarket.eventbus.FilterProductMassage;
 import project.com.maktab.onlinemarket.eventbus.ProductSortMassage;
 import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
@@ -118,10 +118,22 @@ public class CompleteProductListFragment extends Fragment {
         mPageCounter = 1;
         NO_MORE_PAGE = false;
         mIsGridShow = false;
+        ProductFilterFragment.mFilteredAttributes = new ArrayList<>();
     }
 
     public CompleteProductListFragment() {
         // Required empty public constructor
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void filterProducts(FilterProductMassage filterProductMassage) {
+        if (ProductFilterFragment.mFilteredAttributes.size() > 0) {
+            mPageCounter = 1;
+            mProductList.clear();
+            mAdapter.setProductList(mProductList);
+            mAdapter.notifyDataSetChanged();
+            new ProductsAsynceTask(getActivity()).execute(mPageCounter);
+        }
     }
 
 
@@ -147,11 +159,11 @@ public class CompleteProductListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (mIsSubCategory) {
-                    Intent intent = ProductFilterActivity.newIntent(getActivity(), mProductList.get(0).getId());
-                    startActivity(intent);
+                    ProductFilterFragment filterFragment = ProductFilterFragment.newInstance(mProductList.get(0).getId());
+                    filterFragment.show(getFragmentManager(), "show filtered");
                 } else {
-                    Intent intent = ProductFilterActivity.newIntent(getActivity(), SHOULD_HANDLE_FILTER);
-                    startActivity(intent);
+                    ProductFilterFragment filterFragment = ProductFilterFragment.newInstance(SHOULD_HANDLE_FILTER);
+                    filterFragment.show(getFragmentManager(), "show handle filtered");
                 }
 
             }
@@ -396,15 +408,18 @@ public class CompleteProductListFragment extends Fragment {
             try {
                 if (mIsSubCategory)
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                            .getProductsSubCategoires(String.valueOf(pageCounter), String.valueOf(mCategoryId), mOrderType, mOrder)
+                            .getProductsSubCategoires(String.valueOf(pageCounter), String.valueOf(mCategoryId), mOrderType, mOrder,
+                                    ProductFilterFragment.mFilteredAttributes.toString())
                             .execute();
                 else if (mIsFromSearch)
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                            .searchProducts(String.valueOf(pageCounter), mSearchedString, mOrderType, mOrder)
+                            .searchProducts(String.valueOf(pageCounter), mSearchedString, mOrderType, mOrder
+                                    , ProductFilterFragment.mFilteredAttributes.toString())
                             .execute();
                 else
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                            .getAllProductWithPage(String.valueOf(pageCounter), mOrderType, mOrder).execute();
+                            .getAllProductWithPage(String.valueOf(pageCounter), mOrderType, mOrder,
+                                    ProductFilterFragment.mFilteredAttributes.toString()).execute();
                 if (response.isSuccessful()) {
                     productList = response.body();
                     if (productList == null || productList.size() <= 0)

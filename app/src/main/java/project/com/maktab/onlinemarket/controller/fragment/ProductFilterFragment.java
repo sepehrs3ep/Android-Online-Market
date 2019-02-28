@@ -1,6 +1,7 @@
 package project.com.maktab.onlinemarket.controller.fragment;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +13,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.eventbus.FilterProductMassage;
 import project.com.maktab.onlinemarket.model.attributes.Attributes;
 import project.com.maktab.onlinemarket.model.attributes.AttributesTerms;
 import project.com.maktab.onlinemarket.network.Api;
@@ -36,7 +41,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProductFilterFragment extends Fragment {
+public class ProductFilterFragment extends DialogFragment {
     @BindView(R.id.attribute_recycler_view)
     RecyclerView mAttributeRecyclerView;
     @BindView(R.id.attribute_term_recycler_view)
@@ -46,6 +51,7 @@ public class ProductFilterFragment extends Fragment {
     @BindView(R.id.filter_progress_bar)
     ProgressBar mProgressBar;
 
+    public static List<String> mFilteredAttributes ;
     private AttrAdapter mAttrAdapter;
     private TermAttrAdapter mTermAttrAdapter;
     private List<Attributes> mAttributesList;
@@ -67,11 +73,23 @@ public class ProductFilterFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         mProductId = getArguments().getString(PRODUCT_ID_ARGS);
         mAttributesList = new ArrayList<>();
         mTermsAttributesList = new ArrayList<>();
+        mFilteredAttributes = new ArrayList<>();
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        dialog.getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        if (dialog != null) {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setLayout(width, height);
+        }
     }
 
     public ProductFilterFragment() {
@@ -95,6 +113,24 @@ public class ProductFilterFragment extends Fragment {
         updateAttrUI();
         updateTermAttrUI();
 
+
+        mDoFilterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new FilterProductMassage());
+                dismiss();
+            }
+        });
+
+        if(mProductId.equalsIgnoreCase(CompleteProductListFragment.SHOULD_HANDLE_FILTER)){
+            Attributes attributes = new Attributes(1, "رنگ","pa_color");
+            mAttributesList.add(attributes);
+            updateAttrUI();
+            mProgressBar.setVisibility(View.GONE);
+        }
+
+        else {
+
         RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                 .getProductAttributes(mProductId)
                 .enqueue(new Callback<List<Attributes>>() {
@@ -114,6 +150,8 @@ public class ProductFilterFragment extends Fragment {
                         Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
                     }
                 });
+
+        }
 
 
         return view;
@@ -245,6 +283,12 @@ public class ProductFilterFragment extends Fragment {
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    mFilteredAttributes.add(mAttributesTerms.getName());
+                }else {
+                    if(mFilteredAttributes.contains(mAttributesTerms.getName()))
+                        mFilteredAttributes.remove(mAttributesTerms.getName());
+                }
 
                 }
             });
