@@ -414,7 +414,8 @@ public class ProductInfoFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = CompleteProductListActivity.newIntent(getActivity(),"nothing",Long.valueOf(mCategory.getId()),true);
+                    Intent intent = CompleteProductListActivity.newIntent(getActivity(),"nothing",Long.valueOf(mCategory.getId()),"nothing",
+                            false,true);
                     startActivity(intent);
                 }
             });

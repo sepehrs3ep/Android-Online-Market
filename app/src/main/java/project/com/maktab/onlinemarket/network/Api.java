@@ -30,7 +30,7 @@ public interface Api {
     Call<List<Product>> getProductsSubCategoires(@Query("page") String pageNumber ,@Query("category") String categoryId);
 
     @GET("products/?")
-    Call<List<Product>> searchProducts(@Query("search") String productName);
+    Call<List<Product>> searchProducts(@Query("page") String pageNumber , @Query("search") String productName);
 
 
     @GET("products/?")

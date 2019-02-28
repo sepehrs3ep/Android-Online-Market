@@ -360,7 +360,7 @@ public class MainMarketFragment extends Fragment {
     }
 
     private void sendAllListIntent(String type) {
-        Intent intent = CompleteProductListActivity.newIntent(getActivity(), type,-1,false);
+        Intent intent = CompleteProductListActivity.newIntent(getActivity(), type,-1,"nothing",false,false);
         startActivity(intent);
     }
 

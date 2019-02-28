@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.activity.CompleteProductListActivity;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.network.Api;
@@ -38,11 +39,7 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class SearchProductsDialogFragment extends DialogFragment {
-    private RecyclerView mRecyclerView;
     private SearchView mSearchView;
-    private Toolbar mToolbar;
-    private SearchAdapter mAdapter;
-    private ProgressDialog mProgressDialog;
 
 
     public static SearchProductsDialogFragment newInstance() {
@@ -82,55 +79,15 @@ public class SearchProductsDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search_products_dialog, container, false);
-        mRecyclerView = view.findViewById(R.id.search_fragment_recycler_view);
         mSearchView = view.findViewById(R.id.search_fragment_search_view);
-        mToolbar = view.findViewById(R.id.search_fragment_bar);
-        mProgressDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setMessage(getString(R.string.progress_product));
-
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        mAdapter = new SearchAdapter(new ArrayList<Product>());
-
-        mRecyclerView.setAdapter(mAdapter);
-
-
-
-
-
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String s) {
-                mProgressDialog.show();
-                RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                        .searchProducts(s)
-                        .enqueue(new Callback<List<Product>>() {
-                            @Override
-                            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                                if(response.isSuccessful()){
-                                    List<Product> list = response.body();
-                                    mAdapter.setProductList(list);
-                                    mAdapter.notifyDataSetChanged();
-                                    mProgressDialog.cancel();
-
-                                }
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<List<Product>> call, Throwable t) {
-                                Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
-
-
+                Intent intent = CompleteProductListActivity.newIntent(getActivity(),"nothing",-1,s,true,false);
+                startActivity(intent);
                 return true;
             }
 
@@ -142,70 +99,5 @@ public class SearchProductsDialogFragment extends DialogFragment {
 
         return view;
     }
-    private class SearchViewHolder extends RecyclerView.ViewHolder{
-        private ImageView mImageView;
-        private TextView mNameTextView;
-        private TextView mPriceTextView;
-        private Product mProduct;
-
-        public SearchViewHolder(@NonNull View itemView) {
-            super(itemView);
-            mImageView = itemView.findViewById(R.id.product_sub_category_image_view_item);
-            mNameTextView = itemView.findViewById(R.id.product_sub_category_name_text_view);
-            mPriceTextView  = itemView.findViewById(R.id.product_sub_category_price_text_view);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = ProductInfoActivity.newIntent(getActivity(),mProduct.getId());
-                    dismiss();
-                    startActivity(intent);
-                }
-            });
-
-
-        }
-        public void bind(Product product){
-            mProduct = product;
-            mNameTextView.setText(product.getName());
-            mPriceTextView.setText(product.getPrice() + " $ ");
-            if(product.getImages()!=null&&product.getImages().size()>0){
-                Picasso.get().load(product.getImages().get(0).getPath())
-                        .placeholder(R.drawable.shop)
-                        .into(mImageView);
-            }
-
-        }
-    }
-    private class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
-        private List<Product> mProductList;
-
-        public SearchAdapter(List<Product> productList) {
-            mProductList = productList;
-        }
-
-        public void setProductList(List<Product> productList) {
-            mProductList = productList;
-        }
-
-
-        @NonNull
-        @Override
-        public SearchViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.product_sub_category_list_item,viewGroup,false);
-            return new SearchViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull SearchViewHolder searchViewHolder, int i) {
-            Product product = mProductList.get(i);
-            searchViewHolder.bind(product);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mProductList.size();
-        }
-    }
-
 
 }

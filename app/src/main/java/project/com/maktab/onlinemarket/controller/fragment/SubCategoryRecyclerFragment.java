@@ -122,7 +122,8 @@ public class SubCategoryRecyclerFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = CompleteProductListActivity.newIntent(getActivity(),"nothing",mCategory.getId(),true);
+                    Intent intent = CompleteProductListActivity.newIntent(getActivity(),"nothing",mCategory.getId(),
+                            "nothing",false,true);
                     startActivity(intent);
                 }
             });

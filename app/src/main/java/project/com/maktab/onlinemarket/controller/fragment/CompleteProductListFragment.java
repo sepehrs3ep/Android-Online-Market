@@ -1,6 +1,7 @@
 package project.com.maktab.onlinemarket.controller.fragment;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,8 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,12 +40,16 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompleteProuductListFragment extends Fragment {
+public class CompleteProductListFragment extends Fragment {
     private static final String ORDER_BY_ARGS = "orderByArgs";
     private static final String CATEGORY_ID_ARGS = "categoryIdArgs";
     private static final String IS_SUB_CATEGORY_ARGS = "IS_SUB_CATEGORY_ARGS";
+    private static final String SEARCH_STRING_ARGS = "SEARCH_STRING_ARGS";
+    private static final String IS_FROM_SEARCH_ARGS = "IS_FROM_SEARCH_ARGS";
 
     private long mCategoryId;
+    private String mSearchedString;
+    private boolean mIsFromSearch;
     private boolean mIsSubCategory;
     private String mOrderType;
     private CompleteAdapter mAdapter;
@@ -53,28 +60,34 @@ public class CompleteProuductListFragment extends Fragment {
     private RecyclerView mRecyclerView;
 
 
-    public static CompleteProuductListFragment newInstance(String orderBy, long categoryId, boolean isSubCategory) {
+    public static CompleteProductListFragment newInstance(String orderBy, long categoryId, String searchItem, boolean isFromSearch,
+                                                          boolean isSubCategory) {
 
         Bundle args = new Bundle();
         args.putString(ORDER_BY_ARGS, orderBy);
         args.putLong(CATEGORY_ID_ARGS, categoryId);
         args.putBoolean(IS_SUB_CATEGORY_ARGS, isSubCategory);
-        CompleteProuductListFragment fragment = new CompleteProuductListFragment();
+        args.putString(SEARCH_STRING_ARGS, searchItem);
+        args.putBoolean(IS_FROM_SEARCH_ARGS, isFromSearch);
+        CompleteProductListFragment fragment = new CompleteProductListFragment();
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mOrderType = getArguments().getString(ORDER_BY_ARGS);
         mCategoryId = getArguments().getLong(CATEGORY_ID_ARGS);
+        mSearchedString = getArguments().getString(SEARCH_STRING_ARGS);
         mIsSubCategory = getArguments().getBoolean(IS_SUB_CATEGORY_ARGS, false);
+        mIsFromSearch = getArguments().getBoolean(IS_FROM_SEARCH_ARGS, false);
         mPageCounter = 1;
         NO_MORE_PAGE = false;
     }
 
-    public CompleteProuductListFragment() {
+    public CompleteProductListFragment() {
         // Required empty public constructor
     }
 
@@ -83,10 +96,17 @@ public class CompleteProuductListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_products_sub_category, container, false);
+        View view = inflater.inflate(R.layout.fragment_complete_products_list, container, false);
         mRecyclerView = view.findViewById(R.id.products_sub_category_recycler);
         mProgressBar = view.findViewById(R.id.sub_category_progress_bar);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        if (mIsFromSearch) {
+            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            actionBar.setTitle(mSearchedString);
+
+        }
+
 
         setAdapter();
         new ProductsAsynceTask(getActivity()).execute(mPageCounter);
@@ -165,6 +185,10 @@ public class CompleteProuductListFragment extends Fragment {
                 if (mIsSubCategory)
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                             .getProductsSubCategoires(String.valueOf(pageCounter), String.valueOf(mCategoryId))
+                            .execute();
+                else if (mIsFromSearch)
+                    response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                            .searchProducts(String.valueOf(pageCounter), mSearchedString)
                             .execute();
                 else
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
@@ -246,7 +270,7 @@ public class CompleteProuductListFragment extends Fragment {
         @NonNull
         @Override
         public CompleteViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.product_sub_category_list_item, viewGroup, false);
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.product_complete_list_item, viewGroup, false);
             return new CompleteViewHolder(view);
         }
 
