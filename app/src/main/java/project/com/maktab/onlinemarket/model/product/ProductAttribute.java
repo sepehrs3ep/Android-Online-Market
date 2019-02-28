@@ -5,8 +5,7 @@ import android.os.Parcelable;
 
 import java.util.List;
 
-public class Attribute   {
-
+public class ProductAttribute {
 
 
     private long id;
@@ -17,7 +16,7 @@ public class Attribute   {
 
     private long position;
 
-    public Attribute(long id, String name, List<String> options, long position) {
+    public ProductAttribute(long id, String name, List<String> options, long position) {
         this.id = id;
         this.name = name;
         this.options = options;

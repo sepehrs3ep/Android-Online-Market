@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import project.com.maktab.onlinemarket.R;
-import project.com.maktab.onlinemarket.model.product.Attribute;
+import project.com.maktab.onlinemarket.model.product.ProductAttribute;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.model.product.ProductLab;
 
@@ -81,7 +81,7 @@ public class ProductAttributeDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_sub_category_recycler,container,false);
         mRecyclerView = view.findViewById(R.id.sub_category_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new AttrAdapter(mProduct.getAttributes());
+        mAdapter = new AttrAdapter(mProduct.getProductAttributes());
         mRecyclerView.setAdapter(mAdapter);
         return view;
     }
@@ -90,7 +90,7 @@ public class ProductAttributeDialogFragment extends DialogFragment {
         private ImageButton mImageButton;
         private TextView mAttrDescTextView;
         private TextView mAttrTitleTextView;
-        private Attribute mAttribute;
+        private ProductAttribute mProductAttribute;
 
         public AttrViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -112,21 +112,21 @@ public class ProductAttributeDialogFragment extends DialogFragment {
             });
 
         }
-        public void bind(Attribute attribute){
-            mAttribute = attribute;
-            mAttrTitleTextView.setText(attribute.getName());
-            mAttrDescTextView.setText(mAttribute.getOptions().toString());
+        public void bind(ProductAttribute productAttribute){
+            mProductAttribute = productAttribute;
+            mAttrTitleTextView.setText(productAttribute.getName());
+            mAttrDescTextView.setText(mProductAttribute.getOptions().toString());
         }
     }
     private class AttrAdapter extends RecyclerView.Adapter<AttrViewHolder>{
-        private List<Attribute> mAttributeList;
+        private List<ProductAttribute> mProductAttributeList;
 
-        public AttrAdapter(List<Attribute> attributeList) {
-            mAttributeList = attributeList;
+        public AttrAdapter(List<ProductAttribute> productAttributeList) {
+            mProductAttributeList = productAttributeList;
         }
 
-        public void setAttributeList(List<Attribute> attributeList) {
-            mAttributeList = attributeList;
+        public void setProductAttributeList(List<ProductAttribute> productAttributeList) {
+            mProductAttributeList = productAttributeList;
         }
 
         @NonNull
@@ -138,13 +138,13 @@ public class ProductAttributeDialogFragment extends DialogFragment {
 
         @Override
         public void onBindViewHolder(@NonNull AttrViewHolder attrViewHolder, int i) {
-            Attribute attribute = mAttributeList.get(i);
-            attrViewHolder.bind(attribute);
+            ProductAttribute productAttribute = mProductAttributeList.get(i);
+            attrViewHolder.bind(productAttribute);
         }
 
         @Override
         public int getItemCount() {
-            return mAttributeList.size();
+            return mProductAttributeList.size();
         }
     }
 

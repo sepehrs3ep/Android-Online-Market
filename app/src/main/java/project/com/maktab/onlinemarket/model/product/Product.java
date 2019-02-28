@@ -30,7 +30,8 @@ public class Product {
 
     private List<ProductCategory> categories;
 
-    private List<Attribute> attributes;
+    @SerializedName("attributes")
+    private List<ProductAttribute> mProductAttributes;
 
     @SerializedName("related_ids")
     private List<String> relatedProducts;
@@ -39,15 +40,15 @@ public class Product {
         return price;
     }
 
-    public List<Attribute> getAttributes() {
-        return attributes;
+    public List<ProductAttribute> getProductAttributes() {
+        return mProductAttributes;
     }
 
     public List<String> getRelatedProducts() {
         return relatedProducts;
     }
 
-    public Product(String id, String name, String date, String description, String sales, String rate, String price, String regularPrice, List<Image> images, List<ProductCategory> categories, List<Attribute> attributes, List<String> relatedProducts) {
+    public Product(String id, String name, String date, String description, String sales, String rate, String price, String regularPrice, List<Image> images, List<ProductCategory> categories, List<ProductAttribute> productAttributes, List<String> relatedProducts) {
         this.id = id;
         this.name = name;
         this.date = date;
@@ -58,7 +59,7 @@ public class Product {
         this.regularPrice = regularPrice;
         this.images = images;
         this.categories = categories;
-        this.attributes = attributes;
+        this.mProductAttributes = productAttributes;
         this.relatedProducts = relatedProducts;
     }
 

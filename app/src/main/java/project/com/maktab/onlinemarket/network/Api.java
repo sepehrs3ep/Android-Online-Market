@@ -3,6 +3,8 @@ package project.com.maktab.onlinemarket.network;
 import java.util.List;
 
 import androidx.cardview.widget.CardView;
+import project.com.maktab.onlinemarket.model.attributes.Attributes;
+import project.com.maktab.onlinemarket.model.attributes.AttributesTerms;
 import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.product.Product;
 import retrofit2.Call;
@@ -42,6 +44,14 @@ public interface Api {
 
     @GET("products/?")
     Call<List<Product>> getAllProductWithPage(@Query("page") String pageNumber, @Query("orderby") String orderBy,@Query("order") String order);
+
+
+    @GET("products/attributes/?")
+    Call<List<Attributes>> getProductAttributes(@Query("id") String productId);
+
+
+    @GET("products/attributes/{id}/terms")
+    Call<List<AttributesTerms>> getAttributesTerms(@Path("id") String attrId);
 
 
 }
