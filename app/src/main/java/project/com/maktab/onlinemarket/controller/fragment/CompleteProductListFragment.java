@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +36,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import project.com.maktab.onlinemarket.R;
@@ -79,6 +79,7 @@ public class CompleteProductListFragment extends Fragment {
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private TextView textCartItemCount;
+    private boolean mIsGridShow;
     private int mSortType;
 
     private CardView mFilterCardView, mSortCardView;
@@ -99,6 +100,133 @@ public class CompleteProductListFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        setHasOptionsMenu(true);
+        mOrder = DESC_ORDER;
+        mOrderType = getArguments().getString(ORDER_BY_ARGS);
+        mCategoryId = getArguments().getLong(CATEGORY_ID_ARGS);
+        mSearchedString = getArguments().getString(SEARCH_STRING_ARGS);
+        mIsSubCategory = getArguments().getBoolean(IS_SUB_CATEGORY_ARGS, false);
+        mIsFromSearch = getArguments().getBoolean(IS_FROM_SEARCH_ARGS, false);
+        mPageCounter = 1;
+        NO_MORE_PAGE = false;
+        mIsGridShow = false;
+    }
+
+    public CompleteProductListFragment() {
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_complete_products_list, container, false);
+        mRecyclerView = view.findViewById(R.id.products_sub_category_recycler);
+        mProgressBar = view.findViewById(R.id.sub_category_progress_bar);
+        mFilterCardView = view.findViewById(R.id.filter_products_card_view);
+        mSortCardView = view.findViewById(R.id.sort_products_card_view);
+        mChangeRecyclerLayoutImageBtn = view.findViewById(R.id.recycler_view_layout_image_btn);
+        mSortTypeTextView = view.findViewById(R.id.sorted_type_text_view);
+
+        mSortTypeTextView.setText(R.string.check_box_newest);
+
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        mSortCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SortProductsDialogFragment fragment = SortProductsDialogFragment.newInstance(
+                        SortProductsDialogFragment.getEnumIndexByString(getActivity(), mSortTypeTextView.getText().toString()));
+                fragment.show(getFragmentManager(), "show checkboxes");
+            }
+        });
+
+        mChangeRecyclerLayoutImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mIsGridShow = !mIsGridShow;
+                changeRecyclerLayout();
+            }
+        });
+
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (mIsFromSearch) {
+            mOrderType = DATE;
+            actionBar.setTitle(mSearchedString);
+        } else if (mIsSubCategory) {
+            mOrderType = DATE;
+            Category category = CategoryLab.getmCategoryInstance().getCategory(mCategoryId);
+            if (category != null)
+                actionBar.setTitle(category.getName());
+        } else {
+            String order;
+            if (mOrderType.equalsIgnoreCase("date")) {
+                order = getString(R.string.new_products);
+                mSortTypeTextView.setText(R.string.check_box_newest);
+            } else if (mOrderType.equalsIgnoreCase("rating")) {
+                order = getString(R.string.rated_products);
+                mSortTypeTextView.setText(R.string.check_box_rated);
+
+            } else {
+                order = getString(R.string.visited_products);
+                mSortTypeTextView.setText(R.string.check_box_selles);
+            }
+
+            actionBar.setTitle(order);
+        }
+
+
+        setAdapter();
+        new ProductsAsynceTask(getActivity()).execute(mPageCounter);
+
+
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(1)) {
+                    if (!NO_MORE_PAGE) {
+                        mPageCounter++;
+                        new ProductsAsynceTask(getActivity()).execute(mPageCounter);
+
+                    }
+                }
+            }
+        });
+
+
+        return view;
+
+    }
+
+
+    private void changeRecyclerLayout() {
+        if (mIsGridShow) {
+            mChangeRecyclerLayoutImageBtn.setImageResource(R.drawable.ic_linear_layout);
+
+
+            mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
+
+            mRecyclerView.setAdapter(mAdapter);
+        } else {
+            mChangeRecyclerLayoutImageBtn.setImageResource(R.drawable.ic_grid_layout);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mRecyclerView.setAdapter(mAdapter);
+        }
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -153,7 +281,7 @@ public class CompleteProductListFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
 
             SortProductsDialogFragment.Sorts sorts = SortProductsDialogFragment.getEnumSorts(mSortType);
-            switch (sorts){
+            switch (sorts) {
                 case NEWEST:
                     mOrderType = DATE;
                     mOrder = DESC_ORDER;
@@ -183,7 +311,6 @@ public class CompleteProductListFragment extends Fragment {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -201,107 +328,6 @@ public class CompleteProductListFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        }
-        setHasOptionsMenu(true);
-        mOrder = DESC_ORDER;
-        mOrderType = getArguments().getString(ORDER_BY_ARGS);
-        mCategoryId = getArguments().getLong(CATEGORY_ID_ARGS);
-        mSearchedString = getArguments().getString(SEARCH_STRING_ARGS);
-        mIsSubCategory = getArguments().getBoolean(IS_SUB_CATEGORY_ARGS, false);
-        mIsFromSearch = getArguments().getBoolean(IS_FROM_SEARCH_ARGS, false);
-        mPageCounter = 1;
-        NO_MORE_PAGE = false;
-    }
-
-    public CompleteProductListFragment() {
-        // Required empty public constructor
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_complete_products_list, container, false);
-        mRecyclerView = view.findViewById(R.id.products_sub_category_recycler);
-        mProgressBar = view.findViewById(R.id.sub_category_progress_bar);
-        mFilterCardView = view.findViewById(R.id.filter_products_card_view);
-        mSortCardView = view.findViewById(R.id.sort_products_card_view);
-        mChangeRecyclerLayoutImageBtn = view.findViewById(R.id.recycler_view_layout_image_btn);
-        mSortTypeTextView = view.findViewById(R.id.sorted_type_text_view);
-
-        mSortTypeTextView.setText(R.string.check_box_newest);
-
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-
-        mSortCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SortProductsDialogFragment fragment = SortProductsDialogFragment.newInstance(
-                        SortProductsDialogFragment.getEnumIndexByString(getActivity(),mSortTypeTextView.getText().toString()));
-                fragment.show(getFragmentManager(),"show checkboxes");
-            }
-        });
-
-
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (mIsFromSearch){
-            mOrderType = DATE;
-            actionBar.setTitle(mSearchedString);
-        }
-        else if (mIsSubCategory) {
-            mOrderType = DATE;
-            Category category = CategoryLab.getmCategoryInstance().getCategory(mCategoryId);
-            if (category != null)
-                actionBar.setTitle(category.getName());
-        } else {
-            String order;
-            if (mOrderType.equalsIgnoreCase("date")) {
-                order = getString(R.string.new_products);
-                mSortTypeTextView.setText(R.string.check_box_newest);
-            } else if (mOrderType.equalsIgnoreCase("rating")) {
-                order = getString(R.string.rated_products);
-                mSortTypeTextView.setText(R.string.check_box_rated);
-
-            } else {
-                order = getString(R.string.visited_products);
-                mSortTypeTextView.setText(R.string.check_box_selles);
-            }
-
-            actionBar.setTitle(order);
-        }
-
-
-        setAdapter();
-        new ProductsAsynceTask(getActivity()).execute(mPageCounter);
-
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (!recyclerView.canScrollVertically(1)) {
-                    if (!NO_MORE_PAGE) {
-                        mPageCounter++;
-                        new ProductsAsynceTask(getActivity()).execute(mPageCounter);
-
-                    }
-                }
-            }
-        });
-
-
-        return view;
-
-    }
 
     public void setAdapter() {
         if (isAdded()) {
@@ -355,15 +381,15 @@ public class CompleteProductListFragment extends Fragment {
             try {
                 if (mIsSubCategory)
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                            .getProductsSubCategoires(String.valueOf(pageCounter), String.valueOf(mCategoryId),mOrderType,mOrder)
+                            .getProductsSubCategoires(String.valueOf(pageCounter), String.valueOf(mCategoryId), mOrderType, mOrder)
                             .execute();
                 else if (mIsFromSearch)
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                            .searchProducts(String.valueOf(pageCounter), mSearchedString,mOrderType,mOrder)
+                            .searchProducts(String.valueOf(pageCounter), mSearchedString, mOrderType, mOrder)
                             .execute();
                 else
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                            .getAllProductWithPage(String.valueOf(pageCounter), mOrderType,mOrder).execute();
+                            .getAllProductWithPage(String.valueOf(pageCounter), mOrderType, mOrder).execute();
                 if (response.isSuccessful()) {
                     productList = response.body();
                     if (productList == null || productList.size() <= 0)
