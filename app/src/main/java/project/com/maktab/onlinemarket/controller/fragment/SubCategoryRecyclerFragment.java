@@ -22,7 +22,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import project.com.maktab.onlinemarket.R;
-import project.com.maktab.onlinemarket.controller.activity.ProductsSubCategoryActivity;
+import project.com.maktab.onlinemarket.controller.activity.CompleteProductListActivity;
 import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.network.Api;
@@ -122,7 +122,7 @@ public class SubCategoryRecyclerFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = ProductsSubCategoryActivity.newIntent(getActivity(),mCategory.getId());
+                    Intent intent = CompleteProductListActivity.newIntent(getActivity(),"nothing",mCategory.getId(),true);
                     startActivity(intent);
                 }
             });

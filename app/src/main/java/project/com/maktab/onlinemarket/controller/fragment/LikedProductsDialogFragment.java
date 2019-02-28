@@ -14,8 +14,6 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -25,7 +23,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import project.com.maktab.onlinemarket.EventBus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
 import project.com.maktab.onlinemarket.model.product.Product;

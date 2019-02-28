@@ -27,7 +27,7 @@ public interface Api {
 
 
     @GET("products/?")
-    Call<List<Product>> getProductsSubCategoires(@Query("category") String categoryId);
+    Call<List<Product>> getProductsSubCategoires(@Query("page") String pageNumber ,@Query("category") String categoryId);
 
     @GET("products/?")
     Call<List<Product>> searchProducts(@Query("search") String productName);

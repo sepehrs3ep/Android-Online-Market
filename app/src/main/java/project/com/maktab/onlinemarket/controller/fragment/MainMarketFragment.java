@@ -34,6 +34,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -41,7 +42,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-import project.com.maktab.onlinemarket.EventBus.BadgeMassageEvent;
+import project.com.maktab.onlinemarket.eventbus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.CategoryViewPagerActivity;
 import project.com.maktab.onlinemarket.controller.activity.CompleteProductListActivity;
@@ -255,7 +256,7 @@ public class MainMarketFragment extends Fragment {
 
         mActionBarDrawerToggle.syncState();
 
-        ((MainMarketActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SpannableString spannableAllList = new SpannableString(getString(R.string.all_product_list));
         ClickableSpan clickableSpanAllList = new ClickableSpan() {
@@ -359,7 +360,7 @@ public class MainMarketFragment extends Fragment {
     }
 
     private void sendAllListIntent(String type) {
-        Intent intent = CompleteProductListActivity.newIntent(getActivity(), type);
+        Intent intent = CompleteProductListActivity.newIntent(getActivity(), type,-1,false);
         startActivity(intent);
     }
 

@@ -36,8 +36,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.activity.CompleteProductListActivity;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
-import project.com.maktab.onlinemarket.controller.activity.ProductsSubCategoryActivity;
 import project.com.maktab.onlinemarket.model.product.Image;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.model.product.ProductCategory;
@@ -414,7 +414,7 @@ public class ProductInfoFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = ProductsSubCategoryActivity.newIntent(getActivity(), Long.parseLong(mCategory.getId()));
+                    Intent intent = CompleteProductListActivity.newIntent(getActivity(),"nothing",Long.valueOf(mCategory.getId()),true);
                     startActivity(intent);
                 }
             });

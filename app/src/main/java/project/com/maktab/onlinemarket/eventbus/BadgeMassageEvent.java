@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.EventBus;
+package project.com.maktab.onlinemarket.eventbus;
 
 public class BadgeMassageEvent {
 

@@ -6,12 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,17 +14,24 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.network.Api;
 import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
+import project.com.maktab.onlinemarket.utils.GenerateSnackBar;
 import retrofit2.Response;
 
 /**
@@ -38,19 +39,26 @@ import retrofit2.Response;
  */
 public class CompleteProuductListFragment extends Fragment {
     private static final String ORDER_BY_ARGS = "orderByArgs";
+    private static final String CATEGORY_ID_ARGS = "categoryIdArgs";
+    private static final String IS_SUB_CATEGORY_ARGS = "IS_SUB_CATEGORY_ARGS";
+
+    private long mCategoryId;
+    private boolean mIsSubCategory;
     private String mOrderType;
     private CompleteAdapter mAdapter;
     private static int mPageCounter = 1;
     private List<Product> mProductList;
-    private static boolean NO_MORE_PAGE ;
+    private static boolean NO_MORE_PAGE;
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
 
 
-    public static CompleteProuductListFragment newInstance(String orderBy) {
+    public static CompleteProuductListFragment newInstance(String orderBy, long categoryId, boolean isSubCategory) {
 
         Bundle args = new Bundle();
         args.putString(ORDER_BY_ARGS, orderBy);
+        args.putLong(CATEGORY_ID_ARGS, categoryId);
+        args.putBoolean(IS_SUB_CATEGORY_ARGS, isSubCategory);
         CompleteProuductListFragment fragment = new CompleteProuductListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -60,6 +68,8 @@ public class CompleteProuductListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mOrderType = getArguments().getString(ORDER_BY_ARGS);
+        mCategoryId = getArguments().getLong(CATEGORY_ID_ARGS);
+        mIsSubCategory = getArguments().getBoolean(IS_SUB_CATEGORY_ARGS, false);
         mPageCounter = 1;
         NO_MORE_PAGE = false;
     }
@@ -88,15 +98,14 @@ public class CompleteProuductListFragment extends Fragment {
                 super.onScrollStateChanged(recyclerView, newState);
 
                 if (!recyclerView.canScrollVertically(1)) {
-                    if(!NO_MORE_PAGE){
-                    mPageCounter++;
-                    new ProductsAsynceTask(getActivity()).execute(mPageCounter);
+                    if (!NO_MORE_PAGE) {
+                        mPageCounter++;
+                        new ProductsAsynceTask(getActivity()).execute(mPageCounter);
 
                     }
                 }
             }
         });
-
 
 
         return view;
@@ -118,21 +127,29 @@ public class CompleteProuductListFragment extends Fragment {
 
     private class ProductsAsynceTask extends AsyncTask<Integer, String, List<Product>> {
         private ProgressDialog mProgressDialog;
+        private boolean mHasNoProduct = false;
+
         Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.no_page, Snackbar.LENGTH_LONG);
+
         public ProductsAsynceTask(Context context) {
             mProgressDialog = new ProgressDialog(context);
             mProgressDialog.setMessage(getString(R.string.progress_product));
+            mHasNoProduct = false;
         }
 
         @Override
         protected void onPostExecute(List<Product> products) {
             super.onPostExecute(products);
             mProgressBar.setVisibility(View.GONE);
-            if(products==null||products.size()<=0){
+            if (mHasNoProduct) {
+                new GenerateSnackBar(getActivity(), R.string.no_item).getSnackbar().show();
+                return;
+            } else if (products == null || products.size() <= 0) {
                 snackbar.show();
                 NO_MORE_PAGE = true;
                 return;
             }
+
 
             mProductList.addAll(products);
             setAdapter();
@@ -145,11 +162,19 @@ public class CompleteProuductListFragment extends Fragment {
             Response<List<Product>> response = null;
             List<Product> productList = null;
             try {
-                response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                        .getAllProductWithPage(String.valueOf(pageCounter), mOrderType).execute();
+                if (mIsSubCategory)
+                    response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                            .getProductsSubCategoires(String.valueOf(pageCounter), String.valueOf(mCategoryId))
+                            .execute();
+                else
+                    response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                            .getAllProductWithPage(String.valueOf(pageCounter), mOrderType).execute();
                 if (response.isSuccessful()) {
                     productList = response.body();
-                }
+                    if (productList == null || productList.size() <= 0)
+                        mHasNoProduct = true;
+
+                } else publishProgress(getString(R.string.problem_response));
             } catch (IOException e) {
                 e.printStackTrace();
                 publishProgress("problem with your request");
@@ -197,7 +222,7 @@ public class CompleteProuductListFragment extends Fragment {
         public void bind(Product product) {
             mProduct = product;
             mNameTextView.setText(product.getName());
-            mPriceTextView.setText(product.getPrice() + " $ ");
+            mPriceTextView.setText(getString(R.string.price_format, product.getPrice()));
             if (product.getImages() != null && product.getImages().size() > 0) {
                 Picasso.get().load(product.getImages().get(0).getPath())
                         .placeholder(R.drawable.shop)

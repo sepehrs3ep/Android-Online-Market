@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -20,19 +18,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import project.com.maktab.onlinemarket.EventBus.BadgeMassageEvent;
+import project.com.maktab.onlinemarket.eventbus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
 import project.com.maktab.onlinemarket.model.product.Product;
@@ -97,6 +93,7 @@ public class ShopBagDialogFragment extends DialogFragment {
         mProgressDialog.show();*/
         mProgressBar.setVisibility(View.VISIBLE);
 
+
         List<String> productIdies = ProductLab.getInstance().getShoppingBag();
 
         RetrofitClientInstance.getRetrofitInstance().create(Api.class).getReleatedProducts(productIdies.toString())
@@ -145,9 +142,9 @@ public class ShopBagDialogFragment extends DialogFragment {
 
     }
     private void calculateProductsPrice(){
-        long finalValue = 0 ;
+        double finalValue = 0 ;
         for(Product product:mBagShopProductList){
-            long price = Long.valueOf(product.getPrice());
+            double price = Double.valueOf(product.getPrice());
             finalValue += price;
         }
 
