@@ -2,7 +2,6 @@ package project.com.maktab.onlinemarket.network;
 
 import java.util.List;
 
-import androidx.cardview.widget.CardView;
 import project.com.maktab.onlinemarket.model.attributes.Attributes;
 import project.com.maktab.onlinemarket.model.attributes.AttributesTerms;
 import project.com.maktab.onlinemarket.model.category.Category;
@@ -30,12 +29,12 @@ public interface Api {
 
 
     @GET("products/?")
-    Call<List<Product>> getProductsSubCategoires(@Query("page") String pageNumber ,@Query("category") String categoryId
-    , @Query("orderby") String orderBy,@Query("order") String order);
+    Call<List<Product>> getProductsSubCategoires(@Query("page") String pageNumber, @Query("category") String categoryId
+            , @Query("orderby") String orderBy, @Query("order") String order, @Query("attribute_term") String... attributes);
 
     @GET("products/?")
-    Call<List<Product>> searchProducts(@Query("page") String pageNumber , @Query("search") String productName
-    , @Query("orderby") String orderBy,@Query("order") String order);
+    Call<List<Product>> searchProducts(@Query("page") String pageNumber, @Query("search") String productName
+            , @Query("orderby") String orderBy, @Query("order") String order, @Query("attribute_term") String... attributes);
 
 
     @GET("products/?")
@@ -43,7 +42,8 @@ public interface Api {
 
 
     @GET("products/?")
-    Call<List<Product>> getAllProductWithPage(@Query("page") String pageNumber, @Query("orderby") String orderBy,@Query("order") String order);
+    Call<List<Product>> getAllProductWithPage(@Query("page") String pageNumber, @Query("orderby") String orderBy, @Query("order") String order,
+                                              @Query("attribute_term") String... attributes);
 
 
     @GET("products/attributes/?")
