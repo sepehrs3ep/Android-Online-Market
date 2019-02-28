@@ -1,22 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     >
 
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="2dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_margin="2dp"
+            android:id="@+id/filter_products_card_view"
+            android:layout_weight="2"
+            android:layout_height="60dp">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <ImageView
+                    android:src="@drawable/ic_filter_products"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="50dp" />
+                <LinearLayout
+                    android:layout_weight="2"
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_height="50dp">
+                    <TextView
+                        android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:text="@string/filter"
+                        android:layout_height="0dp" />
+                    <TextView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:text="@string/filtering"
+                        android:layout_height="0dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/sort_products_card_view"
+            android:layout_width="0dp"
+            android:layout_margin="2dp"
+            android:layout_weight="2"
+            android:layout_height="60dp">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <ImageView
+                    android:src="@drawable/ic_sort_products"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="50dp" />
+                <LinearLayout
+                    android:layout_weight="2"
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_height="50dp">
+                    <TextView
+                        android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:text="@string/sort"
+                        android:layout_height="0dp" />
+                    <TextView
+                        android:id="@+id/sorted_type_text_view"
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+        <ImageButton
+            android:layout_margin="2dp"
+            android:id="@+id/recycler_view_layout_image_btn"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:src="@drawable/ic_grid_layout"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/white"
+            android:layout_width="0dp"
+            android:layout_height="60dp" />
+
+
+
+
+
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/products_sub_category_recycler"
-        android:layout_height="match_parent"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
     <ProgressBar
         android:id="@+id/sub_category_progress_bar"
-        android:layout_gravity="center"
         style="?android:attr/progressBarStyleLarge"
-        android:layout_centerHorizontal="true"
         android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        android:layout_gravity="center"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="461dp" />
 
 
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

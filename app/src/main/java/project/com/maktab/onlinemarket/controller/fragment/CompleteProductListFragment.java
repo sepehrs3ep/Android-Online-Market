@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -66,6 +68,10 @@ public class CompleteProductListFragment extends Fragment {
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private TextView textCartItemCount;
+    private CardView mFilterCardView , mSortCardView;
+    private ImageButton mChangeRecyclerLayoutImageBtn;
+    private TextView mSortTypeTextView ;
+
 
     public static CompleteProductListFragment newInstance(String orderBy, long categoryId, String searchItem, boolean isFromSearch,
                                                           boolean isSubCategory) {
@@ -148,7 +154,16 @@ public class CompleteProductListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_complete_products_list, container, false);
         mRecyclerView = view.findViewById(R.id.products_sub_category_recycler);
         mProgressBar = view.findViewById(R.id.sub_category_progress_bar);
+        mFilterCardView = view.findViewById(R.id.filter_products_card_view);
+        mSortCardView = view.findViewById(R.id.sort_products_card_view);
+        mChangeRecyclerLayoutImageBtn = view.findViewById(R.id.recycler_view_layout_image_btn);
+        mSortTypeTextView = view.findViewById(R.id.sorted_type_text_view);
+
+
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (mIsFromSearch)
             actionBar.setTitle(mSearchedString);

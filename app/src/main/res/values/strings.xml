@@ -33,6 +33,9 @@
     <string name="liked_products_list">لیست محصولات مورد علاقه</string>
     <string name="yes">بله</string>
     <string name="no">خیر</string>
+    <string name="filtering">رنگ، نوع، قیمت و…</string>
+    <string name="filter">فیلتر کردن</string>
+    <string name="sort">مرتب سازی</string>
 
     <string name="related_products">محصولات مشابه</string>
 
