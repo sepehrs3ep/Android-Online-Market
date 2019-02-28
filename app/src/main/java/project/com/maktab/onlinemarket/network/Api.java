@@ -28,10 +28,12 @@ public interface Api {
 
 
     @GET("products/?")
-    Call<List<Product>> getProductsSubCategoires(@Query("page") String pageNumber ,@Query("category") String categoryId);
+    Call<List<Product>> getProductsSubCategoires(@Query("page") String pageNumber ,@Query("category") String categoryId
+    , @Query("orderby") String orderBy,@Query("order") String order);
 
     @GET("products/?")
-    Call<List<Product>> searchProducts(@Query("page") String pageNumber , @Query("search") String productName);
+    Call<List<Product>> searchProducts(@Query("page") String pageNumber , @Query("search") String productName
+    , @Query("orderby") String orderBy,@Query("order") String order);
 
 
     @GET("products/?")

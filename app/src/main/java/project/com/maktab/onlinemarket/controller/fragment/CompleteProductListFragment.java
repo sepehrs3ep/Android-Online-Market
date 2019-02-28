@@ -66,7 +66,6 @@ public class CompleteProductListFragment extends Fragment {
     private static final String RATE = "rating";
     private static final String VISITED = "popularity";
     private static final String PRICE = "price";
-
     private long mCategoryId;
     private String mOrder;
     private String mSearchedString;
@@ -81,6 +80,7 @@ public class CompleteProductListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private TextView textCartItemCount;
     private int mSortType;
+
     private CardView mFilterCardView, mSortCardView;
     private ImageButton mChangeRecyclerLayoutImageBtn;
     private TextView mSortTypeTextView;
@@ -151,9 +151,6 @@ public class CompleteProductListFragment extends Fragment {
             mProductList.clear();
             mAdapter.setProductList(mProductList);
             mAdapter.notifyDataSetChanged();
-
-            mIsSubCategory = false;
-            mIsFromSearch = false;
 
             SortProductsDialogFragment.Sorts sorts = SortProductsDialogFragment.getEnumSorts(mSortType);
             switch (sorts){
@@ -255,9 +252,12 @@ public class CompleteProductListFragment extends Fragment {
 
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (mIsFromSearch)
+        if (mIsFromSearch){
+            mOrderType = DATE;
             actionBar.setTitle(mSearchedString);
+        }
         else if (mIsSubCategory) {
+            mOrderType = DATE;
             Category category = CategoryLab.getmCategoryInstance().getCategory(mCategoryId);
             if (category != null)
                 actionBar.setTitle(category.getName());
@@ -355,11 +355,11 @@ public class CompleteProductListFragment extends Fragment {
             try {
                 if (mIsSubCategory)
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                            .getProductsSubCategoires(String.valueOf(pageCounter), String.valueOf(mCategoryId))
+                            .getProductsSubCategoires(String.valueOf(pageCounter), String.valueOf(mCategoryId),mOrderType,mOrder)
                             .execute();
                 else if (mIsFromSearch)
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                            .searchProducts(String.valueOf(pageCounter), mSearchedString)
+                            .searchProducts(String.valueOf(pageCounter), mSearchedString,mOrderType,mOrder)
                             .execute();
                 else
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
