@@ -8,6 +8,7 @@ import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.fragment.CompleteProductListFragment;
 
 public class CompleteProductListActivity extends SingleFragmentActivity {
+
     private static final String ORDER_BY_EXTRA = "project.com.maktab.onlinemarket.controllerOrderByExtra";
     private static final String CATEGORY_ID_EXTRA = "CATEGORY_ID_EXTRA";
     private static final String IS_FROM_CATEGORY_EXTRA = "IS_FROM_CATEGORY_EXTRA";

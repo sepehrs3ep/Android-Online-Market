@@ -22,6 +22,10 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +41,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
+import project.com.maktab.onlinemarket.eventbus.ProductSortMassage;
 import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.model.product.Product;
@@ -55,8 +60,15 @@ public class CompleteProductListFragment extends Fragment {
     private static final String IS_SUB_CATEGORY_ARGS = "IS_SUB_CATEGORY_ARGS";
     private static final String SEARCH_STRING_ARGS = "SEARCH_STRING_ARGS";
     private static final String IS_FROM_SEARCH_ARGS = "IS_FROM_SEARCH_ARGS";
+    private static final String DESC_ORDER = "desc";
+    private static final String ASC_ORDER = "asc";
+    private static final String DATE = "date";
+    private static final String RATE = "rating";
+    private static final String VISITED = "popularity";
+    private static final String PRICE = "price";
 
     private long mCategoryId;
+    private String mOrder;
     private String mSearchedString;
     private boolean mIsFromSearch;
     private boolean mIsSubCategory;
@@ -68,9 +80,10 @@ public class CompleteProductListFragment extends Fragment {
     private ProgressBar mProgressBar;
     private RecyclerView mRecyclerView;
     private TextView textCartItemCount;
-    private CardView mFilterCardView , mSortCardView;
+    private int mSortType;
+    private CardView mFilterCardView, mSortCardView;
     private ImageButton mChangeRecyclerLayoutImageBtn;
-    private TextView mSortTypeTextView ;
+    private TextView mSortTypeTextView;
 
 
     public static CompleteProductListFragment newInstance(String orderBy, long categoryId, String searchItem, boolean isFromSearch,
@@ -109,6 +122,72 @@ public class CompleteProductListFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSortChanged(ProductSortMassage productSortMassage) {
+        mSortType = productSortMassage.getEnumIndex();
+
+        String currentSortText = mSortTypeTextView.getText().toString();
+
+        int stringResource = SortProductsDialogFragment.getStringSorts(mSortType);
+        String receivedSort = getString(stringResource);
+
+        mSortTypeTextView.setText(receivedSort);
+
+        if (currentSortText.equalsIgnoreCase(receivedSort))
+            return;
+        else {
+            mPageCounter = 1;
+            mProductList.clear();
+            mAdapter.setProductList(mProductList);
+            mAdapter.notifyDataSetChanged();
+
+            mIsSubCategory = false;
+            mIsFromSearch = false;
+
+            SortProductsDialogFragment.Sorts sorts = SortProductsDialogFragment.getEnumSorts(mSortType);
+            switch (sorts){
+                case NEWEST:
+                    mOrderType = DATE;
+                    mOrder = DESC_ORDER;
+                    break;
+                case RATED:
+                    mOrderType = RATE;
+                    mOrder = DESC_ORDER;
+                    break;
+                case VISITED:
+                    mOrderType = VISITED;
+                    mOrder = DESC_ORDER;
+                    break;
+                case LOW_TO_HIGH:
+                    mOrderType = PRICE;
+                    mOrder = ASC_ORDER;
+                    break;
+                case HIGH_TO_LOW:
+                    mOrderType = PRICE;
+                    mOrder = DESC_ORDER;
+                    break;
+            }
+            new ProductsAsynceTask(getActivity()).execute(mPageCounter);
+
+        }
+
+
+    }
+
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_products_menu:
@@ -132,7 +211,7 @@ public class CompleteProductListFragment extends Fragment {
             getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         }
         setHasOptionsMenu(true);
-
+        mOrder = DESC_ORDER;
         mOrderType = getArguments().getString(ORDER_BY_ARGS);
         mCategoryId = getArguments().getLong(CATEGORY_ID_ARGS);
         mSearchedString = getArguments().getString(SEARCH_STRING_ARGS);
@@ -159,9 +238,20 @@ public class CompleteProductListFragment extends Fragment {
         mChangeRecyclerLayoutImageBtn = view.findViewById(R.id.recycler_view_layout_image_btn);
         mSortTypeTextView = view.findViewById(R.id.sorted_type_text_view);
 
+        mSortTypeTextView.setText(R.string.check_box_newest);
 
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        mSortCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SortProductsDialogFragment fragment = SortProductsDialogFragment.newInstance(
+                        SortProductsDialogFragment.getEnumIndexByString(getActivity(),mSortTypeTextView.getText().toString()));
+                fragment.show(getFragmentManager(),"show checkboxes");
+            }
+        });
 
 
         ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
@@ -171,14 +261,19 @@ public class CompleteProductListFragment extends Fragment {
             Category category = CategoryLab.getmCategoryInstance().getCategory(mCategoryId);
             if (category != null)
                 actionBar.setTitle(category.getName());
-        } else{
-            String order ;
-            if(mOrderType.equalsIgnoreCase("date"))
+        } else {
+            String order;
+            if (mOrderType.equalsIgnoreCase("date")) {
                 order = getString(R.string.new_products);
-            else if(mOrderType.equalsIgnoreCase("rating"))
-                order =getString(R.string.rated_products);
-            else
+                mSortTypeTextView.setText(R.string.check_box_newest);
+            } else if (mOrderType.equalsIgnoreCase("rating")) {
+                order = getString(R.string.rated_products);
+                mSortTypeTextView.setText(R.string.check_box_rated);
+
+            } else {
                 order = getString(R.string.visited_products);
+                mSortTypeTextView.setText(R.string.check_box_selles);
+            }
 
             actionBar.setTitle(order);
         }
@@ -268,7 +363,7 @@ public class CompleteProductListFragment extends Fragment {
                             .execute();
                 else
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                            .getAllProductWithPage(String.valueOf(pageCounter), mOrderType).execute();
+                            .getAllProductWithPage(String.valueOf(pageCounter), mOrderType,mOrder).execute();
                 if (response.isSuccessful()) {
                     productList = response.body();
                     if (productList == null || productList.size() <= 0)
