@@ -250,6 +250,19 @@ public class MainMarketFragment extends Fragment {
                         LikedProductsDialogFragment fragment = LikedProductsDialogFragment.newInstance();
                         fragment.show(getFragmentManager(), "show liked list");
                         return true;
+                    case R.id.date_category_menu_item:
+                        sendAllListIntent("date");
+                        return true;
+                    case R.id.rate_category_menu_item:
+                        sendAllListIntent("rating");
+                        return true;
+
+                    case R.id.visited_category_menu_item:
+                        sendAllListIntent("popularity");
+                        return true;
+                    case R.id.featured_category_menu_item:
+                        sendAllListIntent(CompleteProductListFragment.getIsFeaturedProduct());
+                        return true;
                     default:
                         return false;
                 }
@@ -406,7 +419,7 @@ public class MainMarketFragment extends Fragment {
                 Picasso.get().load(product.getImages().get(0).getPath()).into(mProductImageView);
 
             mProductNameTextView.setText(product.getName());
-            mProductPriceTextView.setText(product.getPrice() + " $ ");
+            mProductPriceTextView.setText(getString(R.string.price_format,product.getPrice()));
         }
     }
 

@@ -1,17 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
 
-    <item
-        android:id="@+id/list_category_menu_item"
-        android:icon="@drawable/ic_product_list"
-        android:title="@string/list_category_menu"
-        app:showAsAction="ifRoom|withText" />
-    <item
-        android:id="@+id/list_like_menu_item"
-        android:icon="@drawable/ic_love_menu_item"
-        app:showAsAction="ifRoom|withText"
-        android:title="@string/liked_products_list" />
+    <group android:id="@+id/grp1" android:checkableBehavior="single" >
 
+        <item
+            android:id="@+id/list_category_menu_item"
+            android:icon="@drawable/ic_product_list"
+            android:title="@string/list_category_menu"
+             />
+        <item
+            android:id="@+id/list_like_menu_item"
+            android:icon="@drawable/ic_love_menu_item"
+            android:title="@string/liked_products_list" />
+    </group>
 
+    <group android:id="@+id/grp2" android:checkableBehavior="single" >
+        <item
+            android:id="@+id/featured_category_menu_item"
+            android:icon="@drawable/ic_category_navigation_item"
+            android:title="@string/featured_products"
+            />
+        <item
+            android:id="@+id/date_category_menu_item"
+            android:icon="@drawable/ic_category_navigation_item"
+            android:title="@string/new_products"
+            />
+        <item
+            android:id="@+id/rate_category_menu_item"
+            android:icon="@drawable/ic_category_navigation_item"
+            android:title="@string/rated_products"
+            />
+        <item
+            android:id="@+id/visited_category_menu_item"
+            android:icon="@drawable/ic_category_navigation_item"
+            android:title="@string/visited_products"
+            />
+
+    </group>
 </menu>
