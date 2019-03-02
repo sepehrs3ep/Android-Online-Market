@@ -4,6 +4,7 @@ package project.com.maktab.onlinemarket.controller.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -51,6 +52,7 @@ import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.model.product.ProductLab;
+import project.com.maktab.onlinemarket.utils.SharedPref;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -366,7 +368,11 @@ public class MainMarketFragment extends Fragment {
     }
 
     private void sendAllListIntent(String type) {
-        Intent intent = CompleteProductListActivity.newIntent(getActivity(), type, -1, "nothing", false, false);
+        Intent intent = null;
+        if(type.equalsIgnoreCase(CompleteProductListFragment.getIsFeaturedProduct()))
+           intent  = CompleteProductListActivity.newIntent(getActivity(), "date", -1, "nothing", false, false,true);
+        else
+         intent = CompleteProductListActivity.newIntent(getActivity(), type, -1, "nothing", false, false,false);
         startActivity(intent);
     }
 

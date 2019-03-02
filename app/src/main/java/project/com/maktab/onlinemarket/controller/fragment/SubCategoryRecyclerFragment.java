@@ -123,7 +123,7 @@ public class SubCategoryRecyclerFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = CompleteProductListActivity.newIntent(getActivity(),"nothing",mCategory.getId(),
-                            "nothing",false,true);
+                            "nothing",false,true,false);
                     startActivity(intent);
                 }
             });

@@ -29,8 +29,11 @@ public interface Api {
 
 
     @GET("products/?featured=true")
-    Call<List<Product>> getFeaturedProducts(@Query("page") String pageNumber,
-                                            @Query("attribute_term") String... attributes);
+    Call<List<Product>> getFeaturedProducts();
+
+    @GET("products/?featured=true")
+    Call<List<Product>> getAllProductWithPageFeatured(@Query("page") String pageNumber, @Query("orderby") String orderBy, @Query("order") String order,
+                                              @Query("attribute_term") String... attributes);
 
 
 

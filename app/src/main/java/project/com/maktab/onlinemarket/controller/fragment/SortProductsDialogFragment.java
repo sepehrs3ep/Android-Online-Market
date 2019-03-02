@@ -103,6 +103,8 @@ public class SortProductsDialogFragment extends DialogFragment {
             case LOW_TO_HIGH:
                 mSortRadioGroup.check(R.id.low_to_high_check_box);
                 break;
+            case FEATURED:
+                mSortRadioGroup.check(R.id.featured_check_box);
         }
 
 
@@ -127,6 +129,8 @@ public class SortProductsDialogFragment extends DialogFragment {
                     case R.id.low_to_high_check_box:
                         selected = Sorts.LOW_TO_HIGH.getIndex();
                         break;
+                    case R.id.featured_check_box:
+                        selected = Sorts.FEATURED.getIndex();
                 }
 
                 if (selected == mCurrentSort) {
@@ -163,6 +167,8 @@ public class SortProductsDialogFragment extends DialogFragment {
             return Sorts.LOW_TO_HIGH.getIndex();
         else if (sortText.equalsIgnoreCase(context.getString(R.string.check_box_cost_high_low)))
             return Sorts.HIGH_TO_LOW.getIndex();
+        else if(sortText.equalsIgnoreCase(context.getString(R.string.check_box_featured)))
+            return Sorts.FEATURED.getIndex();
         else return -1;
 
 
@@ -182,6 +188,8 @@ public class SortProductsDialogFragment extends DialogFragment {
                 return R.string.check_box_cost_high_low;
             case LOW_TO_HIGH:
                 return R.string.check_box_cost_low_high;
+            case FEATURED:
+                return R.string.check_box_featured;
             default:
                 return -1;
 

@@ -52,6 +52,7 @@ import project.com.maktab.onlinemarket.model.product.ProductLab;
 import project.com.maktab.onlinemarket.network.Api;
 import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
 import project.com.maktab.onlinemarket.utils.GenerateSnackBar;
+import project.com.maktab.onlinemarket.utils.SharedPref;
 import retrofit2.Response;
 
 /**
@@ -63,6 +64,7 @@ public class CompleteProductListFragment extends Fragment {
     private static final String IS_SUB_CATEGORY_ARGS = "IS_SUB_CATEGORY_ARGS";
     private static final String SEARCH_STRING_ARGS = "SEARCH_STRING_ARGS";
     private static final String IS_FROM_SEARCH_ARGS = "IS_FROM_SEARCH_ARGS";
+    private static final String IS_FEATURED_ARGS = "IS_FEATURED_ARGS";
     private static final String DESC_ORDER = "desc";
     private static final String ASC_ORDER = "asc";
     private static final String DATE = "date";
@@ -88,7 +90,7 @@ public class CompleteProductListFragment extends Fragment {
     private TextView textCartItemCount;
     private boolean mIsGridShow;
     private int mSortType;
-
+    private ActionBar actionBar;
     private CardView mFilterCardView, mSortCardView;
     private ImageButton mChangeRecyclerLayoutImageBtn;
     private TextView mSortTypeTextView;
@@ -98,7 +100,7 @@ public class CompleteProductListFragment extends Fragment {
     }
 
     public static CompleteProductListFragment newInstance(String orderBy, long categoryId, String searchItem, boolean isFromSearch,
-                                                          boolean isSubCategory) {
+                                                          boolean isSubCategory,boolean isFeatured) {
 
         Bundle args = new Bundle();
         args.putString(ORDER_BY_ARGS, orderBy);
@@ -106,6 +108,7 @@ public class CompleteProductListFragment extends Fragment {
         args.putBoolean(IS_SUB_CATEGORY_ARGS, isSubCategory);
         args.putString(SEARCH_STRING_ARGS, searchItem);
         args.putBoolean(IS_FROM_SEARCH_ARGS, isFromSearch);
+        args.putBoolean(IS_FEATURED_ARGS,isFeatured);
         CompleteProductListFragment fragment = new CompleteProductListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -125,11 +128,8 @@ public class CompleteProductListFragment extends Fragment {
         mIsSubCategory = getArguments().getBoolean(IS_SUB_CATEGORY_ARGS, false);
         mIsFromSearch = getArguments().getBoolean(IS_FROM_SEARCH_ARGS, false);
 
-        if (mOrderType.equalsIgnoreCase(IS_FEATURED_PRODUCT)) {
-            mIsFeatured = true;
-            mOrderType = DATE;
-            mOrder = DESC_ORDER;
-        }
+        mIsFeatured = getArguments().getBoolean(IS_FEATURED_ARGS,false);
+
 
         mPageCounter = 1;
         NO_MORE_PAGE = false;
@@ -211,7 +211,7 @@ public class CompleteProductListFragment extends Fragment {
         });
 
 
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+          actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         if (mIsFromSearch) {
             mOrderType = DATE;
             actionBar.setTitle(mSearchedString);
@@ -221,20 +221,7 @@ public class CompleteProductListFragment extends Fragment {
             if (category != null)
                 actionBar.setTitle(category.getName());
         } else {
-            String order;
-            if (mOrderType.equalsIgnoreCase("date")) {
-                order = getString(R.string.new_products);
-                mSortTypeTextView.setText(R.string.check_box_newest);
-            } else if (mOrderType.equalsIgnoreCase("rating")) {
-                order = getString(R.string.rated_products);
-                mSortTypeTextView.setText(R.string.check_box_rated);
-
-            } else {
-                order = getString(R.string.visited_products);
-                mSortTypeTextView.setText(R.string.check_box_selles);
-            }
-
-            actionBar.setTitle(order);
+            CompleteActionBarTitle(actionBar);
         }
 
 
@@ -261,6 +248,8 @@ public class CompleteProductListFragment extends Fragment {
         return view;
 
     }
+
+
 
     private void sendFilterIntent(String intentExtra) {
         Intent intent = ProductFilterActivity.newIntent(getActivity(), intentExtra);
@@ -329,7 +318,7 @@ public class CompleteProductListFragment extends Fragment {
         String receivedSort = getString(stringResource);
 
         mSortTypeTextView.setText(receivedSort);
-
+        actionBar.setTitle(receivedSort);
         if (currentSortText.equalsIgnoreCase(receivedSort))
             return;
         else {
@@ -339,6 +328,7 @@ public class CompleteProductListFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
 
             SortProductsDialogFragment.Sorts sorts = SortProductsDialogFragment.getEnumSorts(mSortType);
+            mIsFeatured = false;
             switch (sorts) {
                 case NEWEST:
                     mOrderType = DATE;
@@ -360,12 +350,37 @@ public class CompleteProductListFragment extends Fragment {
                     mOrderType = PRICE;
                     mOrder = DESC_ORDER;
                     break;
+                case FEATURED:
+                    mOrderType = DATE;
+                    mOrder =DESC_ORDER;
+                    mIsFeatured = true;
+                    break;
             }
+
             new ProductsAsynceTask(getActivity()).execute(mPageCounter);
 
         }
+    }
+    private void CompleteActionBarTitle(ActionBar actionBar) {
+        String order;
+        if(mIsFeatured){
+            order = getString(R.string.featured_products);
+            mSortTypeTextView.setText(R.string.check_box_featured);
+        }
+        else if (mOrderType.equalsIgnoreCase("date")) {
+            order = getString(R.string.new_products);
+            mSortTypeTextView.setText(R.string.check_box_newest);
+        } else if (mOrderType.equalsIgnoreCase("rating")) {
+            order = getString(R.string.rated_products);
+            mSortTypeTextView.setText(R.string.check_box_rated);
 
+        }
+        else {
+            order = getString(R.string.visited_products);
+            mSortTypeTextView.setText(R.string.check_box_selles);
+        }
 
+        actionBar.setTitle(order);
     }
 
 
@@ -449,7 +464,7 @@ public class CompleteProductListFragment extends Fragment {
                             .execute();
                 else if (mIsFeatured)
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                            .getFeaturedProducts(String.valueOf(pageCounter), mOrderType, mOrder,
+                            .getAllProductWithPageFeatured(String.valueOf(pageCounter), mOrderType, mOrder,
                                     ProductFilterFragment.mFilteredAttributes.toString())
                             .execute();
                 else

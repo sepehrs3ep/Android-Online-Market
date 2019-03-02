@@ -14,15 +14,18 @@ public class CompleteProductListActivity extends SingleFragmentActivity {
     private static final String IS_FROM_CATEGORY_EXTRA = "IS_FROM_CATEGORY_EXTRA";
     private static final String SEARCH_STRING_EXTRA = "SEARCH_STRING_EXTRA";
     private static final String IS_FROM_SEARCH = "IS_FROM_SEARCH";
+    private static final String IS_FROM_FEATURED_EXTRA = "IS_FROM_FEATURED_EXTRA";
 
 
-    public static Intent newIntent(Context context, String orderBy, long categoryId,String searchedString , boolean isSearch, boolean isSubCategory) {
+    public static Intent newIntent(Context context, String orderBy, long categoryId,String searchedString , boolean isSearch, boolean isSubCategory
+    ,boolean isFeatured) {
         Intent intent = new Intent(context, CompleteProductListActivity.class);
         intent.putExtra(ORDER_BY_EXTRA, orderBy);
         intent.putExtra(CATEGORY_ID_EXTRA, categoryId);
         intent.putExtra(IS_FROM_CATEGORY_EXTRA, isSubCategory);
         intent.putExtra(SEARCH_STRING_EXTRA,searchedString);
         intent.putExtra(IS_FROM_SEARCH,isSearch);
+        intent.putExtra(IS_FROM_FEATURED_EXTRA,isFeatured);
         return intent;
     }
 
@@ -33,7 +36,8 @@ public class CompleteProductListActivity extends SingleFragmentActivity {
                 getIntent().getLongExtra(CATEGORY_ID_EXTRA, -1),
                 getIntent().getStringExtra(SEARCH_STRING_EXTRA),
                 getIntent().getBooleanExtra(IS_FROM_SEARCH,false),
-                getIntent().getBooleanExtra(IS_FROM_CATEGORY_EXTRA, false)
+                getIntent().getBooleanExtra(IS_FROM_CATEGORY_EXTRA, false),
+                getIntent().getBooleanExtra(IS_FROM_FEATURED_EXTRA,false)
         );
     }
 

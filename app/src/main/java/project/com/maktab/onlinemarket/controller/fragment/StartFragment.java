@@ -156,7 +156,7 @@ public class StartFragment extends Fragment {
     private List<Product> generateLists(String type) throws IOException {
         if(type.equalsIgnoreCase(CompleteProductListFragment.getIsFeaturedProduct())){
             return RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                    .getFeaturedProducts("1").execute().body();
+                    .getFeaturedProducts().execute().body();
         }
         return RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                  .getAllProducts(type).execute().body();

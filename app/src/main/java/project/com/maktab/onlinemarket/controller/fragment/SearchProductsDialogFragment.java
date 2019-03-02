@@ -86,7 +86,7 @@ public class SearchProductsDialogFragment extends DialogFragment {
 
             @Override
             public boolean onQueryTextSubmit(String s) {
-                Intent intent = CompleteProductListActivity.newIntent(getActivity(),"nothing",-1,s,true,false);
+                Intent intent = CompleteProductListActivity.newIntent(getActivity(),"nothing",-1,s,true,false,false);
                 startActivity(intent);
                 return true;
             }
