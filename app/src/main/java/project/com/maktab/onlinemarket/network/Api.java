@@ -2,12 +2,16 @@ package project.com.maktab.onlinemarket.network;
 
 import java.util.List;
 
+import project.com.maktab.onlinemarket.model.add_customer.Customer;
+import project.com.maktab.onlinemarket.model.add_customer.CustomerResponse;
 import project.com.maktab.onlinemarket.model.attributes.Attributes;
 import project.com.maktab.onlinemarket.model.attributes.AttributesTerms;
 import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.product.Product;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -61,6 +65,10 @@ public interface Api {
 
     @GET("products/attributes/{id}/terms")
     Call<List<AttributesTerms>> getAttributesTerms(@Path("id") String attrId);
+
+
+    @POST("customers")
+    Call<CustomerResponse> addCustomer(@Body Customer customer);
 
 
 }
