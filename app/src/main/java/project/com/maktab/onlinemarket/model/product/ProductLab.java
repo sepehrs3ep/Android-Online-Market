@@ -21,6 +21,7 @@ public class ProductLab {
     private List<Product> mRatedProducts;
     private List<Product> mVisitedProducts;
     private List<Product> mAllProducts;
+    private List<Product> mFeaturedProducts;
     private ShoppingBagDao mBagDao;
     private FavoriteProductsDao mFavoriteProductsDao;
 
@@ -47,9 +48,20 @@ public class ProductLab {
     private ProductLab() {
         mNewProducts = new ArrayList<>();
         mAllProducts = new ArrayList<>();
+        mFeaturedProducts = new ArrayList<>();
 
         mBagDao = OnlineMarketApp.getAppInstance().getDaoSession().getShoppingBagDao();
         mFavoriteProductsDao = OnlineMarketApp.getAppInstance().getDaoSession().getFavoriteProductsDao();
+    }
+
+    public List<Product> getFeaturedProducts() {
+        return mFeaturedProducts;
+
+    }
+
+    public void setFeaturedProducts(List<Product> featuredProducts) {
+        mFeaturedProducts = featuredProducts;
+        mAllProducts.addAll(mFeaturedProducts);
     }
 
     public void addToBag(String id) {

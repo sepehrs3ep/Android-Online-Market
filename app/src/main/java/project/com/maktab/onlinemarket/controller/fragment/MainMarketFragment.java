@@ -3,7 +3,6 @@ package project.com.maktab.onlinemarket.controller.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -42,12 +41,12 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-import project.com.maktab.onlinemarket.eventbus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.CategoryViewPagerActivity;
 import project.com.maktab.onlinemarket.controller.activity.CompleteProductListActivity;
 import project.com.maktab.onlinemarket.controller.activity.MainMarketActivity;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
+import project.com.maktab.onlinemarket.eventbus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.model.product.Product;
@@ -58,15 +57,16 @@ import project.com.maktab.onlinemarket.model.product.ProductLab;
  */
 public class MainMarketFragment extends Fragment {
 
-    private RecyclerView mNewProductRecyclerView, mRateProductsRecyclerView, mVisitedProductsRecyclerView, mChipsRecyclerView;
-    private RecyclerViewProductAdapter mNewProductAdapter, mRateProductAdapter, mVisitedProductAdapter;
+    private RecyclerView mNewProductRecyclerView, mRateProductsRecyclerView, mVisitedProductsRecyclerView, mChipsRecyclerView, mFeaturedRecyclerView;
+    private RecyclerViewProductAdapter mNewProductAdapter, mRateProductAdapter, mVisitedProductAdapter,
+            mFeaturedAdapter;
 
     private List<Category> mChipsCategoryList;
     private TextView textCartItemCount;
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
-    private TextView mNewTemplate, mRateTemplate, mVisitTemplate;
+    private TextView mNewTemplate, mRateTemplate, mVisitTemplate , mFeaturedTemplate;
 
     private ViewPager mMainViewPager;
     private TabLayout mMainTabLayout;
@@ -207,6 +207,8 @@ public class MainMarketFragment extends Fragment {
         mVisitTemplate = view.findViewById(R.id.visited_complete_text_template);
         mMainViewPager = view.findViewById(R.id.main_photo_gallery_view_pager);
         mMainTabLayout = view.findViewById(R.id.main_photo_gallery_tab_layout);
+        mFeaturedTemplate =  view.findViewById(R.id.featured_complete_text_template);
+        mFeaturedRecyclerView = view.findViewById(R.id.featured_recycler_view);
 
         mMainViewPager.setAdapter(new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
@@ -270,7 +272,9 @@ public class MainMarketFragment extends Fragment {
                     case R.id.visited_complete_text_template:
                         sendAllListIntent("popularity");
                         break;
-
+                    case R.id.featured_complete_text_template:
+                        sendAllListIntent(CompleteProductListFragment.getIsFeaturedProduct());
+                        break;
                 }
             }
 
@@ -284,9 +288,10 @@ public class MainMarketFragment extends Fragment {
         mNewTemplate.setText(spannableAllList);
 
         mRateTemplate.setText(spannableAllList);
-
+        mFeaturedTemplate.setText(spannableAllList);
         mVisitTemplate.setText(spannableAllList);
 
+        setTemplate(mFeaturedTemplate);
         setTemplate(mNewTemplate);
         setTemplate(mRateTemplate);
         setTemplate(mVisitTemplate);
@@ -295,11 +300,13 @@ public class MainMarketFragment extends Fragment {
         ((MainMarketActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+        mFeaturedRecyclerView.setLayoutManager(getHorizontalLayoutManager());
         mChipsRecyclerView.setLayoutManager(getHorizontalLayoutManager());
         mNewProductRecyclerView.setLayoutManager(getHorizontalLayoutManager());
         mRateProductsRecyclerView.setLayoutManager(getHorizontalLayoutManager());
         mVisitedProductsRecyclerView.setLayoutManager(getHorizontalLayoutManager());
 
+        mFeaturedAdapter = new RecyclerViewProductAdapter(ProductLab.getInstance().getFeaturedProducts());
         mNewProductAdapter = new RecyclerViewProductAdapter(ProductLab.getInstance().getNewProducts());
         mRateProductAdapter = new RecyclerViewProductAdapter(ProductLab.getInstance().getRatedProducts());
         mVisitedProductAdapter = new RecyclerViewProductAdapter(ProductLab.getInstance().getVisitedProducts());
@@ -349,6 +356,7 @@ public class MainMarketFragment extends Fragment {
             }
         });
 
+        mFeaturedRecyclerView.setAdapter(mFeaturedAdapter);
         mNewProductRecyclerView.setAdapter(mNewProductAdapter);
         mRateProductsRecyclerView.setAdapter(mRateProductAdapter);
         mVisitedProductsRecyclerView.setAdapter(mVisitedProductAdapter);
@@ -358,7 +366,7 @@ public class MainMarketFragment extends Fragment {
     }
 
     private void sendAllListIntent(String type) {
-        Intent intent = CompleteProductListActivity.newIntent(getActivity(), type,-1,"nothing",false,false);
+        Intent intent = CompleteProductListActivity.newIntent(getActivity(), type, -1, "nothing", false, false);
         startActivity(intent);
     }
 

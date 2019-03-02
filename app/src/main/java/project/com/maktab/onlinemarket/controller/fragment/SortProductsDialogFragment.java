@@ -31,7 +31,8 @@ public class SortProductsDialogFragment extends DialogFragment {
         RATED(1),
         VISITED(2),
         HIGH_TO_LOW(3),
-        LOW_TO_HIGH(4);
+        LOW_TO_HIGH(4),
+        FEATURED(5);
 
 
         int index;

@@ -37,5 +37,11 @@
         android:text="@string/check_box_cost_low_high"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <RadioButton
+        android:id="@+id/featured_check_box"
+        android:textSize="30sp"
+        android:text="@string/check_box_featured"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </RadioGroup>

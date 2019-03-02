@@ -28,6 +28,12 @@ public interface Api {
     Call<List<Category>> getSubCategories(@Query("parent") String parentId);
 
 
+    @GET("products/?featured=true")
+    Call<List<Product>> getFeaturedProducts(@Query("page") String pageNumber,
+                                            @Query("attribute_term") String... attributes);
+
+
+
     @GET("products/?")
     Call<List<Product>> getProductsSubCategoires(@Query("page") String pageNumber, @Query("category") String categoryId
             , @Query("orderby") String orderBy, @Query("order") String order, @Query("attribute_term") String... attributes);

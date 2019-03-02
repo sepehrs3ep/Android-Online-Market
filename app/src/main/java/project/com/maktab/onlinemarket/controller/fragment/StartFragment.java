@@ -125,6 +125,7 @@ public class StartFragment extends Fragment {
                 ProductLab.getInstance().setNewProducts(generateLists("date"));
                 ProductLab.getInstance().setRatedProducts(generateLists("rating"));
                 ProductLab.getInstance().setVisitedProducts(generateLists("popularity"));
+                ProductLab.getInstance().setFeaturedProducts(generateLists(CompleteProductListFragment.getIsFeaturedProduct()));
                 CategoryLab.getmCategoryInstance().setAllCategories(RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                         .getAllCategories().execute().body());
                 ProductLab.getInstance().clearDuplicate();
@@ -153,6 +154,10 @@ public class StartFragment extends Fragment {
     }
 
     private List<Product> generateLists(String type) throws IOException {
+        if(type.equalsIgnoreCase(CompleteProductListFragment.getIsFeaturedProduct())){
+            return RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                    .getFeaturedProducts("1").execute().body();
+        }
         return RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                  .getAllProducts(type).execute().body();
     }

@@ -71,6 +71,8 @@ public class CompleteProductListFragment extends Fragment {
     private static final String PRICE = "price";
     public static final String SHOULD_HANDLE_FILTER = "SHOULD_HANDLE_FILTER";
     private static final String COMPLETE_PRODUCT_TAG = "COMPLETE_PRODUCT_TAG";
+    private static final String IS_FEATURED_PRODUCT = "IS_FEATURED_PRODUCT";
+    private boolean mIsFeatured;
     private long mCategoryId;
     private String mOrder;
     private String mSearchedString;
@@ -91,6 +93,9 @@ public class CompleteProductListFragment extends Fragment {
     private ImageButton mChangeRecyclerLayoutImageBtn;
     private TextView mSortTypeTextView;
 
+    public static String getIsFeaturedProduct() {
+        return IS_FEATURED_PRODUCT;
+    }
 
     public static CompleteProductListFragment newInstance(String orderBy, long categoryId, String searchItem, boolean isFromSearch,
                                                           boolean isSubCategory) {
@@ -107,6 +112,7 @@ public class CompleteProductListFragment extends Fragment {
     }
 
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +124,13 @@ public class CompleteProductListFragment extends Fragment {
         mSearchedString = getArguments().getString(SEARCH_STRING_ARGS);
         mIsSubCategory = getArguments().getBoolean(IS_SUB_CATEGORY_ARGS, false);
         mIsFromSearch = getArguments().getBoolean(IS_FROM_SEARCH_ARGS, false);
+
+        if (mOrderType.equalsIgnoreCase(IS_FEATURED_PRODUCT)) {
+            mIsFeatured = true;
+            mOrderType = DATE;
+            mOrder = DESC_ORDER;
+        }
+
         mPageCounter = 1;
         NO_MORE_PAGE = false;
         mIsGridShow = false;
@@ -433,6 +446,11 @@ public class CompleteProductListFragment extends Fragment {
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                             .searchProducts(String.valueOf(pageCounter), mSearchedString, mOrderType, mOrder
                                     , ProductFilterFragment.mFilteredAttributes.toString())
+                            .execute();
+                else if (mIsFeatured)
+                    response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                            .getFeaturedProducts(String.valueOf(pageCounter), mOrderType, mOrder,
+                                    ProductFilterFragment.mFilteredAttributes.toString())
                             .execute();
                 else
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)

@@ -254,19 +254,66 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="46dp" />
-<!--
-            <TextView
-                android:id="@+id/rate_poducts_complete_text_template"
-                android:layout_width="0dp"
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/featured_recycler_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="left"
-                android:text="TextView"
-                app:layout_constraintBottom_toTopOf="@+id/rated_products_recycler_view"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/featured_root_layout"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/chips_recyclerView" />-->
+                tools:layout_editor_absoluteY="46dp" />
+
+
+
+            <LinearLayout
+                android:id="@+id/featured_root_layout"
+                android:layout_width="match_parent"
+                app:layout_constraintBottom_toTopOf="@+id/featured_recycler_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/visited_products_recycler_view"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="@string/featured_products"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="italic|bold"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:layout_gravity="right"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp" />
+                <TextView
+                    android:id="@+id/featured_complete_text_template"
+                    android:layout_weight="1"
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp" />
+
+            </LinearLayout>
+
+            <!--
+                        <TextView
+                            android:id="@+id/rate_poducts_complete_text_template"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="left"
+                            android:text="TextView"
+                            app:layout_constraintBottom_toTopOf="@+id/rated_products_recycler_view"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/chips_recyclerView" />-->
 
   <!--          <TextView
                 android:id="@+id/visited_poducts_complete_text_template"
