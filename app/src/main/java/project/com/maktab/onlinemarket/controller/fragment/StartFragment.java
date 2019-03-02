@@ -25,8 +25,8 @@ import project.com.maktab.onlinemarket.controller.activity.MainMarketActivity;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.model.product.ProductLab;
-import project.com.maktab.onlinemarket.network.Api;
-import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
+import project.com.maktab.onlinemarket.network.base.Api;
+import project.com.maktab.onlinemarket.network.base.RetrofitClientInstance;
 
 
 /**

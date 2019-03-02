@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.network;
+package project.com.maktab.onlinemarket.network.base;
 
 import java.io.IOException;
 

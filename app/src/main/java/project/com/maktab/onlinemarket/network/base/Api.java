@@ -1,9 +1,9 @@
-package project.com.maktab.onlinemarket.network;
+package project.com.maktab.onlinemarket.network.base;
 
 import java.util.List;
 
-import project.com.maktab.onlinemarket.model.add_customer.Customer;
-import project.com.maktab.onlinemarket.model.add_customer.CustomerResponse;
+import project.com.maktab.onlinemarket.network.webservices.add_customer.Customer;
+import project.com.maktab.onlinemarket.network.webservices.add_customer.CustomerResponse;
 import project.com.maktab.onlinemarket.model.attributes.Attributes;
 import project.com.maktab.onlinemarket.model.attributes.AttributesTerms;
 import project.com.maktab.onlinemarket.model.category.Category;

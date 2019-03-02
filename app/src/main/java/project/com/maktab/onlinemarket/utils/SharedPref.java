@@ -5,16 +5,16 @@ import android.preference.PreferenceManager;
 import project.com.maktab.onlinemarket.OnlineMarketApp;
 
 public class SharedPref {
-    private static final String IS_FEATURED_PREF = "IS_FEATURED_PREF";
+    private static final String CUSTOMER_ID_PREF = "CUSTOMER_ID_PREF";
 
-  /*  public static void setIsFeatured(boolean isFeatured){
-        PreferenceManager.getDefaultSharedPreferences(OnlineMarketApp.getAppInstance())
-                .edit().putBoolean(IS_FEATURED_PREF,isFeatured).commit();
+    public static void addCustomerId(long id) {
+        PreferenceManager.getDefaultSharedPreferences(OnlineMarketApp.getAppInstance()).edit()
+                .putLong(CUSTOMER_ID_PREF, id).apply();
     }
-    public static boolean getIsFeatured(){
-        return PreferenceManager.getDefaultSharedPreferences(OnlineMarketApp.getAppInstance())
-                .getBoolean(IS_FEATURED_PREF,false);
-    }*/
+
+    public static long getCustomerId() {
+        return PreferenceManager.getDefaultSharedPreferences(OnlineMarketApp.getAppInstance()).getLong(CUSTOMER_ID_PREF, -1);
+    }
 
 
 }

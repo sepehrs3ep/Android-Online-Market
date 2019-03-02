@@ -1,4 +1,4 @@
-package project.com.maktab.onlinemarket.model.add_customer;
+package project.com.maktab.onlinemarket.network.webservices.add_customer;
 
 public class Customer {
 

@@ -1,7 +1,6 @@
 package project.com.maktab.onlinemarket.controller.fragment;
 
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,8 +30,8 @@ import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.eventbus.FilterProductMassage;
 import project.com.maktab.onlinemarket.model.attributes.Attributes;
 import project.com.maktab.onlinemarket.model.attributes.AttributesTerms;
-import project.com.maktab.onlinemarket.network.Api;
-import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
+import project.com.maktab.onlinemarket.network.base.Api;
+import project.com.maktab.onlinemarket.network.base.RetrofitClientInstance;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

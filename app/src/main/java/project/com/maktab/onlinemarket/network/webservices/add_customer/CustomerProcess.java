@@ -1,7 +1,7 @@
-package project.com.maktab.onlinemarket.model.add_customer;
+package project.com.maktab.onlinemarket.network.webservices.add_customer;
 
-import project.com.maktab.onlinemarket.network.Api;
-import project.com.maktab.onlinemarket.network.RetrofitClientInstance;
+import project.com.maktab.onlinemarket.network.base.Api;
+import project.com.maktab.onlinemarket.network.base.RetrofitClientInstance;
 import retrofit2.Call;
 import retrofit2.Callback;
 
