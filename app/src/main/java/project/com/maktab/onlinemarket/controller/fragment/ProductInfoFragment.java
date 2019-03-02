@@ -69,7 +69,7 @@ public class ProductInfoFragment extends Fragment {
     private Button mProductInfoBtn;
     private ImageButton mExpandImageBtn;
     private TextView mExpandTextView;
-    private ReleatedAdapter mReleatedAdapter;
+    private RelatedAdapter mRelatedAdapter;
     private BottomAppBar mAppBar;
     private TextView textCartItemCount;
     private AppCompatCheckBox mLikeProductCheckBox;
@@ -145,8 +145,8 @@ public class ProductInfoFragment extends Fragment {
         });
         mCategoriesRecyclerView.setAdapter(mCategoriesAdapter);
 
-        mReleatedAdapter = new ReleatedAdapter(new ArrayList<Product>());
-        mReleatedRecyclerView.setAdapter(mReleatedAdapter);
+        mRelatedAdapter = new RelatedAdapter(new ArrayList<Product>());
+        mReleatedRecyclerView.setAdapter(mRelatedAdapter);
 
 
         mTabLayout.setupWithViewPager(mViewPager, true);
@@ -200,8 +200,8 @@ public class ProductInfoFragment extends Fragment {
                     public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
                         if (response.isSuccessful()) {
                             List<Product> products = response.body();
-                            mReleatedAdapter.setProductList(products);
-                            mReleatedAdapter.notifyDataSetChanged();
+                            mRelatedAdapter.setProductList(products);
+                            mRelatedAdapter.notifyDataSetChanged();
                         }else
                             Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
                     }
@@ -373,10 +373,10 @@ public class ProductInfoFragment extends Fragment {
 
     }
 
-    private class ReleatedAdapter extends RecyclerView.Adapter<ReleatedViewHolder> {
+    private class RelatedAdapter extends RecyclerView.Adapter<ReleatedViewHolder> {
         private List<Product> mProductList;
 
-        public ReleatedAdapter(List<Product> productList) {
+        public RelatedAdapter(List<Product> productList) {
             mProductList = productList;
         }
 

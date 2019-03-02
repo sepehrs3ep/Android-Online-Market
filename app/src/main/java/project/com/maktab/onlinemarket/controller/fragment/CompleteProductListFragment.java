@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,6 +41,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.activity.ProductFilterActivity;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
 import project.com.maktab.onlinemarket.eventbus.FilterProductMassage;
 import project.com.maktab.onlinemarket.eventbus.ProductSortMassage;
@@ -68,6 +70,7 @@ public class CompleteProductListFragment extends Fragment {
     private static final String VISITED = "popularity";
     private static final String PRICE = "price";
     public static final String SHOULD_HANDLE_FILTER = "SHOULD_HANDLE_FILTER";
+    private static final String COMPLETE_PRODUCT_TAG = "COMPLETE_PRODUCT_TAG";
     private long mCategoryId;
     private String mOrder;
     private String mSearchedString;
@@ -125,8 +128,9 @@ public class CompleteProductListFragment extends Fragment {
         // Required empty public constructor
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void filterProducts(FilterProductMassage filterProductMassage) {
+        FilterProductMassage massage = EventBus.getDefault().removeStickyEvent(FilterProductMassage.class);
         if (ProductFilterFragment.mFilteredAttributes.size() > 0) {
             mPageCounter = 1;
             mProductList.clear();
@@ -134,6 +138,12 @@ public class CompleteProductListFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
             new ProductsAsynceTask(getActivity()).execute(mPageCounter);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(COMPLETE_PRODUCT_TAG, "is on destroy and object will remove");
     }
 
 
@@ -159,11 +169,13 @@ public class CompleteProductListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (mIsSubCategory) {
-                    ProductFilterFragment filterFragment = ProductFilterFragment.newInstance(mProductList.get(0).getId());
-                    filterFragment.show(getFragmentManager(), "show filtered");
+                    sendFilterIntent(mProductList.get(0).getId());
+                    /*ProductFilterFragment filterFragment = ProductFilterFragment.newInstance(mProductList.get(0).getId());
+                    filterFragment.show(getFragmentManager(), "show filtered");*/
                 } else {
-                    ProductFilterFragment filterFragment = ProductFilterFragment.newInstance(SHOULD_HANDLE_FILTER);
-                    filterFragment.show(getFragmentManager(), "show handle filtered");
+                    sendFilterIntent(SHOULD_HANDLE_FILTER);
+                    /*ProductFilterFragment filterFragment = ProductFilterFragment.newInstance(SHOULD_HANDLE_FILTER);
+                    filterFragment.show(getFragmentManager(), "show handle filtered");*/
                 }
 
             }
@@ -237,6 +249,11 @@ public class CompleteProductListFragment extends Fragment {
 
     }
 
+    private void sendFilterIntent(String intentExtra) {
+        Intent intent = ProductFilterActivity.newIntent(getActivity(), intentExtra);
+        startActivity(intent);
+    }
+
 
     private void changeRecyclerLayout() {
         if (mIsGridShow) {
@@ -287,6 +304,7 @@ public class CompleteProductListFragment extends Fragment {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSortChanged(ProductSortMassage productSortMassage) {

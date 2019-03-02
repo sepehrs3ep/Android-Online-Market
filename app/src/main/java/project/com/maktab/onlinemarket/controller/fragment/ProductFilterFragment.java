@@ -41,7 +41,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProductFilterFragment extends DialogFragment {
+public class ProductFilterFragment extends Fragment {
     @BindView(R.id.attribute_recycler_view)
     RecyclerView mAttributeRecyclerView;
     @BindView(R.id.attribute_term_recycler_view)
@@ -78,9 +78,11 @@ public class ProductFilterFragment extends DialogFragment {
         mTermsAttributesList = new ArrayList<>();
         mFilteredAttributes = new ArrayList<>();
 
+        getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+
     }
 
-    @Override
+/*    @Override
     public void onStart() {
         super.onStart();
         Dialog dialog = getDialog();
@@ -90,7 +92,7 @@ public class ProductFilterFragment extends DialogFragment {
             int height = ViewGroup.LayoutParams.MATCH_PARENT;
             dialog.getWindow().setLayout(width, height);
         }
-    }
+    }*/
 
     public ProductFilterFragment() {
         // Required empty public constructor
@@ -117,8 +119,8 @@ public class ProductFilterFragment extends DialogFragment {
         mDoFilterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EventBus.getDefault().post(new FilterProductMassage());
-                dismiss();
+                EventBus.getDefault().postSticky(new FilterProductMassage());
+                getActivity().finish();
             }
         });
 

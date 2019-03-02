@@ -222,9 +222,7 @@ public class MainMarketFragment extends Fragment {
 
         mMainTabLayout.setupWithViewPager(mMainViewPager, true);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            mMainTabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-        }
+        mMainTabLayout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
 
 
         mDrawerLayout = view.findViewById(R.id.drawer_layout);

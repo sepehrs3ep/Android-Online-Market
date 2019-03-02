@@ -1,4 +1,3 @@
-/*
 package project.com.maktab.onlinemarket.controller.activity;
 
 import android.content.Context;
@@ -28,4 +27,3 @@ public class ProductFilterActivity extends SingleFragmentActivity {
     }
 
 }
-*/
