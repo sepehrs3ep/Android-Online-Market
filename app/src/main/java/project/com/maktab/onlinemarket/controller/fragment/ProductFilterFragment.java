@@ -1,6 +1,7 @@
 package project.com.maktab.onlinemarket.controller.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +49,8 @@ public class ProductFilterFragment extends Fragment {
     Button mDoFilterBtn;
     @BindView(R.id.filter_progress_bar)
     ProgressBar mProgressBar;
-
+    private int selectedPos = RecyclerView.NO_POSITION;
+    int selected_position = 0;
     public static List<String> mFilteredAttributes ;
     private AttrAdapter mAttrAdapter;
     private TermAttrAdapter mTermAttrAdapter;
@@ -204,6 +206,14 @@ public class ProductFilterFragment extends Fragment {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+
+                    // Updating old as well as new positions
+                    mAttrAdapter.notifyItemChanged(selected_position);
+                    selected_position = getAdapterPosition();
+                    mAttrAdapter.notifyItemChanged(selected_position);
+
+
                     mProgressBar.setVisibility(View.VISIBLE);
 
                     RetrofitClientInstance.getRetrofitInstance().create(Api.class)
@@ -238,6 +248,7 @@ public class ProductFilterFragment extends Fragment {
         public void bind(Attributes attributes) {
             mAttributes = attributes;
             mAttrNameTextView.setText(attributes.getName());
+
         }
     }
 
@@ -261,6 +272,7 @@ public class ProductFilterFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull AttrViewHolder holder, int position) {
+            holder.itemView.setBackgroundColor(selected_position == position ? Color.BLACK : Color.TRANSPARENT);
             Attributes attributes = mAttributesList.get(position);
             holder.bind(attributes);
 
@@ -280,6 +292,9 @@ public class ProductFilterFragment extends Fragment {
         public TermAttrViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            if(mFilteredAttributes.size()>0&&mFilteredAttributes.contains(mAttributesTerms.getName())){
+                mCheckBox.setChecked(true);
+            }
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
