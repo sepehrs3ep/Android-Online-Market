@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.ProductFilterActivity"></activity>
+        <activity android:name=".controller.activity.WebPageViewActivity" android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <activity android:name=".controller.activity.ProductFilterActivity" />
         <activity android:name=".controller.activity.CompleteProductListActivity" />
         <activity android:name=".controller.activity.ProductsSubCategoryActivity" />
         <activity android:name=".controller.activity.CategoryViewPagerActivity" />

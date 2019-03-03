@@ -7,7 +7,7 @@
     android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".controller.fragment.StartFragment">
-    <com.airbnb.lottie.LottieAnimationView
+ <!--   <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/bag_lottie_animation"
         android:layout_width="match_parent"
         app:lottie_autoPlay="true"
@@ -24,7 +24,7 @@
         app:lottie_repeatMode="reverse"
         app:lottie_scale="@android:integer/config_longAnimTime"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" />-->
 
     <Button
         android:id="@+id/try_again_btn"

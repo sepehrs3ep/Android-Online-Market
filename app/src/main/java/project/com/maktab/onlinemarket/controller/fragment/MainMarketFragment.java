@@ -47,6 +47,7 @@ import project.com.maktab.onlinemarket.controller.activity.CategoryViewPagerActi
 import project.com.maktab.onlinemarket.controller.activity.CompleteProductListActivity;
 import project.com.maktab.onlinemarket.controller.activity.MainMarketActivity;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
+import project.com.maktab.onlinemarket.controller.activity.WebPageViewActivity;
 import project.com.maktab.onlinemarket.eventbus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
@@ -263,6 +264,9 @@ public class MainMarketFragment extends Fragment {
                     case R.id.featured_category_menu_item:
                         sendAllListIntent(CompleteProductListFragment.getIsFeaturedProduct());
                         return true;
+                    case R.id.web_page_menu_item:
+                        Intent webPageIntent = WebPageViewActivity.newIntent(getActivity());
+                        startActivity(webPageIntent);
                     default:
                         return false;
                 }

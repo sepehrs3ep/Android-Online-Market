@@ -33,8 +33,8 @@ import project.com.maktab.onlinemarket.network.base.RetrofitClientInstance;
  * A simple {@link Fragment} subclass.
  */
 public class StartFragment extends Fragment {
-    private LottieAnimationView mBagAnimationView;
-    private LottieAnimationView mInternetAnimationView;
+ /*   private LottieAnimationView mBagAnimationView;
+    private LottieAnimationView mInternetAnimationView;*/
     private Button mTryAgainButton;
 
 
@@ -60,10 +60,10 @@ public class StartFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_start, container, false);
 
-        mBagAnimationView = view.findViewById(R.id.bag_lottie_animation);
+        /*mBagAnimationView = view.findViewById(R.id.bag_lottie_animation);
         mInternetAnimationView = view.findViewById(R.id.no_internet_lottie_animation);
+        mInternetAnimationView.setVisibility(View.GONE);*/
         mTryAgainButton = view.findViewById(R.id.try_again_btn);
-        mInternetAnimationView.setVisibility(View.GONE);
         mTryAgainButton.setVisibility(View.GONE);
 
 
@@ -81,10 +81,10 @@ public class StartFragment extends Fragment {
 
     private void startInit() {
         if (isNetworkAvailable()) {
-            mBagAnimationView.setVisibility(View.VISIBLE);
+            /*mBagAnimationView.setVisibility(View.VISIBLE);
             mInternetAnimationView.setVisibility(View.GONE);
+            mBagAnimationView.playAnimation();*/
             mTryAgainButton.setVisibility(View.GONE);
-            mBagAnimationView.playAnimation();
 
             new InitProductsAsynceTask().execute();
 
@@ -99,10 +99,10 @@ public class StartFragment extends Fragment {
 */
 
             Toast.makeText(getActivity(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
-            mBagAnimationView.cancelAnimation();
+           /* mBagAnimationView.cancelAnimation();
             mBagAnimationView.setVisibility(View.GONE);
             mInternetAnimationView.setVisibility(View.VISIBLE);
-            mInternetAnimationView.playAnimation();
+            mInternetAnimationView.playAnimation();*/
             mTryAgainButton.setVisibility(View.VISIBLE);
 
 
