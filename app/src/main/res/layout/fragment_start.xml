@@ -7,7 +7,7 @@
     android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".controller.fragment.StartFragment">
- <!--   <com.airbnb.lottie.LottieAnimationView
+  <!--  <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/bag_lottie_animation"
         android:layout_width="match_parent"
         app:lottie_autoPlay="true"

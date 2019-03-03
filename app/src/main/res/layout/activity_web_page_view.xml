@@ -8,17 +8,17 @@
     
     <ProgressBar
         android:id="@+id/web_page_progress_bar"
-        style="?android:attr/progressBarStyleHorizontal"
         android:layout_alignParentTop="true"
-
+        style="?android:attr/progressBarStyleHorizontal"
         android:visibility="gone"
-        android:background="@color/colorPrimary"
+        android:background="@android:color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <WebView
         android:id="@+id/online_market_web_view"
         android:layout_width="match_parent"
+        android:layout_below="@id/web_page_progress_bar"
         android:layout_alignParentBottom="true"
         android:layout_height="match_parent" />
 </RelativeLayout>

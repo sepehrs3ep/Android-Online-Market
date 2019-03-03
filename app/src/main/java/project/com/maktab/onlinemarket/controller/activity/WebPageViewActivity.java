@@ -8,6 +8,7 @@ import project.com.maktab.onlinemarket.R;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -55,6 +56,7 @@ public class WebPageViewActivity extends AppCompatActivity {
                 getSupportActionBar().setSubtitle(title);
 
             }
+
         });
 
         mWebView.setWebViewClient(new WebViewClient(){
@@ -62,9 +64,26 @@ public class WebPageViewActivity extends AppCompatActivity {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 return false;
             }
+
         });
 
 
-
     }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (keyCode) {
+                case KeyEvent.KEYCODE_BACK:
+                    if (mWebView.canGoBack()) {
+                        mWebView.goBack();
+                    } else {
+                        finish();
+                    }
+                    return true;
+            }
+
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

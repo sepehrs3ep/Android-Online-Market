@@ -7,19 +7,16 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.airbnb.lottie.LottieAnimationView;
-
 import java.io.IOException;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.MainMarketActivity;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
@@ -33,8 +30,8 @@ import project.com.maktab.onlinemarket.network.base.RetrofitClientInstance;
  * A simple {@link Fragment} subclass.
  */
 public class StartFragment extends Fragment {
- /*   private LottieAnimationView mBagAnimationView;
-    private LottieAnimationView mInternetAnimationView;*/
+    /*   private LottieAnimationView mBagAnimationView;
+       private LottieAnimationView mInternetAnimationView;*/
     private Button mTryAgainButton;
 
 
@@ -50,7 +47,6 @@ public class StartFragment extends Fragment {
     public StartFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -99,7 +95,7 @@ public class StartFragment extends Fragment {
 */
 
             Toast.makeText(getActivity(), R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
-           /* mBagAnimationView.cancelAnimation();
+          /*  mBagAnimationView.cancelAnimation();
             mBagAnimationView.setVisibility(View.GONE);
             mInternetAnimationView.setVisibility(View.VISIBLE);
             mInternetAnimationView.playAnimation();*/
@@ -154,12 +150,12 @@ public class StartFragment extends Fragment {
     }
 
     private List<Product> generateLists(String type) throws IOException {
-        if(type.equalsIgnoreCase(CompleteProductListFragment.getIsFeaturedProduct())){
+        if (type.equalsIgnoreCase(CompleteProductListFragment.getIsFeaturedProduct())) {
             return RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                     .getFeaturedProducts().execute().body();
         }
         return RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                 .getAllProducts(type).execute().body();
+                .getAllProducts(type).execute().body();
     }
 
 
