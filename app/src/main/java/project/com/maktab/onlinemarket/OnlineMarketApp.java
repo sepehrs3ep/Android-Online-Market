@@ -1,6 +1,8 @@
 package project.com.maktab.onlinemarket;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -29,6 +31,7 @@ public class OnlineMarketApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        createAppNotificationChanel();
 
         DevOpenHelper devOpenHelper = new DevOpenHelper(this,DB_NAME);
 
@@ -36,5 +39,16 @@ public class OnlineMarketApp extends Application {
         mDaoSession = new DaoMaster(database).newSession();
 
         mInstance = this;
+    }
+
+    private void createAppNotificationChanel() {
+        NotificationChannel channel = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            channel = new NotificationChannel(getString(R.string.channel_id), getString(R.string.channel_name), NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription(getString(R.string.channel_desc));
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
     }
 }
