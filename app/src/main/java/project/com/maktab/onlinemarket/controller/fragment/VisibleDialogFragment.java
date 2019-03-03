@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -26,10 +26,9 @@ import project.com.maktab.onlinemarket.eventbus.NotificationMassageEvent;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VisibleFragment extends Fragment {
+public class VisibleDialogFragment extends DialogFragment {
 
-    public VisibleFragment() {
-        // Required empty public constructor
+    public VisibleDialogFragment() {
     }
     @Override
     public void onStart() {
@@ -52,12 +51,5 @@ public class VisibleFragment extends Fragment {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-
 
 }

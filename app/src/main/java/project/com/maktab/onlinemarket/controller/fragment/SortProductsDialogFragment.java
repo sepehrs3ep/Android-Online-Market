@@ -20,7 +20,7 @@ import project.com.maktab.onlinemarket.eventbus.ProductSortMassage;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SortProductsDialogFragment extends DialogFragment {
+public class SortProductsDialogFragment extends VisibleDialogFragment {
     private static final String CURRENT_SORT_ARGS = "CURRENT_SORT_ARGS";
     private int mCurrentSort;
     public static final String RADIO_BUTTON_TAG = "RADIO_BUTTON_TAG";

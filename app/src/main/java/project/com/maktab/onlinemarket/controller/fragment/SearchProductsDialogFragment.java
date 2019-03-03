@@ -20,7 +20,7 @@ import project.com.maktab.onlinemarket.controller.activity.CompleteProductListAc
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchProductsDialogFragment extends DialogFragment {
+public class SearchProductsDialogFragment extends VisibleDialogFragment {
     private SearchView mSearchView;
 
 

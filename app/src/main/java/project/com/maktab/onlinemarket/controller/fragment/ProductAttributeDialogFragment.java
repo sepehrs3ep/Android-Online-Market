@@ -24,7 +24,7 @@ import project.com.maktab.onlinemarket.model.product.ProductLab;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProductAttributeDialogFragment extends DialogFragment {
+public class ProductAttributeDialogFragment extends VisibleDialogFragment {
 
     private static final String PRODUCT_ID_ARGS = "productIdArgs";
     private Product mProduct;

@@ -38,7 +38,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LikedProductsDialogFragment extends DialogFragment {
+public class LikedProductsDialogFragment extends VisibleDialogFragment {
     @BindView(R.id.like_recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.like_progress_bar)
