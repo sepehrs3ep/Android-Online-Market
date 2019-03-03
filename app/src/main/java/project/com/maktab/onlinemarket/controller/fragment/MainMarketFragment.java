@@ -58,7 +58,7 @@ import project.com.maktab.onlinemarket.utils.SharedPref;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainMarketFragment extends Fragment {
+public class MainMarketFragment extends VisibleFragment {
 
     private RecyclerView mNewProductRecyclerView, mRateProductsRecyclerView, mVisitedProductsRecyclerView, mChipsRecyclerView, mFeaturedRecyclerView;
     private RecyclerViewProductAdapter mNewProductAdapter, mRateProductAdapter, mVisitedProductAdapter,

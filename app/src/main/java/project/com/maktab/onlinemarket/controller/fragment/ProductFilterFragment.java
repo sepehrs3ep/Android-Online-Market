@@ -40,7 +40,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProductFilterFragment extends Fragment {
+public class ProductFilterFragment extends VisibleFragment {
     @BindView(R.id.attribute_recycler_view)
     RecyclerView mAttributeRecyclerView;
     @BindView(R.id.attribute_term_recycler_view)

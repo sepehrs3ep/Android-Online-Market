@@ -18,7 +18,7 @@ import project.com.maktab.onlinemarket.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PhotoGalleryFragment extends Fragment {
+public class PhotoGalleryFragment extends VisibleFragment {
     private static final String IMAGE_PATH_ARGS = "imagePath";
     private static final String IMAGE_DRAWBLE_ARGS = "IMAGE_DRAWBLE_ARGS";
     private static final String IMAGE_IS_DRAWBLE_ARGS = "IMAGE_IS_DRAWBLE_ARGS";

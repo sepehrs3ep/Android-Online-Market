@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,6 +17,7 @@ import java.util.List;
 import androidx.core.app.NotificationCompat;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.StartActivity;
+import project.com.maktab.onlinemarket.eventbus.NotificationMassageEvent;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.network.base.Api;
 import project.com.maktab.onlinemarket.network.base.RetrofitClientInstance;
@@ -23,6 +26,7 @@ import retrofit2.Response;
 public class Services {
 
     public static final int PENDING_INTENT_REQUEST_CODE = 23;
+    public static final int INIT_NOTIF_REQ_CODE = 0;
 
     public static void pollServerAndShowNotification(Context context) {
 
@@ -36,8 +40,7 @@ public class Services {
                     //old Result
                 } else {
                     //new Result
-
-
+                    showNotification(context,product);
                 }
                 SharedPref.setProductLastId(product.getId());
             }
@@ -69,6 +72,7 @@ public class Services {
             e.printStackTrace();
         }
 
+        EventBus.getDefault().post(new NotificationMassageEvent(notification, INIT_NOTIF_REQ_CODE));
 
     }
 

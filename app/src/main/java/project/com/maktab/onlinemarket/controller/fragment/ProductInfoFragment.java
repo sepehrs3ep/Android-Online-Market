@@ -52,7 +52,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProductInfoFragment extends Fragment {
+public class ProductInfoFragment extends VisibleFragment {
 
     public static final String PRODUCT_ID_ARGS = "productIdArgs";
     private String mProductId;

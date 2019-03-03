@@ -3,12 +3,19 @@ package project.com.maktab.onlinemarket;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.greenrobot.greendao.database.Database;
 
+import androidx.core.app.NotificationManagerCompat;
 import project.com.maktab.onlinemarket.database.DaoMaster;
 import project.com.maktab.onlinemarket.database.DaoSession;
 import project.com.maktab.onlinemarket.database.DevOpenHelper;
+import project.com.maktab.onlinemarket.eventbus.NotificationMassageEvent;
+import project.com.maktab.onlinemarket.service.PollService;
 
 public class OnlineMarketApp extends Application {
 
@@ -32,6 +39,8 @@ public class OnlineMarketApp extends Application {
     public void onCreate() {
         super.onCreate();
         createAppNotificationChanel();
+        startService(PollService.newIntent(this));
+        EventBus.getDefault().register(this);
 
         DevOpenHelper devOpenHelper = new DevOpenHelper(this,DB_NAME);
 
@@ -39,6 +48,19 @@ public class OnlineMarketApp extends Application {
         mDaoSession = new DaoMaster(database).newSession();
 
         mInstance = this;
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        stopService(PollService.newIntent(this));
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onMassageEvent(NotificationMassageEvent massageEvent){
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        notificationManagerCompat.notify(massageEvent.getReqCode(), massageEvent.getNotification());
     }
 
     private void createAppNotificationChanel() {

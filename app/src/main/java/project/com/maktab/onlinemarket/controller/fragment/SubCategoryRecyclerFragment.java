@@ -27,7 +27,7 @@ import project.com.maktab.onlinemarket.model.category.CategoryLab;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SubCategoryRecyclerFragment extends Fragment {
+public class SubCategoryRecyclerFragment extends VisibleFragment {
 
     private static final String CATEGORY_Parent_ID_ARGS = "categoryIdArgs";
 

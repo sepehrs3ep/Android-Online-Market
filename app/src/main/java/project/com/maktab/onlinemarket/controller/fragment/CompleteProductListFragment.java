@@ -57,7 +57,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompleteProductListFragment extends Fragment {
+public class CompleteProductListFragment extends VisibleFragment {
     private static final String ORDER_BY_ARGS = "orderByArgs";
     private static final String CATEGORY_ID_ARGS = "categoryIdArgs";
     private static final String IS_SUB_CATEGORY_ARGS = "IS_SUB_CATEGORY_ARGS";

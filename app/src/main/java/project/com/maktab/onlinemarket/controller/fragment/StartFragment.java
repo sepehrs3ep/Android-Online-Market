@@ -29,7 +29,7 @@ import project.com.maktab.onlinemarket.network.base.RetrofitClientInstance;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StartFragment extends Fragment {
+public class StartFragment extends VisibleFragment {
     /*   private LottieAnimationView mBagAnimationView;
        private LottieAnimationView mInternetAnimationView;*/
     private Button mTryAgainButton;
