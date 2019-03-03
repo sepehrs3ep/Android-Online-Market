@@ -14,6 +14,7 @@ import project.com.maktab.onlinemarket.database.FavoriteProducts;
 import project.com.maktab.onlinemarket.database.FavoriteProductsDao;
 import project.com.maktab.onlinemarket.database.ShoppingBag;
 import project.com.maktab.onlinemarket.database.ShoppingBagDao;
+import project.com.maktab.onlinemarket.utils.SharedPref;
 
 public class ProductLab {
     private static ProductLab mInstance;
@@ -143,6 +144,7 @@ public class ProductLab {
     }
 
     public void setNewProducts(List<Product> products) {
+        SharedPref.setProductLastId(products.get(0).getId());
         mNewProducts = products;
         mAllProducts.addAll(mNewProducts);
     }

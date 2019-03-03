@@ -15,7 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.WebPageViewActivity" android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+        <service
+            android:name=".service.PollService"
+            android:exported="false"></service>
+
+        <activity
+            android:name=".controller.activity.WebPageViewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".controller.activity.ProductFilterActivity" />
         <activity android:name=".controller.activity.CompleteProductListActivity" />
         <activity android:name=".controller.activity.ProductsSubCategoryActivity" />
