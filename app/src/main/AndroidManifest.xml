@@ -16,8 +16,12 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <service
+            android:name=".service.NotificationEventBusService"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
             android:name=".service.PollService"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <activity
             android:name=".controller.activity.WebPageViewActivity"

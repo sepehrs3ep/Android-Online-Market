@@ -15,6 +15,7 @@ import project.com.maktab.onlinemarket.database.DaoMaster;
 import project.com.maktab.onlinemarket.database.DaoSession;
 import project.com.maktab.onlinemarket.database.DevOpenHelper;
 import project.com.maktab.onlinemarket.eventbus.NotificationMassageEvent;
+import project.com.maktab.onlinemarket.service.NotificationEventBusService;
 import project.com.maktab.onlinemarket.service.PollService;
 
 public class OnlineMarketApp extends Application {
@@ -39,8 +40,12 @@ public class OnlineMarketApp extends Application {
     public void onCreate() {
         super.onCreate();
         createAppNotificationChanel();
-        startService(PollService.newIntent(this));
-        EventBus.getDefault().register(this);
+//        startService(PollService.newIntent(this));
+//        EventBus.getDefault().register(this);
+
+
+        Intent intent  = NotificationEventBusService.newIntent(this);
+        startService(intent);
 
         DevOpenHelper devOpenHelper = new DevOpenHelper(this,DB_NAME);
 
@@ -53,16 +58,18 @@ public class OnlineMarketApp extends Application {
     @Override
     public void onTerminate() {
         super.onTerminate();
-        stopService(PollService.newIntent(this));
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
+        Intent intent  = NotificationEventBusService.newIntent(this);
+        stopService(intent);
+
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
+ /*   @Subscribe(threadMode = ThreadMode.POSTING)
     public void onMassageEvent(NotificationMassageEvent massageEvent){
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(massageEvent.getReqCode(), massageEvent.getNotification());
     }
-
+*/
     private void createAppNotificationChanel() {
         NotificationChannel channel = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

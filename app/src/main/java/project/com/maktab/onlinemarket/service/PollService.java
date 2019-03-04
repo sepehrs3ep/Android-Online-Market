@@ -16,7 +16,7 @@ import project.com.maktab.onlinemarket.utils.Services;
 
 public class PollService extends IntentService {
     private static final String TAG = "PollService";
-    private static final long TIME_INTERVAL = TimeUnit.MINUTES.toMillis(15);
+    private static final long TIME_INTERVAL = TimeUnit.MINUTES.toMillis(1);
 
     public static Intent newIntent(Context context) {
         return new Intent(context, PollService.class);
@@ -41,18 +41,13 @@ public class PollService extends IntentService {
 
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        if(!isAlarmOn(context))
+//        if(!isAlarmOn(context))
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), TIME_INTERVAL, pi);
 
 
     }
 
-    public static boolean isAlarmOn(Context context) {
 
-        Intent intent = newIntent(context);
-        PendingIntent pi = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_NO_CREATE);
-        return pi != null;
-    }
 
     private boolean isOnline() {
         ConnectivityManager cm =

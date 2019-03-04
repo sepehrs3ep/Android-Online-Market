@@ -20,7 +20,7 @@ public class SharedPref {
         PreferenceManager.getDefaultSharedPreferences(OnlineMarketApp.getAppInstance()).edit().putString(PRODUCT_LAST_ID,id).apply();
     }
     public static String getProductLastId(){
-        return PreferenceManager.getDefaultSharedPreferences(OnlineMarketApp.getAppInstance()).getString(PRODUCT_LAST_ID,null);
+        return PreferenceManager.getDefaultSharedPreferences(OnlineMarketApp.getAppInstance()).getString(PRODUCT_LAST_ID,"");
     }
 
 

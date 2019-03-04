@@ -144,7 +144,7 @@ public class ProductLab {
     }
 
     public void setNewProducts(List<Product> products) {
-        SharedPref.setProductLastId(products.get(0).getId());
+        SharedPref.setProductLastId("");
         mNewProducts = products;
         mAllProducts.addAll(mNewProducts);
     }

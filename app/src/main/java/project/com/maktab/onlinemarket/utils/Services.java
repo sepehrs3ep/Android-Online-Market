@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,9 +28,10 @@ public class Services {
 
     public static final int PENDING_INTENT_REQUEST_CODE = 23;
     public static final int INIT_NOTIF_REQ_CODE = 0;
+    private static final String NOTIF_TAG = "NOTIF_TAG";
 
     public static void pollServerAndShowNotification(Context context) {
-
+        SharedPref.setProductLastId("");
         try {
             Response<List<Product>> response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                     .getAllProducts("date").execute();
@@ -38,8 +40,11 @@ public class Services {
                 Product product = response.body().get(0);
                 if (product.getId().equalsIgnoreCase(SharedPref.getProductLastId())) {
                     //old Result
+                    Log.d(NOTIF_TAG,"old result");
+
                 } else {
                     //new Result
+                    Log.d(NOTIF_TAG,"new result");
                     showNotification(context,product);
                 }
                 SharedPref.setProductLastId(product.getId());
