@@ -54,5 +54,4 @@ public class VisibleFragment extends Fragment {
     }
 
 
-
 }

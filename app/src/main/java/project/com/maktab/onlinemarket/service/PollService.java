@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.SystemClock;
+import android.util.Log;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +31,7 @@ public class PollService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (!isOnline())
             return;
-
+        Log.d(Services.NOTIF_TAG,"come on handle intent");
         Services.pollServerAndShowNotification(this);
 
     }
@@ -38,15 +39,16 @@ public class PollService extends IntentService {
     public static void setServiceAlarm(Context context) {
         Intent i = newIntent(context);
         PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
-
-
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-//        if(!isAlarmOn(context))
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), TIME_INTERVAL, pi);
 
 
     }
-
+    public static boolean isAlarmOn(Context context) {
+        Intent intent = newIntent(context);
+        PendingIntent pi = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_NO_CREATE);
+        return pi != null;
+    }
 
 
     private boolean isOnline() {

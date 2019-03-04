@@ -28,9 +28,10 @@ public class Services {
 
     public static final int PENDING_INTENT_REQUEST_CODE = 23;
     public static final int INIT_NOTIF_REQ_CODE = 0;
-    private static final String NOTIF_TAG = "NOTIF_TAG";
+    public static final String NOTIF_TAG = "NOTIF_TAG";
 
     public static void pollServerAndShowNotification(Context context) {
+        Log.d(NOTIF_TAG,"come on poll server and show notification");
         SharedPref.setProductLastId("");
         try {
             Response<List<Product>> response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
