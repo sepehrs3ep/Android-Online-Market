@@ -1,14 +1,28 @@
 package project.com.maktab.onlinemarket.model.order;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+import project.com.maktab.onlinemarket.model.customer.Billing;
+
 public class Order {
 
-    private long id;
+    private Billing billing;
 
-    private String username;
+    @SerializedName("line_items")
+    private List<OrderItem> orderItemsList;
 
-    private String password;
+    public Order(Billing billing, List<OrderItem> orderItemsList) {
+        this.billing = billing;
+        this.orderItemsList = orderItemsList;
+    }
 
-    private String email;
+    public Billing getBilling() {
+        return billing;
+    }
 
-
+    public List<OrderItem> getOrderItemsList() {
+        return orderItemsList;
+    }
 }
