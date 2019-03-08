@@ -1,5 +1,7 @@
 package project.com.maktab.onlinemarket.network.webservices.add_customer;
 
+import java.util.List;
+
 import project.com.maktab.onlinemarket.model.customer.Customer;
 import project.com.maktab.onlinemarket.network.base.Api;
 import project.com.maktab.onlinemarket.network.base.RetrofitClientInstance;
@@ -26,6 +28,11 @@ public class CustomerProcess {
     public void getCustomer(Callback callback){
         Call<Customer> call = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                 .getCustomer(mCustomerId);
+        call.enqueue(callback);
+    }
+    public void getAllCustomerList(Callback callback){
+        Call<List<Customer>> call = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                .getAllCustomers();
         call.enqueue(callback);
     }
 }

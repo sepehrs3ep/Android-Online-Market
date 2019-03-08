@@ -80,7 +80,8 @@ public interface Api {
     @POST("orders")
     Call<OrderResponse> addOrder(@Body Order order);
 
-
+    @GET("customers")
+    Call<List<Customer>> getAllCustomers();
 
 
 
