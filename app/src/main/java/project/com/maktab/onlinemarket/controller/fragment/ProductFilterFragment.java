@@ -31,6 +31,7 @@ import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.eventbus.FilterProductMassage;
 import project.com.maktab.onlinemarket.model.attributes.Attributes;
 import project.com.maktab.onlinemarket.model.attributes.AttributesTerms;
+import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.network.base.Api;
 import project.com.maktab.onlinemarket.network.base.RetrofitClientInstance;
 import retrofit2.Call;
@@ -51,7 +52,6 @@ public class ProductFilterFragment extends VisibleFragment {
     ProgressBar mProgressBar;
     private int selectedPos = RecyclerView.NO_POSITION;
     int selected_position = 0;
-    public static List<String> mFilteredAttributes ;
     private AttrAdapter mAttrAdapter;
     private TermAttrAdapter mTermAttrAdapter;
     private List<Attributes> mAttributesList;
@@ -76,23 +76,10 @@ public class ProductFilterFragment extends VisibleFragment {
         mProductId = getArguments().getString(PRODUCT_ID_ARGS);
         mAttributesList = new ArrayList<>();
         mTermsAttributesList = new ArrayList<>();
-        mFilteredAttributes = new ArrayList<>();
 
         getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
 
     }
-
-/*    @Override
-    public void onStart() {
-        super.onStart();
-        Dialog dialog = getDialog();
-        dialog.getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-        if (dialog != null) {
-            int width = ViewGroup.LayoutParams.MATCH_PARENT;
-            int height = ViewGroup.LayoutParams.MATCH_PARENT;
-            dialog.getWindow().setLayout(width, height);
-        }
-    }*/
 
     public ProductFilterFragment() {
         // Required empty public constructor
@@ -288,13 +275,14 @@ public class ProductFilterFragment extends VisibleFragment {
         @BindView(R.id.attribute_term_item_check_box)
         CheckBox mCheckBox;
         private AttributesTerms mAttributesTerms;
+        private List<String> mFilteredAttributes;
 
         public TermAttrViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            if(mFilteredAttributes.size()>0&&mFilteredAttributes.contains(mAttributesTerms.getName())){
-                mCheckBox.setChecked(true);
-            }
+            mFilteredAttributes = CategoryLab.getmCategoryInstance().getFilteredAttributes();
+
+
             mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -313,6 +301,9 @@ public class ProductFilterFragment extends VisibleFragment {
         public void bind(AttributesTerms terms) {
             mAttributesTerms = terms;
             mCheckBox.setText(terms.getName());
+            if(mFilteredAttributes!=null&&mFilteredAttributes.size()>0&&mFilteredAttributes.contains(mAttributesTerms.getName())){
+                mCheckBox.setChecked(true);
+            }
         }
     }
 

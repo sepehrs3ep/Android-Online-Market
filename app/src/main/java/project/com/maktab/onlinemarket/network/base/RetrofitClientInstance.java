@@ -1,6 +1,7 @@
 package project.com.maktab.onlinemarket.network.base;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Credentials;
 import okhttp3.Interceptor;
@@ -20,6 +21,9 @@ public class RetrofitClientInstance {
     public static Retrofit getRetrofitInstance() {
         if (retrofitInstance == null) {
             OkHttpClient client = new OkHttpClient.Builder()
+                    .readTimeout(100,TimeUnit.SECONDS)
+                    .writeTimeout(100,TimeUnit.SECONDS)
+                    .connectTimeout(100,TimeUnit.SECONDS)
                     .addInterceptor(new BasicAuthInterceptor(USER_NAME, PASSWORD))
                     .build();
 

@@ -12,12 +12,22 @@ public class CategoryLab {
 
     private static CategoryLab mCategoryInstance;
     private List<Category> mAllCategories;
+    public  List<String> mFilteredAttributes ;
 
     private List<Category> mParentCategories;
 
     private CategoryLab() {
         mAllCategories = new ArrayList<>();
         mParentCategories = new ArrayList<>();
+        mFilteredAttributes = new ArrayList<>();
+    }
+
+    public List<String> getFilteredAttributes() {
+        return mFilteredAttributes;
+    }
+
+    public void setFilteredAttributes(List<String> filteredAttributes) {
+        mFilteredAttributes = filteredAttributes;
     }
 
     public Category getCategory(long categoryId) {

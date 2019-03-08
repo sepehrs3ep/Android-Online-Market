@@ -47,10 +47,6 @@ public class OnlineMarketApp extends Application {
 
         EventBus.getDefault().register(this);
         Log.d(Services.NOTIF_TAG,"started alarm manager");
-//        PollService.setServiceAlarm(this);
-
-        /*Intent intent  = AlarmService.newIntent(this);
-        startService(intent);*/
 
         DevOpenHelper devOpenHelper = new DevOpenHelper(this,DB_NAME);
 
@@ -65,8 +61,7 @@ public class OnlineMarketApp extends Application {
         super.onTerminate();
         EventBus.getDefault().unregister(this);
         Log.d(Services.NOTIF_TAG,"come on terminate");
-//        Intent intent  = AlarmService.newIntent(this);
-//        stopService(AlarmService.newIntent(this));
+
 
     }
 

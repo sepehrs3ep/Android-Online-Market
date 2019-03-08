@@ -89,6 +89,7 @@ public class CompleteProductListFragment extends VisibleFragment {
     private TextView textCartItemCount;
     private boolean mIsGridShow;
     private int mSortType;
+    private List<String> mFilteredAttributes;
     private ActionBar actionBar;
     private CardView mFilterCardView, mSortCardView;
     private ImageButton mChangeRecyclerLayoutImageBtn;
@@ -120,6 +121,7 @@ public class CompleteProductListFragment extends VisibleFragment {
         super.onCreate(savedInstanceState);
         getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         setHasOptionsMenu(true);
+        mFilteredAttributes =  CategoryLab.getmCategoryInstance().getFilteredAttributes();
         mOrder = DESC_ORDER;
         mOrderType = getArguments().getString(ORDER_BY_ARGS);
         mCategoryId = getArguments().getLong(CATEGORY_ID_ARGS);
@@ -133,7 +135,7 @@ public class CompleteProductListFragment extends VisibleFragment {
         mPageCounter = 1;
         NO_MORE_PAGE = false;
         mIsGridShow = false;
-        ProductFilterFragment.mFilteredAttributes = new ArrayList<>();
+//        ProductFilterFragment.mFilteredAttributes = new ArrayList<>();
     }
 
     public CompleteProductListFragment() {
@@ -143,7 +145,7 @@ public class CompleteProductListFragment extends VisibleFragment {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void filterProducts(FilterProductMassage filterProductMassage) {
         FilterProductMassage massage = EventBus.getDefault().removeStickyEvent(FilterProductMassage.class);
-        if (ProductFilterFragment.mFilteredAttributes.size() > 0) {
+        if (mFilteredAttributes.size() > 0) {
             mPageCounter = 1;
             mProductList.clear();
             mAdapter.setProductList(mProductList);
@@ -454,22 +456,22 @@ public class CompleteProductListFragment extends VisibleFragment {
                 if (mIsSubCategory)
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                             .getProductsSubCategoires(String.valueOf(pageCounter), String.valueOf(mCategoryId), mOrderType, mOrder,
-                                    ProductFilterFragment.mFilteredAttributes.toString())
+                                    mFilteredAttributes.toString())
                             .execute();
                 else if (mIsFromSearch)
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                             .searchProducts(String.valueOf(pageCounter), mSearchedString, mOrderType, mOrder
-                                    , ProductFilterFragment.mFilteredAttributes.toString())
+                                    , mFilteredAttributes.toString())
                             .execute();
                 else if (mIsFeatured)
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                             .getAllProductWithPageFeatured(String.valueOf(pageCounter), mOrderType, mOrder,
-                                    ProductFilterFragment.mFilteredAttributes.toString())
+                                    mFilteredAttributes.toString())
                             .execute();
                 else
                     response = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                             .getAllProductWithPage(String.valueOf(pageCounter), mOrderType, mOrder,
-                                    ProductFilterFragment.mFilteredAttributes.toString()).execute();
+                                    mFilteredAttributes.toString()).execute();
                 if (response.isSuccessful()) {
                     productList = response.body();
                     if (productList == null || productList.size() <= 0)
