@@ -49,9 +49,11 @@ public interface Api {
     Call<List<Product>> searchProducts(@Query("page") String pageNumber, @Query("search") String productName
             , @Query("orderby") String orderBy, @Query("order") String order, @Query("attribute_term") String... attributes);
 
-
-    @GET("products/?")
-    Call<List<Product>> getReleatedProducts(@Query("include") String... releateds);
+/*
+    @GET("products?")
+    Call<List<Product>> getReleatedProducts(@Query("include") String... releateds);*/
+    @GET("products?")
+    Call<List<Product>> getReleatedProducts(@Query("include") String... realated);
 
 
     @GET("products/?")

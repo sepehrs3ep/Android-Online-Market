@@ -16,10 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <service
+            android:name=".service.PollJobService"
+            android:enabled="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"/>
+
         <receiver
             android:name=".receiver.AlarmReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
         <receiver
             android:name=".receiver.BootReceiver"
             android:enabled="true"
@@ -38,7 +44,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".controller.activity.ProductFilterActivity" />
         <activity android:name=".controller.activity.CompleteProductListActivity" />
-        <activity android:name=".controller.activity.ProductsSubCategoryActivity" />
         <activity android:name=".controller.activity.CategoryViewPagerActivity" />
         <activity
             android:name=".controller.activity.ProductInfoActivity"

@@ -3,6 +3,7 @@ package project.com.maktab.onlinemarket.controller.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.SpannableString;
@@ -10,6 +11,7 @@ import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,7 +55,9 @@ import project.com.maktab.onlinemarket.model.category.Category;
 import project.com.maktab.onlinemarket.model.category.CategoryLab;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.model.product.ProductLab;
+import project.com.maktab.onlinemarket.service.PollJobService;
 import project.com.maktab.onlinemarket.service.PollService;
+import project.com.maktab.onlinemarket.utils.Services;
 import project.com.maktab.onlinemarket.utils.SharedPref;
 
 /**
@@ -116,6 +120,14 @@ public class MainMarketFragment extends VisibleFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            if (!PollJobService.isScheduled(getActivity())) {
+                Log.d(Services.NOTIF_TAG, "started job manager");
+                PollJobService.scheduleService(getActivity(), true);
+            }
+        }*/
+
         mChipsCategoryList = CategoryLab.getmCategoryInstance().getParentCategories();
         setHasOptionsMenu(true);
         getActivity().getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);

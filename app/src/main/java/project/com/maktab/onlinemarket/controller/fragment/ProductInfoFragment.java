@@ -45,6 +45,7 @@ import project.com.maktab.onlinemarket.model.product.ProductLab;
 import project.com.maktab.onlinemarket.network.base.Api;
 import project.com.maktab.onlinemarket.network.base.RetrofitClientInstance;
 import project.com.maktab.onlinemarket.utils.GenerateSnackBar;
+import project.com.maktab.onlinemarket.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -194,7 +195,7 @@ public class ProductInfoFragment extends VisibleFragment {
         });
 
         RetrofitClientInstance.getRetrofitInstance().create(Api.class)
-                .getReleatedProducts(mProduct.getRelatedProducts().toString())
+                .getReleatedProducts(Utils.getRemovedBracketArray(mProduct.getRelatedProducts()))
                 .enqueue(new Callback<List<Product>>() {
                     @Override
                     public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {

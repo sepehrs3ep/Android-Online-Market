@@ -3,6 +3,7 @@ package project.com.maktab.onlinemarket;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.os.Build;
 import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
@@ -15,7 +16,7 @@ import project.com.maktab.onlinemarket.database.DaoMaster;
 import project.com.maktab.onlinemarket.database.DaoSession;
 import project.com.maktab.onlinemarket.database.DevOpenHelper;
 import project.com.maktab.onlinemarket.eventbus.NotificationMassageEvent;
-import project.com.maktab.onlinemarket.service.PollService;
+import project.com.maktab.onlinemarket.service.PollJobService;
 import project.com.maktab.onlinemarket.utils.Services;
 
 public class OnlineMarketApp extends Application {
@@ -36,21 +37,22 @@ public class OnlineMarketApp extends Application {
         return DB_NAME;
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
         createAppNotificationChanel();
 
-        if(!PollService.isAlarmOn(this))
-        PollService.setServiceAlarm(this);
+        /*if(!PollService.isAlarmOn(this))
+        PollService.setServiceAlarm(this);*/
 
 
         EventBus.getDefault().register(this);
-        Log.d(Services.NOTIF_TAG,"started alarm manager");
 
-        DevOpenHelper devOpenHelper = new DevOpenHelper(this,DB_NAME);
 
-        Database database =devOpenHelper.getWritableDb();
+        DevOpenHelper devOpenHelper = new DevOpenHelper(this, DB_NAME);
+
+        Database database = devOpenHelper.getWritableDb();
         mDaoSession = new DaoMaster(database).newSession();
 
         mInstance = this;
@@ -60,16 +62,17 @@ public class OnlineMarketApp extends Application {
     public void onTerminate() {
         super.onTerminate();
         EventBus.getDefault().unregister(this);
-        Log.d(Services.NOTIF_TAG,"come on terminate");
+        Log.d(Services.NOTIF_TAG, "come on terminate");
 
 
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onMassageEvent(NotificationMassageEvent massageEvent){
+    public void onMassageEvent(NotificationMassageEvent massageEvent) {
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(massageEvent.getReqCode(), massageEvent.getNotification());
     }
+
     private void createAppNotificationChanel() {
         NotificationChannel channel = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

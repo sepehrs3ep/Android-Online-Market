@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,6 +39,7 @@ import project.com.maktab.onlinemarket.network.base.Api;
 import project.com.maktab.onlinemarket.network.base.RetrofitClientInstance;
 import project.com.maktab.onlinemarket.utils.CustomAlertDialogFragment;
 import project.com.maktab.onlinemarket.utils.GenerateSnackBar;
+import project.com.maktab.onlinemarket.utils.Utils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -96,7 +99,7 @@ public class ShopBagDialogFragment extends DialogFragment {
 
         List<String> productIdies = ProductLab.getInstance().getShoppingBag();
 
-        RetrofitClientInstance.getRetrofitInstance().create(Api.class).getReleatedProducts(productIdies.toString())
+        RetrofitClientInstance.getRetrofitInstance().create(Api.class).getReleatedProducts(Utils.getRemovedBracketArray(productIdies))
                 .enqueue(new Callback<List<Product>>() {
                     @Override
                     public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
