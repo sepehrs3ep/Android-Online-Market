@@ -50,6 +50,10 @@
     <string name="channel_desc">خبر دادن محصولات جدید</string>
     <string name="notif_new_product">محصول جدید!</string>
 
+    <string name="province">%s : استان</string>
+    <string name="city">شهر:  s%</string>
+    <string name="call_number">شماره تماس : </string>
+
     <string name="related_products">محصولات مشابه</string>
 
     <!-- TODO: Remove or change this placeholder text -->
