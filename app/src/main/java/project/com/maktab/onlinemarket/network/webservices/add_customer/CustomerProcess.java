@@ -20,6 +20,9 @@ public class CustomerProcess {
         mCustomerId = customerId;
     }
 
+    public CustomerProcess() {
+    }
+
     public void send(Callback callback) {
         Call<CustomerResponse> call = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
                 .addCustomer(mCustomer);

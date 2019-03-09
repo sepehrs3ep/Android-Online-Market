@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import project.com.maktab.onlinemarket.controller.activity.SubmitInfoActivity;
 import project.com.maktab.onlinemarket.eventbus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
@@ -122,7 +123,13 @@ public class ShopBagDialogFragment extends DialogFragment {
                 });
 
 
-
+        mSubmitShopBagBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = SubmitInfoActivity.newIntent(getActivity());
+                startActivity(intent);
+            }
+        });
 
 
 
