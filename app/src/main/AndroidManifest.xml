@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".controller.activity.SubmitInfoActivity"></activity>
+        <activity android:name=".controller.activity.AddEditCustomerActivity"></activity>
+        <activity android:name=".controller.activity.SubmitInfoActivity" />
 
         <service
             android:name=".service.PollJobService"

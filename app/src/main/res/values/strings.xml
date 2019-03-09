@@ -53,6 +53,12 @@
     <string name="province"> %s : استان</string>
     <string name="city"> %s : شهر</string>
     <string name="submit_info_component">ثبت اطلاعات و ادامه خرید</string>
+    <string name="customer_name">نام و نام خانوادگی</string>
+    <string name="postal_code">کد پستی</string>
+    <string name="customer_address">آدرس</string>
+    <string name="customer_province">استان</string>
+    <string name="customer_city">شهر</string>
+    <string name="submit_customer">ثبت اطلاعات</string>
 
     <string name="call_number">شماره تماس : </string>
 
