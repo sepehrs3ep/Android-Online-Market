@@ -241,7 +241,7 @@ public class ProductInfoFragment extends VisibleFragment {
     }
 
     private void addProductToBag() {
-        ProductLab.getInstance().addToBag(mProduct.getId());
+        ProductLab.getInstance().insertToBag(mProduct.getId(),1);
         new GenerateSnackBar(getActivity(), R.string.add_shop_successfully).getSnackbar().show();
     }
 

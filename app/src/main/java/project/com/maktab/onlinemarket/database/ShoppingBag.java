@@ -12,10 +12,13 @@ public class ShoppingBag {
 
     private String productId;
 
-    @Generated(hash = 921778862)
-    public ShoppingBag(Long id, String productId) {
+    private int productNumber;
+
+    @Generated(hash = 1296866025)
+    public ShoppingBag(Long id, String productId, int productNumber) {
         this.id = id;
         this.productId = productId;
+        this.productNumber = productNumber;
     }
 
     @Generated(hash = 1113443636)
@@ -37,6 +40,16 @@ public class ShoppingBag {
     public void setProductId(String productId) {
         this.productId = productId;
     }
+
+    public int getProductNumber() {
+        return this.productNumber;
+    }
+
+    public void setProductNumber(int productNumber) {
+        this.productNumber = productNumber;
+    }
+
+
 
 
 }

@@ -21,4 +21,15 @@ public class OrderItem {
     public long getNumber() {
         return number;
     }
+
+    public OrderItem() {
+    }
+
+    public void setProductId(long productId) {
+        this.productId = productId;
+    }
+
+    public void setNumber(long number) {
+        this.number = number;
+    }
 }

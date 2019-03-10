@@ -2,10 +2,8 @@ package project.com.maktab.onlinemarket.controller.fragment;
 
 
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +16,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.greenrobot.eventbus.EventBus;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import project.com.maktab.onlinemarket.R;
@@ -73,11 +73,11 @@ public class AddEditCustomerFragment extends VisibleFragment {
     Button mSubmitBtn;
 
 
-    public static AddEditCustomerFragment newInstance(long customerId,boolean isEdit) {
+    public static AddEditCustomerFragment newInstance(long customerId, boolean isEdit) {
 
         Bundle args = new Bundle();
-        args.putLong(CUSTOMER_ID_ARGS,customerId);
-        args.putBoolean(FOR_EDIT_ARGS,isEdit);
+        args.putLong(CUSTOMER_ID_ARGS, customerId);
+        args.putBoolean(FOR_EDIT_ARGS, isEdit);
         AddEditCustomerFragment fragment = new AddEditCustomerFragment();
         fragment.setArguments(args);
         return fragment;
@@ -91,22 +91,22 @@ public class AddEditCustomerFragment extends VisibleFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mCustomerId = getArguments().getLong(CUSTOMER_ID_ARGS);
-        mIsEdit = getArguments().getBoolean(FOR_EDIT_ARGS,false);
+        mIsEdit = getArguments().getBoolean(FOR_EDIT_ARGS, false);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_add_edit_customer, container, false);
-        ButterKnife.bind(this,view);
+        View view = inflater.inflate(R.layout.fragment_add_edit_customer, container, false);
+        ButterKnife.bind(this, view);
 
         mSubmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(!validateCustomerAddress()||!validateCustomerCity()||!validateCustomerName()||!validateCustomerProvince()||!validateCustomerPostal()
-                ||!validateCustomerPhone()||!validateCustomerEmail()){
+                if (!validateCustomerAddress() || !validateCustomerCity() || !validateCustomerName() || !validateCustomerProvince() || !validateCustomerPostal()
+                        || !validateCustomerPhone() || !validateCustomerEmail()) {
                     return;
                 }
                 String name = mCustomerNameEditText.getText().toString();
@@ -135,11 +135,11 @@ public class AddEditCustomerFragment extends VisibleFragment {
                 customerProcess.send(new Callback() {
                     @Override
                     public void onResponse(Call call, Response response) {
-                        if(!response.isSuccessful()){
-                            Toast.makeText(getActivity(), response.code()+"", Toast.LENGTH_SHORT).show();
+                        if (!response.isSuccessful()) {
+                            Toast.makeText(getActivity(), response.code() + "", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        Toast.makeText(getActivity(), R.string.successfully +"your id is : " + ((CustomerResponse)response.body()).getId(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), R.string.successfully + "your id is : " + ((CustomerResponse) response.body()).getId(), Toast.LENGTH_SHORT).show();
                         EventBus.getDefault().postSticky(new AddCustomerMassage());
                         getActivity().finish();
 
@@ -152,13 +152,8 @@ public class AddEditCustomerFragment extends VisibleFragment {
                 });
 
 
-
-
-
             }
         });
-
-
 
 
         return view;
@@ -174,6 +169,7 @@ public class AddEditCustomerFragment extends VisibleFragment {
         }
         return true;
     }
+
     private boolean validateCustomerPhone() {
         if (mCustomerPhoneEditText.getText().toString().trim().isEmpty()) {
             mCustomerPhoneLayout.setError(getString(R.string.empty_error));
@@ -184,6 +180,7 @@ public class AddEditCustomerFragment extends VisibleFragment {
         }
         return true;
     }
+
     private boolean validateCustomerProvince() {
         if (mCustomerProvinceEditText.getText().toString().trim().isEmpty()) {
             mCustomerProvinceLayout.setError(getString(R.string.empty_error));
@@ -194,6 +191,7 @@ public class AddEditCustomerFragment extends VisibleFragment {
         }
         return true;
     }
+
     private boolean validateCustomerCity() {
         if (mCustomerCityEditText.getText().toString().trim().isEmpty()) {
             mCustomerCityLayout.setError(getString(R.string.empty_error));
@@ -204,6 +202,7 @@ public class AddEditCustomerFragment extends VisibleFragment {
         }
         return true;
     }
+
     private boolean validateCustomerPostal() {
         if (mCustomerPostalEditText.getText().toString().trim().isEmpty()) {
             mCustomerPostalLayout.setError(getString(R.string.empty_error));
@@ -214,6 +213,7 @@ public class AddEditCustomerFragment extends VisibleFragment {
         }
         return true;
     }
+
     private boolean validateCustomerAddress() {
         if (mCustomerAddressEditText.getText().toString().trim().isEmpty()) {
             mCustomerAddressLayout.setError(getString(R.string.empty_error));
@@ -224,9 +224,15 @@ public class AddEditCustomerFragment extends VisibleFragment {
         }
         return true;
     }
+
     private boolean validateCustomerEmail() {
-        if (mCustomerEmailEditText.getText().toString().trim().isEmpty()) {
+        String emailText = mCustomerEmailEditText.getText().toString().trim();
+        if (emailText.isEmpty()) {
             mCustomerEmailLayout.setError(getString(R.string.empty_error));
+            requestFocus(mCustomerEmailEditText);
+            return false;
+        } if (!TextUtils.isEmpty(emailText) && Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
+            mCustomerEmailLayout.setError(getString(R.string.email_wrong));
             requestFocus(mCustomerEmailEditText);
             return false;
         } else {
@@ -236,13 +242,11 @@ public class AddEditCustomerFragment extends VisibleFragment {
     }
 
 
-
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
-
 
 
 }

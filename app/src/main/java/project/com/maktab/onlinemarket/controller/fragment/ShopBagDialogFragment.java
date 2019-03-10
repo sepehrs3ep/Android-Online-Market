@@ -4,16 +4,11 @@ package project.com.maktab.onlinemarket.controller.fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,17 +18,19 @@ import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import project.com.maktab.onlinemarket.controller.activity.SubmitInfoActivity;
-import project.com.maktab.onlinemarket.eventbus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
+import project.com.maktab.onlinemarket.controller.activity.SubmitInfoActivity;
+import project.com.maktab.onlinemarket.eventbus.BadgeMassageEvent;
 import project.com.maktab.onlinemarket.model.product.Product;
 import project.com.maktab.onlinemarket.model.product.ProductLab;
 import project.com.maktab.onlinemarket.network.base.Api;
@@ -50,11 +47,11 @@ import retrofit2.Response;
  */
 public class ShopBagDialogFragment extends DialogFragment {
     @BindView(R.id.shop_final_sum_text_view)
-     TextView mShopFinalSumTextView;
+    TextView mShopFinalSumTextView;
     @BindView(R.id.submit_shop_bag_btn)
     Button mSubmitShopBagBtn;
     @BindView(R.id.shop_bag_recycler_view)
-     RecyclerView mShopBagRecyclerView;
+    RecyclerView mShopBagRecyclerView;
     @BindView(R.id.shop_bag_progress_bar)
     ProgressBar mProgressBar;
 
@@ -89,8 +86,8 @@ public class ShopBagDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view =  inflater.inflate(R.layout.fragment_shop_bag_dialog, container, false);
-        ButterKnife.bind(this,view);
+        View view = inflater.inflate(R.layout.fragment_shop_bag_dialog, container, false);
+        ButterKnife.bind(this, view);
         mShopBagRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         /*mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setMessage(getString(R.string.progress_product));
@@ -104,13 +101,13 @@ public class ShopBagDialogFragment extends DialogFragment {
                 .enqueue(new Callback<List<Product>>() {
                     @Override
                     public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                        if(!response.isSuccessful()){
+                        if (!response.isSuccessful()) {
                             Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
                             return;
                         }
                         mBagShopProductList = response.body();
-                        if(mBagShopProductList==null||mBagShopProductList.size()<=0){
-                            new GenerateSnackBar(getActivity(),R.string.no_item).getSnackbar().show();
+                        if (mBagShopProductList == null || mBagShopProductList.size() <= 0) {
+                            new GenerateSnackBar(getActivity(), R.string.no_item).getSnackbar().show();
                         }
                         updateUI();
                         mProgressBar.setVisibility(View.GONE);
@@ -132,55 +129,64 @@ public class ShopBagDialogFragment extends DialogFragment {
         });
 
 
-
         return view;
     }
-    private void updateUI(){
 
-        if(mBagShopProductList==null||mBagShopProductList.size()<=0)
-            new GenerateSnackBar(getActivity(),R.string.no_item).getSnackbar().show();
-        if(mAdapter==null){
+    private void updateUI() {
+
+        if (mBagShopProductList == null || mBagShopProductList.size() <= 0)
+            new GenerateSnackBar(getActivity(), R.string.no_item).getSnackbar().show();
+        if (mAdapter == null) {
             mAdapter = new ShopBagAdapter(mBagShopProductList);
             mShopBagRecyclerView.setAdapter(mAdapter);
-        }else {
+        } else {
             mAdapter.setProductList(mBagShopProductList);
             mAdapter.notifyDataSetChanged();
         }
         calculateProductsPrice();
 
 
-
     }
-    private void calculateProductsPrice(){
-        double finalValue = 0 ;
-        for(Product product:mBagShopProductList){
+
+    private void calculateProductsPrice() {
+        double finalValue = 0;
+        for (Product product : mBagShopProductList) {
             double price = Double.valueOf(product.getPrice());
             finalValue += price;
         }
 
-        mShopFinalSumTextView.setText(getString(R.string.price_format,finalValue + " "));
+        mShopFinalSumTextView.setText(getString(R.string.price_format, finalValue + " "));
     }
-     class ShopBagViewHolder extends RecyclerView.ViewHolder {
+
+    class ShopBagViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.product_shop_bag_image)
         ImageView mProductImage;
         @BindView(R.id.product_shop_bag_name_text_view)
-         TextView mProductName;
+        TextView mProductName;
         @BindView(R.id.full_price_text_view)
-         TextView mProductFullPrice;
+        TextView mProductFullPrice;
         @BindView(R.id.final_price_text_view)
-         TextView mProductFinalPrice;
+        TextView mProductFinalPrice;
         @BindView(R.id.delete_product_bag_btn)
-         Button mDeleteProductBtn;
+        Button mDeleteProductBtn;
+        @BindView(R.id.minus_product_number)
+        ImageButton mMinusBtn;
+        @BindView(R.id.add_product_number)
+        ImageButton mAddbtn;
+        @BindView(R.id.product_number_text_view)
+        TextView mProductNumber;
+
+        private int productNumber = 1;
 
         private Product mProduct;
 
 
         public ShopBagViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             mDeleteProductBtn.setOnClickListener(v -> {
                 CustomAlertDialogFragment dialogFragment = CustomAlertDialogFragment.newInstance(getString(R.string.dialog_bag_question));
-                dialogFragment.show(getFragmentManager(),"sure for delete");
+                dialogFragment.show(getFragmentManager(), "sure for delete");
                 dialogFragment.setOnYesNoClick(new CustomAlertDialogFragment.OnYesNoDialogClick() {
                     @Override
                     public void onYesClicked() {
@@ -193,20 +199,41 @@ public class ShopBagDialogFragment extends DialogFragment {
 
                     @Override
                     public void onNoClicked() {
-                    dialogFragment.dismiss();
+                        dialogFragment.dismiss();
                     }
                 });
 
 
-
             });
             mProductImage.setOnClickListener(v -> {
-                Intent intent = ProductInfoActivity.newIntent(getActivity(),mProduct.getId());
+                Intent intent = ProductInfoActivity.newIntent(getActivity(), mProduct.getId());
                 startActivity(intent);
             });
+            mMinusBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    productNumber--;
+                    if (productNumber < 1)
+                        productNumber = 1;
+                    mProductNumber.setText(productNumber + " ");
+                    ProductLab.getInstance().insertToBag(mProduct.getId(), productNumber);
+
+                }
+            });
+            mAddbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (productNumber >= 1)
+                        productNumber++;
+                    mProductNumber.setText(productNumber + " ");
+                    ProductLab.getInstance().insertToBag(mProduct.getId(), productNumber);
+                }
+            });
+
 
         }
-        public void bind(Product product){
+
+        public void bind(Product product) {
             mProduct = product;
             Picasso.get().load(product.getImages().get(0).getPath()).into(mProductImage);
             mProductName.setText(product.getName());
@@ -214,7 +241,8 @@ public class ShopBagDialogFragment extends DialogFragment {
             mProductFinalPrice.setText(product.getRegularPrice());
         }
     }
-    private class  ShopBagAdapter extends RecyclerView.Adapter<ShopBagViewHolder>{
+
+    private class ShopBagAdapter extends RecyclerView.Adapter<ShopBagViewHolder> {
         private List<Product> mProductList;
 
         public ShopBagAdapter(List<Product> productList) {
@@ -228,7 +256,7 @@ public class ShopBagDialogFragment extends DialogFragment {
         @NonNull
         @Override
         public ShopBagViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.shop_bag_list_item,parent,false);
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.shop_bag_list_item, parent, false);
 
             return new ShopBagViewHolder(view);
         }

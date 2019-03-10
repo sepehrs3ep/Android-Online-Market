@@ -25,4 +25,15 @@ public class Order {
     public List<OrderItem> getOrderItemsList() {
         return orderItemsList;
     }
+
+    public Order() {
+    }
+
+    public void setBilling(Billing billing) {
+        this.billing = billing;
+    }
+
+    public void setOrderItemsList(List<OrderItem> orderItemsList) {
+        this.orderItemsList = orderItemsList;
+    }
 }

@@ -102,10 +102,53 @@
                     android:layout_height="wrap_content" />
 
 
+
+
             </LinearLayout>
 
 
+
         </androidx.cardview.widget.CardView>
+        <TextView
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:text="@string/product_number"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="100dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/minus_product_number"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:src="@drawable/ic_minus"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/product_number_text_view"
+                android:textColor="@android:color/black"
+                android:textSize="30sp"
+                android:text="1"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <ImageButton
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:src="@drawable/ic_add_info"
+                android:id="@+id/add_product_number"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/delete_product_bag_btn"

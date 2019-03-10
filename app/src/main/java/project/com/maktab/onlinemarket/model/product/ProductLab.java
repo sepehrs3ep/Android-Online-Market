@@ -65,14 +65,21 @@ public class ProductLab {
         mAllProducts.addAll(mFeaturedProducts);
     }
 
-    public void addToBag(String id) {
+
+    public void insertToBag(String id,int number) {
         List<ShoppingBag> checkList = mBagDao.queryBuilder()
                 .where(ShoppingBagDao.Properties.ProductId.eq(id))
                 .list();
-        if (checkList != null && checkList.size() > 0)
+
+        if (checkList != null && checkList.size() > 0){
+            ShoppingBag updateBag = checkList.get(0);
+            updateBag.setProductNumber(number);
+            mBagDao.update(updateBag);
             return;
+        }
         ShoppingBag shoppingBag = new ShoppingBag();
         shoppingBag.setProductId(id);
+        shoppingBag.setProductNumber(number);
         mBagDao.insert(shoppingBag);
     }
 
@@ -120,6 +127,10 @@ public class ProductLab {
             result = list.stream().map(FavoriteProducts::getProductId).collect(Collectors.toList());
         }
         return result;
+    }
+
+    public List<ShoppingBag> getAllShopBagEntity(){
+        return mBagDao.loadAll();
     }
 
     public List<String> getShoppingBag() {

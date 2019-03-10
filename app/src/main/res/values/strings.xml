@@ -62,6 +62,8 @@
     <string name="empty_error">لطفا فیلد خالی را پر کنید.</string>
     <string name="successfully">با موفقیت انجام شد</string>
     <string name="email">آدرس ایمیل</string>
+    <string name="email_wrong">اشکال در نوع ایمیل</string>
+    <string name="product_number">تعداد:</string>
 
     <string name="call_number">شماره تماس : </string>
 
