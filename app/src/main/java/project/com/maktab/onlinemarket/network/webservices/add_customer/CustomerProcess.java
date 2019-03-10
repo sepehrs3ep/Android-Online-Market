@@ -38,4 +38,11 @@ public class CustomerProcess {
                 .getAllCustomers();
         call.enqueue(callback);
     }
+    public void updateCustomer(Callback callback){
+        Call<CustomerResponse> call = RetrofitClientInstance.getRetrofitInstance().create(Api.class)
+                .updateCustomer(mCustomerId);
+        call.enqueue(callback);
+
+    }
+
 }

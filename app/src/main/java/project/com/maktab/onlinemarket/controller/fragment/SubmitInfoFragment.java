@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -189,6 +190,9 @@ public class SubmitInfoFragment extends VisibleFragment {
 
 
     class CustomerInfoHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.edit_customer_info_image_view)
+        ImageView mEditCustomerImageView;
+
         @BindView(R.id.customer_name_text_view)
         TextView mCustomerNameTv;
         @BindView(R.id.province_text_view)
@@ -200,13 +204,25 @@ public class SubmitInfoFragment extends VisibleFragment {
         @BindView(R.id.call_number_text_view)
         TextView mNumberTextView;
 
+        private Customer mCustomer;
+
         public CustomerInfoHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
+            mEditCustomerImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = AddEditCustomerActivity.newIntent(getActivity(),mCustomer.getId(),true);
+                    startActivity(intent);
+                }
+            });
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+
                     if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
 
                     // Updating old as well as new positions
@@ -221,6 +237,7 @@ public class SubmitInfoFragment extends VisibleFragment {
         }
 
         public void bind(Customer customer) {
+            mCustomer = customer;
             mCustomerNameTv.setText(customer.getName().concat(customer.getLastName()));
             mProvinceTextView.setText(getString(R.string.province, customer.getBilling().getCountry()));
             mCityTextView.setText(getString(R.string.city, customer.getBilling().getCity()));

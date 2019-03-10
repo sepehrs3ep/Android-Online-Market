@@ -2,7 +2,6 @@ package project.com.maktab.onlinemarket.controller.fragment;
 
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -38,6 +38,9 @@ public class AddEditCustomerFragment extends VisibleFragment {
     private static final String FOR_EDIT_ARGS = "FOR_EDIT_ARGS";
     private long mCustomerId;
     private boolean mIsEdit;
+
+    @BindView(R.id.get_customer_progress_bar)
+    ProgressBar mProgressBar;
 
     @BindView(R.id.customer_name_layout)
     TextInputLayout mCustomerNameLayout;
@@ -101,6 +104,39 @@ public class AddEditCustomerFragment extends VisibleFragment {
         View view = inflater.inflate(R.layout.fragment_add_edit_customer, container, false);
         ButterKnife.bind(this, view);
 
+        if (mIsEdit) {
+            mProgressBar.setVisibility(View.VISIBLE);
+            CustomerProcess customerProcess = new CustomerProcess(String.valueOf(mCustomerId));
+            customerProcess.getCustomer(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    if (!response.isSuccessful()) {
+                        Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
+                        mProgressBar.setVisibility(View.GONE);
+                        return;
+                    }
+                    Customer customer = (Customer) response.body();
+                    mCustomerNameEditText.setText(customer.getName().concat(customer.getLastName()));
+                    mCustomerPhoneEditText.setText(customer.getBilling().getPhone());
+                    mCustomerEmailEditText.setText(customer.getEmail());
+                    mCustomerProvinceEditText.setText(customer.getBilling().getCountry());
+                    mCustomerCityEditText.setText(customer.getBilling().getCity());
+                    mCustomerPostalEditText.setText(customer.getBilling().getPostCode());
+                    mCustomerAddressEditText.setText(customer.getBilling().getFirstAddress());
+                    mProgressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
+                    mProgressBar.setVisibility(View.GONE);
+                }
+            });
+
+
+        }
+
+
         mSubmitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,9 +155,9 @@ public class AddEditCustomerFragment extends VisibleFragment {
                 String email = mCustomerEmailEditText.getText().toString();
 
                 Customer customer = new Customer();
-                Billing billing = new Billing();
                 customer.setName(splited[0]);
                 customer.setLastName(splited[1]);
+                Billing billing = new Billing();
                 billing.setName(splited[0]);
                 billing.setLastName(splited[1]);
                 billing.setEmail(email);
@@ -130,29 +166,53 @@ public class AddEditCustomerFragment extends VisibleFragment {
                 billing.setPhone(phone);
                 billing.setFirstAddress(address);
                 billing.setPostCode(postal);
-                customer.setBilling(billing);
+
                 customer.setEmail(email);
 
+                if (mIsEdit) {
+                    CustomerProcess customerProcess = new CustomerProcess(String.valueOf(mCustomerId));
+                    customerProcess.updateCustomer(new Callback() {
+                        @Override
+                        public void onResponse(Call call, Response response) {
+                            if (!response.isSuccessful()) {
+                                Toast.makeText(getActivity(), response.code() + "", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            Toast.makeText(getActivity(), R.string.successfully + "your id is : " + ((CustomerResponse) response.body()).getId(), Toast.LENGTH_SHORT).show();
+                            EventBus.getDefault().postSticky(new AddCustomerMassage());
+                            getActivity().finish();
 
-                CustomerProcess customerProcess = new CustomerProcess(customer);
-                customerProcess.send(new Callback() {
-                    @Override
-                    public void onResponse(Call call, Response response) {
-                        if (!response.isSuccessful()) {
-                            Toast.makeText(getActivity(), response.code() + "", Toast.LENGTH_SHORT).show();
-                            return;
                         }
-                        Toast.makeText(getActivity(), R.string.successfully + "your id is : " + ((CustomerResponse) response.body()).getId(), Toast.LENGTH_SHORT).show();
-                        EventBus.getDefault().postSticky(new AddCustomerMassage());
-                        getActivity().finish();
 
-                    }
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+                            Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-                    @Override
-                    public void onFailure(Call call, Throwable t) {
-                        Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
-                    }
-                });
+
+                } else {
+                    customer.setBilling(billing);
+                    CustomerProcess customerProcess = new CustomerProcess(customer);
+                    customerProcess.send(new Callback() {
+                        @Override
+                        public void onResponse(Call call, Response response) {
+                            if (!response.isSuccessful()) {
+                                Toast.makeText(getActivity(), response.code() + "", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            Toast.makeText(getActivity(), R.string.successfully + "your id is : " + ((CustomerResponse) response.body()).getId(), Toast.LENGTH_SHORT).show();
+                            EventBus.getDefault().postSticky(new AddCustomerMassage());
+                            getActivity().finish();
+
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+                            Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
 
 
             }
@@ -234,7 +294,8 @@ public class AddEditCustomerFragment extends VisibleFragment {
             mCustomerEmailLayout.setError(getString(R.string.empty_error));
             requestFocus(mCustomerEmailEditText);
             return false;
-        } if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
             mCustomerEmailLayout.setError(getString(R.string.email_wrong));
             requestFocus(mCustomerEmailEditText);
             return false;

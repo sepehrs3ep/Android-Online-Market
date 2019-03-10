@@ -22,6 +22,7 @@
             android:textDirection="rtl"
             android:layout_height="40dp" />
             <ImageView
+                android:id="@+id/edit_customer_info_image_view"
                 android:src="@drawable/ic_edit_info"
                 android:layout_weight="1"
                 android:layout_width="0dp"
