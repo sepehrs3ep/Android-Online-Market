@@ -70,4 +70,43 @@ public class Billing {
         this.phone = phone;
         this.postCode = postCode;
     }
+
+    public Billing() {
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setFirstAddress(String firstAddress) {
+        this.firstAddress = firstAddress;
+    }
+
+    public void setSecondAddress(String secondAddress) {
+        this.secondAddress = secondAddress;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+    }
 }

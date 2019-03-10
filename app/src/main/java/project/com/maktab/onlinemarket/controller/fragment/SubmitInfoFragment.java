@@ -1,6 +1,7 @@
 package project.com.maktab.onlinemarket.controller.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,10 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -21,6 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.activity.AddEditCustomerActivity;
+import project.com.maktab.onlinemarket.eventbus.AddCustomerMassage;
 import project.com.maktab.onlinemarket.model.customer.Customer;
 import project.com.maktab.onlinemarket.network.webservices.add_customer.CustomerProcess;
 import retrofit2.Call;
@@ -30,7 +37,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SubmitInfoFragment extends Fragment {
+public class SubmitInfoFragment extends VisibleFragment {
 
     @BindView(R.id.customer_info_recycler)
     RecyclerView mCustomerInfoRecycler;
@@ -66,9 +73,24 @@ public class SubmitInfoFragment extends Fragment {
         mCustomerInfoRecycler.setLayoutManager(getHorizontalLayoutManager());
         updateUI();
 
+        mAddCustomerFloatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = AddEditCustomerActivity.newIntent(getActivity(),-1,false);
+                startActivity(intent);
+            }
+        });
+
 
         return view;
     }
+
+    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
+    public void addCustomerListener(AddCustomerMassage addCustomerMassage){
+        EventBus.getDefault().removeStickyEvent(addCustomerMassage);
+        updateUI();
+    }
+
     private void updateUI(){
         mProgressBar.setVisibility(View.VISIBLE);
 
