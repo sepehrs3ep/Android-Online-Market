@@ -122,6 +122,9 @@ public class AddEditCustomerFragment extends VisibleFragment {
                 Billing billing = new Billing();
                 customer.setName(splited[0]);
                 customer.setLastName(splited[1]);
+                billing.setName(splited[0]);
+                billing.setLastName(splited[1]);
+                billing.setEmail(email);
                 billing.setCity(city);
                 billing.setCountry(province);
                 billing.setPhone(phone);
@@ -231,7 +234,7 @@ public class AddEditCustomerFragment extends VisibleFragment {
             mCustomerEmailLayout.setError(getString(R.string.empty_error));
             requestFocus(mCustomerEmailEditText);
             return false;
-        } if (!TextUtils.isEmpty(emailText) && Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
+        } if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
             mCustomerEmailLayout.setError(getString(R.string.email_wrong));
             requestFocus(mCustomerEmailEditText);
             return false;

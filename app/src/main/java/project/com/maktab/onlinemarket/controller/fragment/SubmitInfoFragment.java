@@ -2,6 +2,7 @@ package project.com.maktab.onlinemarket.controller.fragment;
 
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,9 +30,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import project.com.maktab.onlinemarket.R;
 import project.com.maktab.onlinemarket.controller.activity.AddEditCustomerActivity;
+import project.com.maktab.onlinemarket.database.ShoppingBag;
 import project.com.maktab.onlinemarket.eventbus.AddCustomerMassage;
 import project.com.maktab.onlinemarket.model.customer.Customer;
+import project.com.maktab.onlinemarket.model.order.Order;
+import project.com.maktab.onlinemarket.model.order.OrderItem;
+import project.com.maktab.onlinemarket.model.product.ProductLab;
 import project.com.maktab.onlinemarket.network.webservices.add_customer.CustomerProcess;
+import project.com.maktab.onlinemarket.network.webservices.add_order.OrderProcess;
+import project.com.maktab.onlinemarket.network.webservices.add_order.OrderResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,8 +56,9 @@ public class SubmitInfoFragment extends VisibleFragment {
     ProgressBar mProgressBar;
     @BindView(R.id.submit_customer_info_btn)
     Button mSubmitCustomerBtn;
-
+    int selected_position = 0;
     private CustomerInfoAdapter mAdapter;
+    private List<Customer> mCustomerList;
 
     public static SubmitInfoFragment newInstance() {
 
@@ -63,6 +73,11 @@ public class SubmitInfoFragment extends VisibleFragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mCustomerList = new ArrayList<>();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,8 +91,49 @@ public class SubmitInfoFragment extends VisibleFragment {
         mAddCustomerFloatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = AddEditCustomerActivity.newIntent(getActivity(),-1,false);
+                Intent intent = AddEditCustomerActivity.newIntent(getActivity(), -1, false);
                 startActivity(intent);
+            }
+        });
+
+        mSubmitCustomerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Customer customer = mCustomerList.get(selected_position);
+
+                List<OrderItem> orderItemList = new ArrayList<>();
+                List<ShoppingBag> shoppingBags = ProductLab.getInstance().getAllShopBagEntity();
+                for (ShoppingBag bags : shoppingBags) {
+
+                    OrderItem orderItem = new OrderItem();
+                    orderItem.setNumber(bags.getProductNumber());
+                    orderItem.setProductId(bags.getId());
+
+                }
+
+                Order order = new Order();
+                order.setOrderItemsList(orderItemList);
+                order.setBilling(customer.getBilling());
+
+                OrderProcess orderProcess = new OrderProcess(order);
+                orderProcess.send(new Callback() {
+                    @Override
+                    public void onResponse(Call call, Response response) {
+                        if (!response.isSuccessful()) {
+                            Toast.makeText(getActivity(), R.string.problem_response + response.code() + " ", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Toast.makeText(getActivity(), R.string.successfully + ((OrderResponse) response.body()).getId() + " ", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+                        Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
             }
         });
 
@@ -85,31 +141,31 @@ public class SubmitInfoFragment extends VisibleFragment {
         return view;
     }
 
-    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
-    public void addCustomerListener(AddCustomerMassage addCustomerMassage){
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void addCustomerListener(AddCustomerMassage addCustomerMassage) {
         EventBus.getDefault().removeStickyEvent(addCustomerMassage);
         updateUI();
     }
 
-    private void updateUI(){
+    private void updateUI() {
         mProgressBar.setVisibility(View.VISIBLE);
 
-        if(isAdded()){
+        if (isAdded()) {
             CustomerProcess customerProcess = new CustomerProcess();
             customerProcess.getAllCustomerList(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
-                    if(!response.isSuccessful()){
+                    if (!response.isSuccessful()) {
                         Toast.makeText(getActivity(), R.string.problem_response, Toast.LENGTH_SHORT).show();
                         mProgressBar.setVisibility(View.GONE);
                         return;
                     }
-                    List<Customer> customerList = (List<Customer>) response.body();
-                    if(mAdapter==null){
-                        mAdapter = new CustomerInfoAdapter(customerList);
+                    mCustomerList = (List<Customer>) response.body();
+                    if (mAdapter == null) {
+                        mAdapter = new CustomerInfoAdapter();
                         mCustomerInfoRecycler.setAdapter(mAdapter);
-                    }else {
-                        mAdapter.setCustomerList(customerList);
+                    } else {
+//                        mAdapter.setCustomerList(customerList);
                         mAdapter.notifyDataSetChanged();
                     }
                     mProgressBar.setVisibility(View.GONE);
@@ -132,7 +188,7 @@ public class SubmitInfoFragment extends VisibleFragment {
     }
 
 
-     class CustomerInfoHolder extends RecyclerView.ViewHolder {
+    class CustomerInfoHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.customer_name_text_view)
         TextView mCustomerNameTv;
         @BindView(R.id.province_text_view)
@@ -147,12 +203,27 @@ public class SubmitInfoFragment extends VisibleFragment {
         public CustomerInfoHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getAdapterPosition() == RecyclerView.NO_POSITION) return;
+
+                    // Updating old as well as new positions
+                    mAdapter.notifyItemChanged(selected_position);
+                    selected_position = getAdapterPosition();
+                    mAdapter.notifyItemChanged(selected_position);
+
+                }
+            });
+
+
         }
 
         public void bind(Customer customer) {
             mCustomerNameTv.setText(customer.getName().concat(customer.getLastName()));
-            mProvinceTextView.setText(getString(R.string.province,customer.getBilling().getCountry()));
-            mCityTextView.setText(getString(R.string.city,customer.getBilling().getCity()));
+            mProvinceTextView.setText(getString(R.string.province, customer.getBilling().getCountry()));
+            mCityTextView.setText(getString(R.string.city, customer.getBilling().getCity()));
             mAddressTextView.setText(customer.getBilling().getFirstAddress());
             mNumberTextView.setText(customer.getBilling().getPhone());
 
@@ -161,15 +232,6 @@ public class SubmitInfoFragment extends VisibleFragment {
     }
 
     private class CustomerInfoAdapter extends RecyclerView.Adapter<CustomerInfoHolder> {
-        private List<Customer> mCustomerList;
-
-        public CustomerInfoAdapter(List<Customer> customerList) {
-            mCustomerList = customerList;
-        }
-
-        public void setCustomerList(List<Customer> customerList) {
-            mCustomerList = customerList;
-        }
 
         @NonNull
         @Override
@@ -180,6 +242,7 @@ public class SubmitInfoFragment extends VisibleFragment {
 
         @Override
         public void onBindViewHolder(@NonNull CustomerInfoHolder holder, int position) {
+            holder.itemView.setBackgroundColor(selected_position == position ? Color.GREEN : Color.TRANSPARENT);
             Customer customer = mCustomerList.get(position);
             holder.bind(customer);
         }
