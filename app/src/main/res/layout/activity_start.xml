@@ -6,36 +6,48 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".controller.fragment.StartFragment">
-  <!--  <com.airbnb.lottie.LottieAnimationView
+    tools:context=".controller.activity.StartActivity">
+    <ImageView
+        android:background="@android:color/white"
+        android:src="@drawable/shoplogo"
+        android:layout_margin="8dp"
+        android:scaleType="centerCrop"
+        android:cropToPadding="true"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/bag_lottie_animation"
         android:layout_width="match_parent"
         app:lottie_autoPlay="true"
+        android:layout_marginTop="16dp"
         app:lottie_fileName="bag.json"
         app:lottie_loop="true"
         app:lottie_repeatMode="reverse"
         app:lottie_scale="@android:integer/config_longAnimTime"
-
         android:layout_height="match_parent" />
     <com.airbnb.lottie.LottieAnimationView
         app:lottie_fileName="connection.json"
         android:id="@+id/no_internet_lottie_animation"
         app:lottie_loop="true"
+        android:layout_marginTop="16dp"
+
         app:lottie_repeatMode="reverse"
         app:lottie_scale="@android:integer/config_longAnimTime"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />-->
+        android:layout_height="match_parent" />
 
     <Button
         android:id="@+id/try_again_btn"
         style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="200dp"
         android:layout_gravity="center"
+
         android:padding="4dp"
         android:layout_marginTop="100dp"
         android:background="@drawable/button_border"
-        android:textColor="@android:color/white"
-        android:textSize="23sp"
+        android:textColor="@android:color/black"
+        android:textSize="25sp"
         android:layout_height="wrap_content"
         android:text="@string/try_again" />
 
