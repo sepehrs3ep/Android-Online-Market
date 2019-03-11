@@ -1,6 +1,7 @@
 package project.com.maktab.onlinemarket.controller.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -9,10 +10,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -21,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.activity.MapsActivity;
 import project.com.maktab.onlinemarket.eventbus.AddCustomerMassage;
 import project.com.maktab.onlinemarket.model.customer.Billing;
 import project.com.maktab.onlinemarket.model.customer.Customer;
@@ -42,6 +46,8 @@ public class AddEditCustomerFragment extends VisibleFragment {
     @BindView(R.id.get_customer_progress_bar)
     ProgressBar mProgressBar;
 
+    @BindView(R.id.select_map_image_view)
+    ImageView mMapImageView;
     @BindView(R.id.customer_name_layout)
     TextInputLayout mCustomerNameLayout;
     @BindView(R.id.customer_phone_layout)
@@ -104,6 +110,15 @@ public class AddEditCustomerFragment extends VisibleFragment {
         View view = inflater.inflate(R.layout.fragment_add_edit_customer, container, false);
         ButterKnife.bind(this, view);
         mProgressBar.setVisibility(View.GONE);
+        Picasso.get().load(R.drawable.mapmap).into(mMapImageView);
+
+        mMapImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = MapsActivity.newIntent(getActivity());
+                startActivity(intent);
+            }
+        });
 
         if (mIsEdit) {
             mProgressBar.setVisibility(View.VISIBLE);
