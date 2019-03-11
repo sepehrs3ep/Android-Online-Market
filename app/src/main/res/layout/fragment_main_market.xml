@@ -11,7 +11,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
+        android:padding="4dp"
         android:layout_height="match_parent">
 
 
@@ -23,6 +24,7 @@
                 android:id="@+id/main_photo_gallery_view_pager"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
+                android:layout_margin="0dp"
                 android:layout_marginTop="8dp"
                 android:padding="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +35,6 @@
                 android:id="@+id/main_photo_gallery_tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/main_photo_gallery_view_pager"
@@ -45,7 +46,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-
+                app:layout_goneMarginTop="4dp"
                 android:id="@+id/chips_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
@@ -112,7 +113,7 @@
                 android:layout_width="match_parent"
                 app:layout_constraintBottom_toTopOf="@+id/rated_products_recycler_view"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="8dp"
+                android:layout_marginTop="32dp"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chips_recyclerView"
@@ -144,17 +145,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:background="@android:color/darker_gray"
+                android:background="@color/gainsboro"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/visited_layout_root" />
 
             <LinearLayout
-                android:layout_margin="8dp"
                 android:id="@+id/visited_layout_root"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
+                android:layout_marginTop="40dp"
                 app:layout_constraintBottom_toTopOf="@+id/visited_products_recycler_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="parent"
@@ -200,12 +201,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/rated_products_recycler_view" />-->
 
             <androidx.recyclerview.widget.RecyclerView
-                android:background="@android:color/darker_gray"
+                android:background="@color/gainsboro"
 
                 android:id="@+id/rated_products_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rate_root_layout" />
@@ -245,9 +246,10 @@
                 android:id="@+id/new_product_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:background="@android:color/darker_gray"
+                android:background="@color/gainsboro"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title_rate_layout"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -261,7 +263,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:background="@android:color/darker_gray"
+                android:layout_marginTop="4dp"
+                android:background="@color/gainsboro"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/featured_root_layout"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -275,7 +278,7 @@
                 android:layout_width="match_parent"
                 app:layout_constraintBottom_toTopOf="@+id/featured_recycler_view"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="8dp"
+                android:layout_marginTop="40dp"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/visited_products_recycler_view"

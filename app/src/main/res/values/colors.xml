@@ -3,4 +3,5 @@
     <color name="colorPrimary">#ff1744</color>
     <color name="colorPrimaryDark">#c4001d</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="gainsboro">#DCDCDC	</color>
 </resources>

@@ -63,6 +63,9 @@ public class SearchProductsDialogFragment extends VisibleDialogFragment {
         View view = inflater.inflate(R.layout.fragment_search_products_dialog, container, false);
         mSearchView = view.findViewById(R.id.search_fragment_search_view);
 
+        mSearchView.setFocusable(true);
+        mSearchView.setIconified(false);
+        mSearchView.requestFocusFromTouch();
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
