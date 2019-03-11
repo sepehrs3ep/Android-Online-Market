@@ -103,6 +103,7 @@ public class AddEditCustomerFragment extends VisibleFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_edit_customer, container, false);
         ButterKnife.bind(this, view);
+        mProgressBar.setVisibility(View.GONE);
 
         if (mIsEdit) {
             mProgressBar.setVisibility(View.VISIBLE);
