@@ -7,7 +7,7 @@
 
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:fontFamily">@font/font_style_market</item>
+        <!--<item name="android:fontFamily">@font/font_style_market</item>-->
     </style>
 
 

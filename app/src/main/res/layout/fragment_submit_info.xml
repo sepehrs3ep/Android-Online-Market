@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:layout_margin="8dp"
     tools:context=".controller.fragment.SubmitInfoFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,11 +14,29 @@
         android:layout_height="match_parent">
 
 
+        <ProgressBar
+            android:id="@+id/submit_info_progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="@id/root_customer_layout"
+            app:layout_constraintHorizontal_bias="0.552"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/customer_info_recycler"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/add_info_float_btn"
             app:layout_constraintEnd_toEndOf="@id/root_customer_layout"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@id/root_customer_layout"
@@ -28,24 +47,12 @@
             android:id="@+id/add_info_float_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:src="@drawable/ic_add_info"
-            app:layout_constraintEnd_toEndOf="@id/root_customer_layout"
-            app:layout_constraintTop_toBottomOf="@+id/customer_info_recycler" />
+            app:layout_constraintBottom_toTopOf="@+id/submit_customer_info_btn"
+            app:layout_constraintEnd_toEndOf="@id/root_customer_layout" />
 
-        <ProgressBar
-            android:id="@+id/submit_info_progress_bar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center"
-            app:layout_constraintBottom_toBottomOf="@id/root_customer_layout"
-            app:layout_constraintEnd_toEndOf="@id/root_customer_layout"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customer_info_recycler" />
 
 
 
@@ -54,6 +61,7 @@
         <Button
             android:id="@+id/submit_customer_info_btn"
             android:layout_width="0dp"
+            android:layout_margin="0dp"
             android:layout_height="wrap_content"
             android:text="@string/submit_info_component"
             android:textSize="25sp"

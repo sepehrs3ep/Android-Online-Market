@@ -251,7 +251,7 @@ public class ProductInfoFragment extends VisibleFragment {
 
     private void showDetailsUI() {
         mTextViewName.setText(mProduct.getName());
-        mTextViewPrice.setText(mProduct.getPrice() + " $ ");
+        mTextViewPrice.setText(getString(R.string.price_format,mProduct.getPrice()));
         mExpandTextView.setText(mProduct.getDescription());
         mExpandTextView.setVisibility(View.GONE);
 
@@ -317,7 +317,7 @@ public class ProductInfoFragment extends VisibleFragment {
                 Picasso.get().load(product.getImages().get(0).getPath()).into(mProductImageView);
 
             mProductNameTextView.setText(product.getName());
-            mProductPriceTextView.setText(product.getPrice() + " $ ");
+            mProductPriceTextView.setText(getString(R.string.price_format,product.getPrice()));
         }
     }
 
