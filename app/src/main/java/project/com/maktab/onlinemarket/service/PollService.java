@@ -56,6 +56,7 @@ public class PollService extends IntentService {
         }
 
         SharedPref.setAlarmStatus(isOn);
+        SharedPref.setTimeIntervals(timeInterval);
 
 
 

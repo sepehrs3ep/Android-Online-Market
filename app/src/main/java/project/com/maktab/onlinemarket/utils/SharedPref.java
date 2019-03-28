@@ -8,6 +8,7 @@ public class SharedPref {
     private static final String CUSTOMER_ID_PREF = "CUSTOMER_ID_PREF";
     private static final String PRODUCT_LAST_ID = "PRODUCT_LAST_ID";
     private static final String IS_ALARM_ON = "IS_ALARM_ON";
+    private static final String ALARM_INTERVALS = "ALARM_INTERVALS";
 
     public static void addCustomerId(long id) {
         PreferenceManager.getDefaultSharedPreferences(OnlineMarketApp.getAppInstance()).edit()
@@ -38,6 +39,14 @@ public class SharedPref {
         return PreferenceManager.getDefaultSharedPreferences(OnlineMarketApp.getAppInstance())
                 .getBoolean(IS_ALARM_ON,false);
 
+    }
+    public static void setTimeIntervals(long timeIntervals){
+        PreferenceManager.getDefaultSharedPreferences(OnlineMarketApp.getAppInstance()).edit()
+                .putLong(ALARM_INTERVALS,timeIntervals).apply();
+
+    }
+    public static long getTimeIntervals(){
+        return PreferenceManager.getDefaultSharedPreferences(OnlineMarketApp.getAppInstance()).getLong(ALARM_INTERVALS,-1);
     }
 
 
