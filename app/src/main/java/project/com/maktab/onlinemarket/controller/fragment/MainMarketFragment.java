@@ -30,6 +30,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,6 +160,8 @@ public class MainMarketFragment extends VisibleFragment {
         });
 
 
+
+
     }
 
     private void setTemplate(TextView template) {
@@ -174,17 +177,23 @@ public class MainMarketFragment extends VisibleFragment {
                 fragment.show(getFragmentManager(), "Search");
 
                 return true;
+
             case android.R.id.home:
                 if (mDrawerLayout.isDrawerOpen(Gravity.RIGHT)) {
                     mDrawerLayout.closeDrawer(Gravity.RIGHT);
                 } else {
                     mDrawerLayout.openDrawer(Gravity.RIGHT);
                 }
-
                 return true;
+
             case R.id.action_cart:
                 ShopBagDialogFragment shopBagDialogFragment = ShopBagDialogFragment.newInstance();
                 shopBagDialogFragment.show(getFragmentManager(), "show the bag from main");
+                return true;
+
+            case R.id.choose_time_menu:
+                TimeChooseDialogFragment timeChooseDialogFragment = TimeChooseDialogFragment.newInstance();
+                timeChooseDialogFragment.show(getFragmentManager(),"show the time choose ");
                 return true;
 
             default:

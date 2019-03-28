@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.ToggleButton;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -32,6 +34,9 @@ public class TimeChooseDialogFragment extends DialogFragment {
     TextInputLayout mCustomTimeInputLayout;
     @BindView(R.id.selected_time_spinner)
     Spinner mSelectTimeSpinner;
+    @BindView(R.id.service_toggle_btn)
+    ToggleButton mServiceToggleBtn;
+
 
 
     public static TimeChooseDialogFragment newInstance() {
@@ -56,11 +61,29 @@ public class TimeChooseDialogFragment extends DialogFragment {
         View view =  inflater.inflate(R.layout.fragment_time_choose_dialog, container, false);
         ButterKnife.bind(this,view);
 
+        enableWidgets(false);
+
+        mServiceToggleBtn.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+
+                enableWidgets(true);
+
+            }else {
+                enableWidgets(false);
+
+            }
+        });
 
 
 
 
         return view;
+    }
+
+    private void enableWidgets(boolean b) {
+        mCustomTimeInputLayout.setEnabled(b);
+        mCustomTimeEditText.setEnabled(b);
+        mSelectTimeSpinner.setEnabled(b);
     }
 
     private boolean validateTimeEditText() {

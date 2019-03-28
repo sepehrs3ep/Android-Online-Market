@@ -13,6 +13,7 @@ import android.util.Log;
 import java.util.concurrent.TimeUnit;
 
 import project.com.maktab.onlinemarket.utils.Services;
+import project.com.maktab.onlinemarket.utils.SharedPref;
 
 
 public class PollService extends IntentService {
@@ -31,19 +32,35 @@ public class PollService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (!isOnline())
             return;
-        Log.d(Services.NOTIF_TAG,"come on handle intent");
+        Log.d(Services.NOTIF_TAG, "come on handle intent");
         Services.pollServerAndShowNotification(this);
 
     }
 
-    public static void setServiceAlarm(Context context) {
+    public static void setServiceAlarm(Context context, boolean isOn,long timeInterval) {
+
         Intent i = newIntent(context);
+
         PendingIntent pi = PendingIntent.getService(context, 0, i, 0);
+
+
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), TIME_INTERVAL, pi);
+
+        if (isOn) {
+            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), timeInterval, pi);
+        } else {
+
+            alarmManager.cancel(pi);
+            pi.cancel();
+
+        }
+
+        SharedPref.setAlarmStatus(isOn);
+
 
 
     }
+
     public static boolean isAlarmOn(Context context) {
         Intent intent = newIntent(context);
         PendingIntent pi = PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_NO_CREATE);

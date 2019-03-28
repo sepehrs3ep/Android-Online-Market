@@ -76,6 +76,11 @@
     <string name="title_activity_maps">Map</string>
     <string name="cart">سبد خرید</string>
     <string name="submit_time">ثبت</string>
+    <string name="service_on">دریافت نوتیفیکیشن</string>
+    <string name="off_service">خاموش کردن نوتیفیکیشن</string>
+    <string name="on_service">روشن کردن نوتیفیکیشن</string>
+    <string name="choose_time">لطفا زمان دریافت اعلان را انتخاب کنید</string>
+
 
 
 </resources>
