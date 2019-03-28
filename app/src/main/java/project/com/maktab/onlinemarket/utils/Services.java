@@ -17,6 +17,7 @@ import java.util.List;
 
 import androidx.core.app.NotificationCompat;
 import project.com.maktab.onlinemarket.R;
+import project.com.maktab.onlinemarket.controller.activity.ProductInfoActivity;
 import project.com.maktab.onlinemarket.controller.activity.StartActivity;
 import project.com.maktab.onlinemarket.eventbus.NotificationMassageEvent;
 import project.com.maktab.onlinemarket.model.product.Product;
@@ -61,7 +62,7 @@ public class Services {
 
     private static void showNotification(Context context, Product product) {
         Notification notification = null;
-        Intent intent = StartActivity.newIntent(context);
+        Intent intent = ProductInfoActivity.newIntent(context,product.getId());
         PendingIntent pendingIntent = PendingIntent.getActivity(context, PENDING_INTENT_REQUEST_CODE, intent, 0);
 
         try {

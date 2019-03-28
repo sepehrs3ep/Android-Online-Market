@@ -5,13 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 
 import project.com.maktab.onlinemarket.service.PollService;
+import project.com.maktab.onlinemarket.utils.SharedPref;
 
 public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-            PollService.setServiceAlarm(context);
+            if(SharedPref.isAlarmOn())
+            PollService.setServiceAlarm(context,true,1l);
         }
 
     }
