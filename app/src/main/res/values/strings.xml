@@ -68,11 +68,14 @@
     <string name="call_number">شماره تماس : </string>
 
     <string name="related_products">محصولات مشابه</string>
+    <string name="time_choosing">انتخاب زمان</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="notif_received">Visible Fragment is Received</string>
     <string name="title_activity_maps">Map</string>
+    <string name="cart">سبد خرید</string>
+    <string name="submit_time">ثبت</string>
 
 
 </resources>
