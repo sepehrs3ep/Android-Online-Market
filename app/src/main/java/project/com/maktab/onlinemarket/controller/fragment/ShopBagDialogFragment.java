@@ -54,6 +54,7 @@ public class ShopBagDialogFragment extends DialogFragment {
     RecyclerView mShopBagRecyclerView;
     @BindView(R.id.shop_bag_progress_bar)
     ProgressBar mProgressBar;
+    private double mFinalValue = 0;
 
     private List<Product> mBagShopProductList;
     private ProgressDialog mProgressDialog;
@@ -149,13 +150,17 @@ public class ShopBagDialogFragment extends DialogFragment {
     }
 
     private void calculateProductsPrice() {
-        double finalValue = 0;
+
         for (Product product : mBagShopProductList) {
             double price = Double.valueOf(product.getPrice());
-            finalValue += price;
+            mFinalValue += price;
         }
 
-        mShopFinalSumTextView.setText(getString(R.string.price_format, finalValue + " "));
+        updatePrice();
+    }
+
+    private void updatePrice() {
+        mShopFinalSumTextView.setText(getString(R.string.price_format, mFinalValue + " "));
     }
 
     class ShopBagViewHolder extends RecyclerView.ViewHolder {
@@ -213,20 +218,30 @@ public class ShopBagDialogFragment extends DialogFragment {
                 @Override
                 public void onClick(View v) {
                     productNumber--;
-                    if (productNumber < 1)
+                    if (productNumber < 1){
                         productNumber = 1;
+
+                    }else
+                    mFinalValue -= Double.valueOf(mProduct.getPrice());
+
                     mProductNumber.setText(productNumber + " ");
                     ProductLab.getInstance().insertToBag(mProduct.getId(), productNumber);
+                    updatePrice();
+
 
                 }
             });
             mAddbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (productNumber >= 1)
+                    if (productNumber >= 1){
                         productNumber++;
+                    mFinalValue += Double.valueOf(mProduct.getPrice());
+
+                    }
                     mProductNumber.setText(productNumber + " ");
                     ProductLab.getInstance().insertToBag(mProduct.getId(), productNumber);
+                    updatePrice();
                 }
             });
 
